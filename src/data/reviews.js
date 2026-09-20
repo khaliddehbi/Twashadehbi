@@ -1,0 +1,80 @@
+export const CUSTOMER_REVIEWS = [
+  {
+    id: 'rev-1',
+    productId: 'TD-W01',
+    customerName: 'Yassine Berrada',
+    city: 'Casablanca',
+    rating: 5,
+    date: '14 Septembre 2026',
+    verifiedPurchase: true,
+    title: 'Une merveille ! La qualité dépasse mes attentes',
+    titleAr: 'روعة لا توصف، الجودة فاقت كل توقعاتي',
+    comment: 'Franchement impressionné par le poids de la montre et la brillance de l’or. J’ai reçu le colis en 24h à Maarif. Le livreur m’a laissé ouvrir la boîte pour vérifier avant de payer en espèces. 10/10 !',
+    commentAr: 'بصراحة تفاجأت بوزن الساعة ولمعان الذهب الثقيل. وصلني الطلب خلال 24 ساعة في المعاريف بالدار البيضاء، والموزع سمح لي بفتح العلبة وفحصها قبل الدفع كاش.'
+  },
+  {
+    id: 'rev-2',
+    productId: 'TD-B01',
+    customerName: 'Salma Kettani',
+    city: 'Rabat - Agdal',
+    rating: 5,
+    date: '10 Septembre 2026',
+    verifiedPurchase: true,
+    title: 'Le jonc Zahra est sublime avec mes caftans',
+    titleAr: 'سوار زهرة تحفة رائعة مع القفطان المغربي',
+    comment: 'La ciselure est d’une finesse incroyable, ça fait vraiment bijou traditionnel revisité. Je le porte tous les jours même sous la douche et la couleur or n’a pas bougé.',
+    commentAr: 'النقش دقيق جدا وفيه لمسة تقليدية عصرية. أرتديه يوميا حتى مع الاستحمام ولون الذهب ثابت لم يتغير بتاتا.'
+  },
+  {
+    id: 'rev-3',
+    productId: 'TD-S01',
+    customerName: 'Mehdi El Fassi',
+    city: 'Fès',
+    rating: 5,
+    date: '05 Septembre 2026',
+    verifiedPurchase: true,
+    title: 'Cadeau de mariage parfait pour mon frère',
+    titleAr: 'هدية زفاف ممتازة لأخي',
+    comment: 'Le coffret velours avec le sceau doré donne un effet très prestigieux dès l’ouverture. Mon frère a adoré le duo montre + jonc. Service client très pro sur WhatsApp.',
+    commentAr: 'العلبة المخملية مع الشعار الذهبي تعطي انطباعا فخما جدا. أخي أعجبه الطقم كثيرا وتواصل خدمة العملاء عبر الواتساب كان سريعا ومحترفا.'
+  },
+  {
+    id: 'rev-4',
+    productId: 'TD-R01',
+    customerName: 'Hamza Tazi',
+    city: 'Marrakech',
+    rating: 5,
+    date: '01 Septembre 2026',
+    verifiedPurchase: true,
+    title: 'Chevalière Atlas au top',
+    titleAr: 'خاتم الأطلس قمة في الأناقة',
+    comment: 'L’onyx noir naturel a une très belle profondeur et l’or brossé donne un style viril et sobre. Reçu à Guéliz en 48h chrono.',
+    commentAr: 'العقيق الأسود عميق جدا والذهب المطفي يعطي طابعا رجوليا راقيا. استلمت الطرد في مراكش خلال 48 ساعة.'
+  },
+  {
+    id: 'rev-5',
+    productId: 'TD-B03',
+    customerName: 'Amina Mansouri',
+    city: 'Tanger',
+    rating: 5,
+    date: '28 Août 2026',
+    verifiedPurchase: true,
+    title: 'La nacre est magnifique, brillance assurée',
+    titleAr: 'عرق اللؤلؤ يلمع بشكل ساحر مع الضوء',
+    comment: 'Je cherchais un bracelet trèfle raffiné à un prix raisonnable au Maroc. TWASHA DEHBI a relevé le défi haut la main. Merci pour la livraison rapide à Tanger !',
+    commentAr: 'كنت أبحث عن سوار أنيق بسعر مناسب في المغرب، طواشة ذهبي تفوقت بامتياز. شكرا على التوصيل السريع إلى طنجة!'
+  },
+  {
+    id: 'rev-6',
+    productId: 'TD-B02',
+    customerName: 'Reda Chraibi',
+    city: 'Casablanca',
+    rating: 5,
+    date: '22 Août 2026',
+    verifiedPurchase: true,
+    title: 'Maillons cubains lourds et fermoir très solide',
+    titleAr: 'سوار مايون ثقيل وقفل آمن جدا',
+    comment: 'Le bracelet a du poids, on sent que c’est de la bonne matière et pas du toc léger. Le fermoir avec la gravure Twasha Dehbi est super soigné.',
+    commentAr: 'السوار ثقيل ومصمت وتحس بجودته العالية. القفل المنقوش باسم العلامة متقن للغاية.'
+  }
+];
