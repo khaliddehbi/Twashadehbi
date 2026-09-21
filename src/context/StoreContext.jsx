@@ -8,16 +8,50 @@ const StoreContext = createContext();
 export function StoreProvider({ children }) {
   const [language, setLanguage] = useState('fr'); // 'fr', 'ar', 'en'
   const [currency] = useState('MAD');
-  const [cart, setCart] = useState([
-    {
-      product: PRODUCTS[0], // TD-W01 Montre Royale
-      variant: PRODUCTS[0].variants[0],
-      size: PRODUCTS[0].sizes[0],
-      quantity: 1
+  const [cart, setCart] = useState(() => {
+    try {
+      const saved = localStorage.getItem('twasha_cart');
+      return saved ? JSON.parse(saved) : [
+        {
+          product: PRODUCTS[0],
+          variant: PRODUCTS[0].variants[0],
+          size: PRODUCTS[0].sizes[0],
+          quantity: 1
+        }
+      ];
+    } catch (e) {
+      return [
+        {
+          product: PRODUCTS[0],
+          variant: PRODUCTS[0].variants[0],
+          size: PRODUCTS[0].sizes[0],
+          quantity: 1
+        }
+      ];
     }
-  ]);
+  });
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [wishlist, setWishlist] = useState(['TD-B01', 'TD-R01']);
+  const [wishlist, setWishlist] = useState(() => {
+    try {
+      const saved = localStorage.getItem('twasha_wishlist');
+      return saved ? JSON.parse(saved) : ['TD-B01', 'TD-R01'];
+    } catch (e) {
+      return ['TD-B01', 'TD-R01'];
+    }
+  });
+
+  // Persist cart & wishlist
+  useEffect(() => {
+    try {
+      localStorage.setItem('twasha_cart', JSON.stringify(cart));
+    } catch (e) {}
+  }, [cart]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('twasha_wishlist', JSON.stringify(wishlist));
+    } catch (e) {}
+  }, [wishlist]);
   const [currentView, setCurrentView] = useState('home'); // home, catalog, product, cart, checkout, confirmation, tracking, account, admin
   const [selectedProductId, setSelectedProductId] = useState(PRODUCTS[0].id);
   const [selectedOrderId, setSelectedOrderId] = useState('TD-8492');
