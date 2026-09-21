@@ -1,29 +1,29 @@
 import React, { useState } from 'react';
 import { useStore } from '../../context/StoreContext';
-import { 
-  ShoppingBag, 
-  Heart, 
-  Search, 
-  Menu, 
-  X, 
-  PhoneCall, 
+import {
+  ShoppingBag,
+  Heart,
+  Search,
+  Menu,
+  X,
+  PhoneCall,
   SlidersHorizontal,
-  Globe, 
-  User, 
-  ShieldCheck, 
+  Globe,
+  User,
+  ShieldCheck,
   Truck
 } from 'lucide-react';
 
 export default function Header() {
-  const { 
-    language, 
-    setLanguage, 
-    t, 
-    cartItemCount, 
+  const {
+    language,
+    setLanguage,
+    t,
+    cartItemCount,
     cartSubtotal,
-    setIsCartOpen, 
-    wishlist, 
-    currentView, 
+    setIsCartOpen,
+    wishlist,
+    currentView,
     navigateTo,
     setIsSearchOpen
   } = useStore();
@@ -54,21 +54,21 @@ export default function Header() {
             {/* Language Switcher */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
               <Globe size={13} color="var(--gold-400)" />
-              <button 
-                onClick={() => setLanguage('fr')} 
-                style={{ 
-                  color: language === 'fr' ? 'var(--gold-400)' : '#A3A3A3', 
+              <button
+                onClick={() => setLanguage('fr')}
+                style={{
+                  color: language === 'fr' ? 'var(--gold-400)' : '#A3A3A3',
                   fontWeight: language === 'fr' ? '700' : '400',
-                  fontSize: '0.75rem' 
+                  fontSize: '0.75rem'
                 }}
               >
                 FR
               </button>
               <span style={{ color: '#555' }}>|</span>
-              <button 
-                onClick={() => setLanguage('ar')} 
-                style={{ 
-                  color: language === 'ar' ? 'var(--gold-400)' : '#A3A3A3', 
+              <button
+                onClick={() => setLanguage('ar')}
+                style={{
+                  color: language === 'ar' ? 'var(--gold-400)' : '#A3A3A3',
                   fontWeight: language === 'ar' ? '700' : '400',
                   fontSize: '0.75rem',
                   fontFamily: 'var(--font-arabic)'
@@ -77,12 +77,12 @@ export default function Header() {
                 العربية
               </button>
               <span style={{ color: '#555' }}>|</span>
-              <button 
-                onClick={() => setLanguage('en')} 
-                style={{ 
-                  color: language === 'en' ? 'var(--gold-400)' : '#A3A3A3', 
+              <button
+                onClick={() => setLanguage('en')}
+                style={{
+                  color: language === 'en' ? 'var(--gold-400)' : '#A3A3A3',
                   fontWeight: language === 'en' ? '700' : '400',
-                  fontSize: '0.75rem' 
+                  fontSize: '0.75rem'
                 }}
               >
                 EN
@@ -97,17 +97,17 @@ export default function Header() {
             <span style={{ color: '#444' }}>•</span>
 
             {/* Admin Quick Link */}
-            <button 
+            <button
               onClick={() => navigateTo('admin')}
-              style={{ 
+              style={{
                 background: 'rgba(212, 175, 55, 0.2)',
                 color: 'var(--gold-300)',
                 border: '1px solid var(--gold-500)',
                 borderRadius: '16px',
                 padding: '3px 10px',
-                display: 'flex', 
-                alignItems: 'center', 
-                gap: '5px', 
+                display: 'flex',
+                alignItems: 'center',
+                gap: '5px',
                 fontSize: '0.75rem',
                 fontWeight: '700',
                 cursor: 'pointer'
@@ -125,8 +125,8 @@ export default function Header() {
       <header className="header-wrapper">
         <div className="container header-inner">
           {/* Mobile Hamburger */}
-          <button 
-            className="icon-btn mobile-menu-btn" 
+          <button
+            className="icon-btn mobile-menu-btn"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             style={{ display: 'none' }}
           >
@@ -140,7 +140,7 @@ export default function Header() {
             </div>
             <div className="brand-text">
               <span className="brand-name">TWASHA DEHBI</span>
-              <span className="brand-arabic">طواشة ذهبي • MA</span>
+              {/* <span className="brand-arabic">طواشة ذهبي • MA</span> */}
             </div>
           </a>
 
@@ -163,8 +163,8 @@ export default function Header() {
           {/* Header Action Icons */}
           <div className="header-icons">
             {/* Search Trigger */}
-            <button 
-              className="icon-btn" 
+            <button
+              className="icon-btn"
               onClick={() => setIsSearchOpen(true)}
               aria-label="Rechercher un bijou"
               title="Rechercher"
@@ -173,8 +173,8 @@ export default function Header() {
             </button>
 
             {/* Customer Account */}
-            <button 
-              className="icon-btn" 
+            <button
+              className="icon-btn"
               onClick={() => navigateTo('account')}
               aria-label="Mon Compte"
               title="Mon Compte"
@@ -183,8 +183,8 @@ export default function Header() {
             </button>
 
             {/* Wishlist */}
-            <button 
-              className="icon-btn" 
+            <button
+              className="icon-btn"
               onClick={() => navigateTo('account')}
               aria-label="Liste d'envies"
               title="Coups de Cœur"
@@ -194,8 +194,8 @@ export default function Header() {
             </button>
 
             {/* Cart Drawer Trigger */}
-            <button 
-              className="icon-btn" 
+            <button
+              className="icon-btn"
               onClick={() => setIsCartOpen(true)}
               style={{ background: 'var(--obsidian-900)', color: 'var(--gold-400)', width: 'auto', padding: '8px 14px', borderRadius: '30px' }}
               aria-label="Panier d'achats"
@@ -215,10 +215,10 @@ export default function Header() {
 
         {/* Mobile Navigation Drawer */}
         {mobileMenuOpen && (
-          <div 
-            style={{ 
-              background: '#FFFFFF', 
-              borderTop: '1px solid var(--border-subtle)', 
+          <div
+            style={{
+              background: '#FFFFFF',
+              borderTop: '1px solid var(--border-subtle)',
               padding: '20px',
               display: 'flex',
               flexDirection: 'column',
@@ -229,10 +229,10 @@ export default function Header() {
             {navItems.map((item) => (
               <button
                 key={item.key}
-                style={{ 
-                  textAlign: 'left', 
-                  fontSize: '1rem', 
-                  fontWeight: '600', 
+                style={{
+                  textAlign: 'left',
+                  fontSize: '1rem',
+                  fontWeight: '600',
                   padding: '10px 0',
                   borderBottom: '1px solid #F3F4F6',
                   color: 'var(--obsidian-900)'
@@ -246,9 +246,9 @@ export default function Header() {
               </button>
             ))}
             <div style={{ display: 'flex', gap: '10px', paddingTop: '10px' }}>
-              <button 
+              <button
                 onClick={() => { navigateTo('admin'); setMobileMenuOpen(false); }}
-                className="btn-dark" 
+                className="btn-dark"
                 style={{ width: '100%', fontSize: '0.85rem' }}
               >
                 <SlidersHorizontal size={15} />
