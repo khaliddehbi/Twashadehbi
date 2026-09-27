@@ -38,7 +38,7 @@ export default function AccountView() {
                 Othmane Bennani
               </h1>
               <span style={{ fontSize: '0.85rem', color: 'var(--gold-400)' }}>
-                Membre Privilège TWASHA DEHBI • Casablanca
+                Membre Privilège TWISHIYAT • Maroc
               </span>
             </div>
           </div>
@@ -50,7 +50,7 @@ export default function AccountView() {
               style={{ fontSize: '0.85rem', padding: '10px 18px' }}
             >
               <ShoppingBag size={15} />
-              <span>Commander un bijou</span>
+              <span>Découvrir la collection</span>
             </button>
           </div>
         </div>

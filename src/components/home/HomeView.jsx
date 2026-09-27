@@ -70,7 +70,7 @@ export default function HomeView() {
     <div>
       {/* 1. HERO SECTION */}
       <section className="hero-section">
-        <img src={heroBanner} alt="TWASHA DEHBI Lifestyle" className="hero-bg" />
+        <img src={heroBanner} alt="TWISHIYAT Lifestyle" className="hero-bg" />
         <div className="hero-overlay"></div>
         <div className="container" style={{ position: 'relative', zIndex: 5 }}>
           <div className="hero-content">
@@ -111,7 +111,7 @@ export default function HomeView() {
                   <Star key={i} size={15} fill="var(--gold-400)" />
                 ))}
               </div>
-              <span><strong>4.9/5</strong> • Plus de 4 800 clients au Maroc</span>
+              <span><strong>Sélection Exclusive</strong> • Livraison sécurisée partout au Maroc</span>
             </div>
           </div>
         </div>
@@ -411,7 +411,7 @@ export default function HomeView() {
         </div>
       </section>
 
-      {/* 6. WHY CHOOSE TWASHA DEHBI */}
+      {/* 6. WHY CHOOSE TWISHIYAT */}
       <section style={{ padding: '80px 0', background: '#FAF8F5' }}>
         <div className="container">
           <div className="section-header">
@@ -610,7 +610,7 @@ export default function HomeView() {
           {newsletterSuccess ? (
             <div style={{ background: 'rgba(16, 185, 129, 0.15)', border: '1px solid #10B981', padding: '16px', borderRadius: '8px', color: '#A7F3D0', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
               <CheckCircle2 size={20} />
-              <span>Félicitations ! Votre code promo <strong>TWASHA10</strong> (-10%) a été activé !</span>
+              <span>Félicitations ! Votre code promo <strong>TWISHIYAT10</strong> (-10%) a été activé !</span>
             </div>
           ) : (
             <form onSubmit={handleNewsletterSubmit} style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center' }}>

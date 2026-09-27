@@ -136,11 +136,10 @@ export default function Header() {
           {/* Brand Logo & Monogram */}
           <a href="#" className="brand-logo" onClick={(e) => { e.preventDefault(); navigateTo('home'); }}>
             <div className="brand-crest">
-              <span>TD</span>
+              <span>TW</span>
             </div>
             <div className="brand-text">
-              <span className="brand-name">TWASHA DEHBI</span>
-              {/* <span className="brand-arabic">طواشة ذهبي • MA</span> */}
+              <span className="brand-name">TWISHIYAT</span>
             </div>
           </a>
 
@@ -245,14 +244,14 @@ export default function Header() {
                 {t(item.key)}
               </button>
             ))}
-            <div style={{ display: 'flex', gap: '10px', paddingTop: '10px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', paddingTop: '10px' }}>
               <button
-                onClick={() => { navigateTo('admin'); setMobileMenuOpen(false); }}
+                onClick={() => { navigateTo('tracking'); setMobileMenuOpen(false); }}
                 className="btn-dark"
-                style={{ width: '100%', fontSize: '0.85rem' }}
+                style={{ width: '100%', fontSize: '0.85rem', justifyContent: 'center' }}
               >
-                <SlidersHorizontal size={15} />
-                <span>{t('navAdmin')}</span>
+                <Truck size={15} />
+                <span>{t('navTracking')}</span>
               </button>
             </div>
           </div>

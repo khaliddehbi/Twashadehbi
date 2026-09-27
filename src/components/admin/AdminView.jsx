@@ -66,7 +66,7 @@ export default function AdminView() {
   });
 
   const handleSendWhatsAppConfirmation = (ord) => {
-    const text = `Salam ${ord.customer.fullName} ! C’est TWASHA DEHBI. Nous avons bien reçu votre commande N° ${ord.id} d'un montant de ${ord.total} DH. Confirmez-vous la livraison à ${ord.customer.city} (${ord.customer.address}) ?`;
+    const text = `Salam ${ord.customer.fullName} ! C’est TWISHIYAT. Nous avons bien reçu votre commande N° ${ord.id} d'un montant de ${ord.total} DH. Confirmez-vous la livraison à ${ord.customer.city} (${ord.customer.address}) ?`;
     window.open(`https://wa.me/212${ord.customer.phone.replace(/^0/, '')}?text=${encodeURIComponent(text)}`, '_blank');
   };
 
@@ -83,7 +83,7 @@ export default function AdminView() {
       stock: Number(newProdStock),
       gender: 'men',
       image: products[0].image,
-      shortDescription: 'Nouvel accessoire haute joaillerie TWASHA DEHBI.'
+      shortDescription: 'Nouvel accessoire sélection TWISHIYAT.'
     });
 
     setNewProductModal(false);
@@ -102,7 +102,7 @@ export default function AdminView() {
               <span style={{ fontSize: '0.8rem', color: '#6B7280' }}>Boutique Officielle Casablanca</span>
             </div>
             <h1 style={{ fontSize: '2.2rem', color: 'var(--obsidian-950)', margin: '4px 0' }}>
-              Administration TWASHA DEHBI
+              Administration TWISHIYAT
             </h1>
             <p style={{ color: '#6B7280', fontSize: '0.9rem' }}>
               Gestion des commandes en espèces (COD), expéditions Amana/Cathedis et catalogue.
@@ -478,7 +478,7 @@ export default function AdminView() {
           <div className="modal-card" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '600px', padding: '32px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '2px solid var(--obsidian-900)', paddingBottom: '16px', marginBottom: '20px' }}>
               <div>
-                <h2 style={{ fontSize: '1.4rem', margin: 0 }}>TWASHA DEHBI SARL</h2>
+                <h2 style={{ fontSize: '1.4rem', margin: 0 }}>TWISHIYAT</h2>
                 <span style={{ fontSize: '0.8rem', color: '#6B7280' }}>Bordereau d'Expédition & Encaissement COD</span>
               </div>
               <div style={{ textAlign: 'right' }}>
@@ -490,7 +490,7 @@ export default function AdminView() {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', fontSize: '0.85rem', marginBottom: '20px' }}>
               <div style={{ background: '#FAF8F5', padding: '12px', borderRadius: '6px' }}>
                 <strong style={{ display: 'block', marginBottom: '4px', color: '#6B7280' }}>EXPÉDITEUR :</strong>
-                TWASHA DEHBI - Hub Casablanca<br />
+                TWISHIYAT - Expéditions Maroc<br />
                 Bd Al Massira, Maarif, Casablanca<br />
                 Tél : 06 61 24 58 90
               </div>

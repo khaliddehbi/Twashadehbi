@@ -56,7 +56,7 @@ export default function QuickViewModal() {
         {/* Details Column */}
         <div style={{ flex: '1 1 380px', padding: '32px', display: 'flex', flexDirection: 'column' }}>
           <span style={{ fontSize: '0.78rem', textTransform: 'uppercase', color: 'var(--gold-700)', fontWeight: '700', letterSpacing: '0.08em', marginBottom: '6px' }}>
-            {quickViewProduct.category} • TWASHA DEHBI
+            {quickViewProduct.category} • TWISHIYAT
           </span>
 
           <h3 style={{ fontSize: '1.4rem', fontWeight: '700', color: 'var(--obsidian-900)', marginBottom: '10px', lineHeight: '1.3' }}>

@@ -9,7 +9,7 @@ const AdminContext = createContext();
 export function AdminProvider({ children }) {
   const [orders, setOrders] = useState(() => {
     try {
-      const saved = localStorage.getItem('twasha_orders');
+      const saved = localStorage.getItem('twishiyat_orders') || localStorage.getItem('twasha_orders');
       return saved ? JSON.parse(saved) : INITIAL_ORDERS;
     } catch (e) {
       return INITIAL_ORDERS;
@@ -18,7 +18,7 @@ export function AdminProvider({ children }) {
 
   const [products, setProducts] = useState(() => {
     try {
-      const saved = localStorage.getItem('twasha_products');
+      const saved = localStorage.getItem('twishiyat_products') || localStorage.getItem('twasha_products');
       return saved ? JSON.parse(saved) : PRODUCTS;
     } catch (e) {
       return PRODUCTS;
@@ -29,15 +29,15 @@ export function AdminProvider({ children }) {
 
   const [coupons, setCoupons] = useState(() => {
     try {
-      const saved = localStorage.getItem('twasha_coupons');
+      const saved = localStorage.getItem('twishiyat_coupons') || localStorage.getItem('twasha_coupons');
       return saved ? JSON.parse(saved) : [
-        { code: 'TWASHA10', type: 'percentage', value: 10, uses: 142, active: true },
+        { code: 'TWISHIYAT10', type: 'percentage', value: 10, uses: 142, active: true },
         { code: 'MAROC', type: 'shipping', value: 0, uses: 89, active: true },
         { code: 'VIP20', type: 'percentage', value: 20, uses: 34, active: true }
       ];
     } catch (e) {
       return [
-        { code: 'TWASHA10', type: 'percentage', value: 10, uses: 142, active: true },
+        { code: 'TWISHIYAT10', type: 'percentage', value: 10, uses: 142, active: true },
         { code: 'MAROC', type: 'shipping', value: 0, uses: 89, active: true },
         { code: 'VIP20', type: 'percentage', value: 20, uses: 34, active: true }
       ];
@@ -142,19 +142,19 @@ export function AdminProvider({ children }) {
   // Persist to localStorage
   useEffect(() => {
     try {
-      localStorage.setItem('twasha_orders', JSON.stringify(orders));
+      localStorage.setItem('twishiyat_orders', JSON.stringify(orders));
     } catch (e) {}
   }, [orders]);
 
   useEffect(() => {
     try {
-      localStorage.setItem('twasha_products', JSON.stringify(products));
+      localStorage.setItem('twishiyat_products', JSON.stringify(products));
     } catch (e) {}
   }, [products]);
 
   useEffect(() => {
     try {
-      localStorage.setItem('twasha_coupons', JSON.stringify(coupons));
+      localStorage.setItem('twishiyat_coupons', JSON.stringify(coupons));
     } catch (e) {}
   }, [coupons]);
 

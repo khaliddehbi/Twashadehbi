@@ -46,11 +46,11 @@ export default function WhatsAppWidget() {
           {/* Header */}
           <div style={{ background: '#075E54', color: '#FFFFFF', padding: '16px 20px', display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: '#FFFFFF', border: '2px solid #25D366', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#075E54', fontWeight: 'bold' }}>
-              TD
+              TW
             </div>
             <div>
               <h4 style={{ fontSize: '0.95rem', fontWeight: '700', color: '#FFFFFF', margin: 0 }}>
-                TWASHA DEHBI Concierge
+                TWISHIYAT Service Client
               </h4>
               <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '0.75rem', color: '#A7F3D0', marginTop: '2px' }}>
                 <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#25D366' }}></span>
@@ -63,14 +63,14 @@ export default function WhatsAppWidget() {
           <div style={{ padding: '18px', background: '#F0F2F5' }}>
             <div style={{ background: '#FFFFFF', padding: '12px 14px', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.08)', marginBottom: '14px', fontSize: '0.85rem', color: '#1F2937' }}>
               {language === 'ar'
-                ? 'مرحباً بك في طواشة ذهبي! كيف يمكن لمستشارينا في الدار البيضاء مساعدتك اليوم؟'
-                : 'Salam ! Bienvenue chez TWASHA DEHBI. Comment notre équipe à Casablanca peut-elle vous aider aujourd’hui ?'}
+                ? 'مرحباً بك في تويشيات! كيف يمكننا مساعدتك اليوم؟'
+                : 'Salam ! Bienvenue chez TWISHIYAT. Comment pouvons-nous vous aider aujourd’hui ?'}
             </div>
 
             {/* Quick Actions */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <button
-                onClick={() => openChat('Salam ! Je souhaite commander un bijou chez Twasha Dehbi avec paiement à la livraison.')}
+                onClick={() => openChat('Salam ! Je souhaite commander chez TWISHIYAT avec paiement à la livraison.')}
                 style={{
                   background: '#FFFFFF',
                   padding: '10px 14px',
@@ -139,7 +139,7 @@ export default function WhatsAppWidget() {
 
           {/* Footer Note */}
           <div style={{ padding: '10px', textAlign: 'center', background: '#FFFFFF', fontSize: '0.72rem', color: '#9CA3AF', borderTop: '1px solid #F3F4F6' }}>
-            Service client officiel TWASHA DEHBI • Casablanca
+            Service client officiel TWISHIYAT • Maroc
           </div>
         </div>
       )}

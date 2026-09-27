@@ -33,9 +33,13 @@ export function validateMoroccanPhone(phone) {
 
 export function formatMoroccanPhone(phone) {
   if (!phone) return '';
-  const clean = phone.replace(/[\s\-\(\)\.]/g, '');
+  let clean = phone.replace(/[\s\-\(\)\.]/g, '');
+  if (clean.startsWith('+212')) clean = '0' + clean.slice(4);
+  else if (clean.startsWith('00212')) clean = '0' + clean.slice(5);
+  else if (clean.startsWith('212') && clean.length === 12) clean = '0' + clean.slice(3);
+
   if (clean.length === 10 && clean.startsWith('0')) {
-    return `${clean.slice(0, 2)} ${clean.slice(2, 4)} ${clean.slice(4, 6)} ${clean.slice(8, 10)}`;
+    return `${clean.slice(0, 2)} ${clean.slice(2, 4)} ${clean.slice(4, 6)} ${clean.slice(6, 8)} ${clean.slice(8, 10)}`;
   }
   return phone;
 }

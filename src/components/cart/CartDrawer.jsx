@@ -186,7 +186,7 @@ export default function CartDrawer() {
                   type="text"
                   value={couponInput}
                   onChange={(e) => setCouponInput(e.target.value)}
-                  placeholder={appliedCoupon ? `Code actif: ${appliedCoupon.code}` : "Code promo (ex: TWASHA10)"}
+                  placeholder={appliedCoupon ? `Code actif: ${appliedCoupon.code}` : "Code promo (ex: TWISHIYAT10)"}
                   style={{
                     width: '100%',
                     padding: '9px 12px 9px 36px',

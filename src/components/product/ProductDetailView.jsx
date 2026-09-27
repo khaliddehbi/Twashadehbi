@@ -146,7 +146,7 @@ export default function ProductDetailView() {
   };
 
   const handleWhatsAppInquiry = () => {
-    const text = `Salam TWASHA DEHBI ! Je souhaite commander le bijou : "${product.name}" au prix de ${product.price} DH. Est-il disponible ?`;
+    const text = `Salam TWISHIYAT ! Je souhaite commander le produit : "${product.name}" au prix de ${product.price} DH. Est-il disponible ?`;
     window.open(`https://wa.me/212661245890?text=${encodeURIComponent(text)}`, '_blank');
   };
 
@@ -605,7 +605,7 @@ export default function ProductDetailView() {
                     <ul style={{ paddingLeft: '20px', marginTop: '6px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
                       <li>Résistant à l'eau et aux éclaboussures.</li>
                       <li>Essuyez délicatement avec la chamoisine offerte après contact prolongé avec des produits agressifs.</li>
-                      <li>Conservez dans l'écrin velours TWASHA DEHBI lorsque vous ne le portez pas.</li>
+                      <li>Conservez dans l'écrin velours TWISHIYAT lorsque vous ne le portez pas.</li>
                     </ul>
                   </div>
                 )}
@@ -673,7 +673,7 @@ export default function ProductDetailView() {
 
           {/* Review Submission Form */}
           <div id="review-form-box" style={{ background: '#FAF8F5', padding: '30px', borderRadius: '14px', border: '1px solid #EFEAE2', maxWidth: '650px' }}>
-            <h3 style={{ fontSize: '1.2rem', marginBottom: '14px' }}>Partagez votre avis sur TWASHA DEHBI</h3>
+            <h3 style={{ fontSize: '1.2rem', marginBottom: '14px' }}>Partagez votre avis sur TWISHIYAT</h3>
             {reviewSuccess ? (
               <div style={{ background: '#D1FAE5', color: '#065F46', padding: '14px', borderRadius: '8px', fontSize: '0.9rem' }}>
                 Merci pour votre avis ! Il sera visible après modération de notre équipe.

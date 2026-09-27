@@ -1,5 +1,5 @@
 -- ==============================================================================
--- TWASHA DEHBI - Supabase PostgreSQL Database Setup Script
+-- TWISHIYAT - Supabase PostgreSQL Database Setup Script
 -- Copiez et collez ce script dans le "SQL Editor" de votre tableau de bord Supabase
 -- ==============================================================================
 

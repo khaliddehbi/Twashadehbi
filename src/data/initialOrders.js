@@ -103,7 +103,7 @@ export const INITIAL_ORDERS = [
     items: [
       {
         productId: 'TD-S01',
-        name: 'Coffret Majestueux Twasha (Montre + Jonc Ciselé)',
+        name: 'Coffret Majestueux TWISHIYAT (Montre + Jonc Ciselé)',
         variant: 'Coffret Velours Noir & Or',
         price: 699,
         quantity: 1,

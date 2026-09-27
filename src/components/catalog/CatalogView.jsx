@@ -85,7 +85,7 @@ export default function CatalogView() {
 
           <h1 style={{ fontSize: '2.4rem', color: 'var(--obsidian-950)', marginBottom: '8px' }}>
             {categoryFilter === 'all' 
-              ? 'Toutes les Créations TWASHA DEHBI' 
+              ? 'Toutes les Créations TWISHIYAT' 
               : (CATEGORIES.find(c => c.id === categoryFilter)?.name || 'Boutique')}
           </h1>
           <p style={{ color: '#6B7280', fontSize: '0.95rem' }}>
@@ -141,7 +141,7 @@ export default function CatalogView() {
                 color: 'var(--obsidian-900)'
               }}
             >
-              <option value="featured">Sélection TWASHA DEHBI</option>
+              <option value="featured">Sélection TWISHIYAT</option>
               <option value="price-asc">Prix croissant (DH)</option>
               <option value="price-desc">Prix décroissant (DH)</option>
               <option value="rating">Meilleures notes clients</option>

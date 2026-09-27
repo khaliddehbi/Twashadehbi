@@ -39,7 +39,7 @@ export const PRODUCTS = [
     gallery: [watchGold, watchLeather, giftBox],
     shortDescription: 'Chronographe d’exception avec cadran vert émeraude soleillé et finitions en or 18k.',
     shortDescriptionAr: 'كرونوغراف استثنائي بمينا أخضر زمردي ولمسات ذهبية 18 قيراط مقاومة للماء.',
-    description: 'Chef-d’œuvre de l’horlogerie moderne inspiré du raffinement marocain. Dotée d’un boîtier en acier inoxydable 316L avec placage PVD or jaune 18K inaltérable, d’un cadran vert émeraude soleillé emblématique et d’un verre saphir inrayable. Livrée dans son écrin de luxe TWASHA DEHBI avec certificat d’authenticité et garantie 1 an.',
+    description: 'Chef-d’œuvre de l’horlogerie moderne inspiré du raffinement marocain. Dotée d’un boîtier en acier inoxydable 316L avec placage PVD or jaune 18K inaltérable, d’un cadran vert émeraude soleillé emblématique et d’un verre saphir inrayable. Livrée dans son écrin de luxe TWISHIYAT avec certificat d’authenticité et garantie 1 an.',
     descriptionAr: 'تحفة فنية في صناعة الساعات الراقية مستوحاة من الأناقة المغربية العصرية. هيكل فولاذي 316L مطلي بطبقة الذهب عيار 18 المقاوم لتغير اللون مع زجاج الياقوت المضاد للخدش.',
     specs: {
       'Matériau': 'Acier Inoxydable 316L & Placage Or 18K PVD',
@@ -114,9 +114,9 @@ export const PRODUCTS = [
     isFlashSale: true,
     image: braceletCuff,
     gallery: [braceletCuff, giftBox],
-    shortDescription: 'Gravures architecturales ciselées à la main avec poinçon de marque TWASHA DEHBI.',
+    shortDescription: 'Gravures architecturales ciselées à la main avec poinçon de marque TWISHIYAT.',
     shortDescriptionAr: 'سوار عصري محفور بزخارف معمارية مغربية راقية بلمعان الذهب.',
-    description: 'Une pièce maîtresse signée TWASHA DEHBI. Le jonc Zahra fusionne les lignes de l’architecture arabo-andalouse avec la pureté du bijou moderne. Résistant à l’eau, aux parfums et à la transpiration.',
+    description: 'Une pièce maîtresse signée TWISHIYAT. Le jonc Zahra fusionne les lignes de l’architecture arabo-andalouse avec la pureté du bijou moderne. Résistant à l’eau, aux parfums et à la transpiration.',
     descriptionAr: 'قطعة فنية تجسد الزخرفة المعمارية المغربية بروح معاصرة. مقاومة للماء والعطور ولا يتغير لونها أبدًا.',
     specs: {
       'Matériau': 'Acier Titane Haute Densité + Triple placage Or 18K',
@@ -152,8 +152,8 @@ export const PRODUCTS = [
     isFlashSale: false,
     image: braceletCuban,
     gallery: [braceletCuban, ringOnyx],
-    shortDescription: 'Maillons serrés ultra-brillants avec fermoir boîte sécurisé gravé TWASHA DEHBI.',
-    shortDescriptionAr: 'سوار رجالي كلاسيكي عريض بحلقات مصمتة وقفل فاخر محفور بعلامة طواشة ذهبي.',
+    shortDescription: 'Maillons serrés ultra-brillants avec fermoir boîte sécurisé gravé TWISHIYAT.',
+    shortDescriptionAr: 'سوار رجالي كلاسيكي عريض بحلقات مصمتة وقفل فاخر محفور بعلامة تويشيات.',
     description: 'Un classique masculin audacieux. Finition miroir étincelante, fermoir luxe à double loquet de sécurité et présence royale au poignet.',
     descriptionAr: 'كلاسيكية رجالية متميزة بحلقات مصقولة بلمعان المرايا وقفل مزدوج الأمان.',
     specs: {
@@ -232,7 +232,7 @@ export const PRODUCTS = [
       'Matériau': 'Acier 316L brossé + Placage Or 18K 5 couches',
       'Pierre': 'Véritable Onyx Noir naturel poli',
       'Bordure': 'Gravure tressée arabo-berbère',
-      'Gravure intérieure': 'TWASHA DEHBI 18K'
+      'Gravure intérieure': 'TWISHIYAT 18K'
     },
     variants: [
       { id: 'gold-onyx', name: 'Or Brossé & Onyx Noir', nameAr: 'ذهب مطفي وعقيق أسود', colorHex: '#D4AF37' }
@@ -267,7 +267,7 @@ export const PRODUCTS = [
       'Pierre Centrale': 'Cristal Saphir Vert Émeraude taille émeraude (8x10 mm)',
       'Pierres Latérales': 'Zircons cubiques AAA taille baguette et brillants',
       'Métal': 'Argent 925 doré à l’Or fin 18K (Vermeil)',
-      'Poinçon': 'S925 & TD'
+      'Poinçon': 'S925 & TW'
     },
     variants: [
       { id: 'emerald-gold', name: 'Émeraude & Or Jaune', nameAr: 'زمرد وذهب أصفر', colorHex: '#1B4D3E' }
@@ -277,10 +277,10 @@ export const PRODUCTS = [
   },
   {
     id: 'TD-S01',
-    name: 'Coffret Majestueux Twasha (Montre + Jonc Ciselé)',
-    nameAr: 'علبة الهدايا الملكية طواشة (ساعة + سوار محفور)',
-    nameEn: 'Majestic Twasha Gift Set (Watch + Engraved Cuff)',
-    slug: 'coffret-majestueux-twasha-duo',
+    name: 'Coffret Majestueux TWISHIYAT (Montre + Jonc Ciselé)',
+    nameAr: 'علبة الهدايا الملكية تويشيات (ساعة + سوار محفور)',
+    nameEn: 'Majestic TWISHIYAT Gift Set (Watch + Engraved Cuff)',
+    slug: 'coffret-majestueux-twishiyat-duo',
     category: 'sets',
     gender: 'men',
     price: 699,
@@ -294,14 +294,14 @@ export const PRODUCTS = [
     isFlashSale: true,
     image: giftBox,
     gallery: [giftBox, watchGold, braceletCuff],
-    shortDescription: 'L’ensemble signature TWASHA DEHBI dans son luxueux écrin en velours noir et or.',
+    shortDescription: 'L’ensemble signature TWISHIYAT dans son luxueux écrin en velours noir et or.',
     shortDescriptionAr: 'طقم الهدايا الأيقوني الكامل في علبة مخملية سوداء فاخرة بختم ذهبي.',
     description: 'Le cadeau par excellence pour célébrer un anniversaire, une réussite ou un mariage marocain. Comprend la Montre Royale Saphir or ainsi que le Jonc Zahra assorti, protégés dans un coffret rigide en velours noir stamped or avec ruban satiné.',
     descriptionAr: 'الهدية المثالية لأغلى المناسبات والأعياد. يجمع بين الساعة الياقوتية الفخمة والسوار الذهبي المحفور داخل علبة مخملية ملكية.',
     specs: {
       'Contenu': '1x Montre Royale + 1x Jonc Ciselé Or 18K + Outil de réglage',
       'Packaging': 'Écrin rigide velours noir doublé satin or avec sceau armoiries',
-      'Accessoires': 'Certificat de garantie 1 an + Sac cadeau Twasha Dehbi',
+      'Accessoires': 'Certificat de garantie 1 an + Sac cadeau TWISHIYAT',
       'Idéal': 'Cadeau de mariage, Fêtes, Anniversaires'
     },
     variants: [

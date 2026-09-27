@@ -85,7 +85,7 @@ export default function CheckoutView() {
     setIsSubmitting(true);
     trackPixel('InitiateCheckout', { value: finalTotal, num_items: cart.length });
 
-    const orderId = `TD-${Math.floor(1000 + Math.random() * 9000)}`;
+    const orderId = `TW-${Math.floor(1000 + Math.random() * 9000)}`;
 
     const newOrder = {
       id: orderId,
@@ -379,7 +379,7 @@ export default function CheckoutView() {
                     </span>
                   </div>
                   <p style={{ fontSize: '0.78rem', color: '#4B5563', marginTop: '2px' }}>
-                    Boîte rigide en velours noir et or avec ruban satiné et sac de luxe Twasha Dehbi.
+                    Boîte rigide en velours noir et or avec ruban satiné et sac de luxe TWISHIYAT.
                   </p>
                 </div>
               </div>
@@ -437,7 +437,7 @@ export default function CheckoutView() {
                 type="text"
                 value={couponCodeInput}
                 onChange={(e) => setCouponCodeInput(e.target.value)}
-                placeholder="Code promo (ex: TWASHA10)"
+                placeholder="Code promo (ex: TWISHIYAT10)"
                 style={{ flexGrow: 1, padding: '10px 12px', borderRadius: '6px', border: '1px solid #D1D5DB', fontSize: '0.85rem', textTransform: 'uppercase', outline: 'none' }}
               />
               <button type="submit" className="btn-dark" style={{ padding: '0 16px', fontSize: '0.82rem' }}>

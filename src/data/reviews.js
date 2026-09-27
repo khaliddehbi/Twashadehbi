@@ -61,8 +61,8 @@ export const CUSTOMER_REVIEWS = [
     verifiedPurchase: true,
     title: 'La nacre est magnifique, brillance assurée',
     titleAr: 'عرق اللؤلؤ يلمع بشكل ساحر مع الضوء',
-    comment: 'Je cherchais un bracelet trèfle raffiné à un prix raisonnable au Maroc. TWASHA DEHBI a relevé le défi haut la main. Merci pour la livraison rapide à Tanger !',
-    commentAr: 'كنت أبحث عن سوار أنيق بسعر مناسب في المغرب، طواشة ذهبي تفوقت بامتياز. شكرا على التوصيل السريع إلى طنجة!'
+    comment: 'Je cherchais un bracelet trèfle raffiné à un prix raisonnable au Maroc. TWISHIYAT a relevé le défi haut la main. Merci pour la livraison rapide à Tanger !',
+    commentAr: 'كنت أبحث عن سوار أنيق بسعر مناسب في المغرب، تويشيات تفوقت بامتياز. شكرا على التوصيل السريع إلى طنجة!'
   },
   {
     id: 'rev-6',
@@ -74,7 +74,7 @@ export const CUSTOMER_REVIEWS = [
     verifiedPurchase: true,
     title: 'Maillons cubains lourds et fermoir très solide',
     titleAr: 'سوار مايون ثقيل وقفل آمن جدا',
-    comment: 'Le bracelet a du poids, on sent que c’est de la bonne matière et pas du toc léger. Le fermoir avec la gravure Twasha Dehbi est super soigné.',
+    comment: 'Le bracelet a du poids, on sent que c’est de la bonne matière et pas du toc léger. Le fermoir avec la gravure TWISHIYAT est super soigné.',
     commentAr: 'السوار ثقيل ومصمت وتحس بجودته العالية. القفل المنقوش باسم العلامة متقن للغاية.'
   }
 ];

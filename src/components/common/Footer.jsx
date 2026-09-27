@@ -76,10 +76,10 @@ export default function Footer() {
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
               <div style={{ width: '38px', height: '38px', borderRadius: '50%', background: 'var(--obsidian-900)', border: '1px solid var(--gold-500)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--gold-400)', fontWeight: 'bold' }}>
-                TD
+                TW
               </div>
               <span style={{ fontFamily: 'var(--font-serif)', fontSize: '1.3rem', fontWeight: '700', color: '#FFFFFF', letterSpacing: '0.08em' }}>
-                TWASHA DEHBI
+                TWISHIYAT
               </span>
             </div>
             <p style={{ fontSize: '0.85rem', color: '#9CA3AF', lineHeight: '1.6', marginBottom: '20px' }}>
@@ -153,7 +153,7 @@ export default function Footer() {
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <Mail size={18} color="var(--gold-400)" style={{ flexShrink: 0 }} />
-                <span>contact@twashadehbi.ma</span>
+                <span>contact@twishiyat.ma</span>
               </div>
               <div style={{ background: 'rgba(212, 175, 55, 0.08)', padding: '10px 14px', borderRadius: '6px', border: '1px solid rgba(212, 175, 55, 0.2)', marginTop: '6px' }}>
                 <span style={{ color: 'var(--gold-300)', fontWeight: '600', fontSize: '0.8rem' }}>
@@ -202,7 +202,7 @@ export default function Footer() {
         {/* Copyright & Subfooter */}
         <div style={{ borderTop: '1px solid rgba(255, 255, 255, 0.08)', marginTop: '50px', paddingTop: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', fontSize: '0.8rem', color: '#9CA3AF' }}>
           <div>
-            © {new Date().getFullYear()} TWASHA DEHBI SARL. {t('allRightsReserved')}
+            © {new Date().getFullYear()} TWISHIYAT. {t('allRightsReserved')}
           </div>
           <div style={{ display: 'flex', gap: '18px', flexWrap: 'wrap' }}>
             <a href="#" style={{ color: '#9CA3AF' }}>{t('terms')}</a>
