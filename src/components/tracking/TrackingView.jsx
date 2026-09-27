@@ -17,24 +17,25 @@ export default function TrackingView() {
   const { selectedOrderId, setSelectedOrderId, language, t } = useStore();
   const { orders } = useAdmin();
 
-  const [orderQuery, setOrderQuery] = useState(selectedOrderId || 'TD-8492');
-  const [phoneQuery, setPhoneQuery] = useState('');
-  const [searchedOrder, setSearchedOrder] = useState(
-    orders.find(o => o.id === (selectedOrderId || 'TD-8492')) || orders[0]
-  );
+  const [orderQuery, setOrderQuery] = useState(selectedOrderId || '');
+  const [searchedOrder, setSearchedOrder] = useState(() => {
+    return selectedOrderId ? orders.find(o => o.id === selectedOrderId) || null : null;
+  });
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleSearch = (e) => {
     e.preventDefault();
     setErrorMessage('');
     const cleanId = orderQuery.trim().toUpperCase();
+    if (!cleanId) return;
+
     const found = orders.find(o => o.id.toUpperCase() === cleanId);
     
     if (found) {
       setSearchedOrder(found);
       setSelectedOrderId(found.id);
     } else {
-      setErrorMessage(`Aucune commande trouvée avec le numéro "${cleanId}". Essayez TD-8492 ou TD-8475.`);
+      setErrorMessage(`Aucune commande trouvée avec la référence "${cleanId}". Veuillez vérifier le numéro reçu lors de votre commande.`);
     }
   };
 
@@ -62,7 +63,7 @@ export default function TrackingView() {
                 type="text"
                 value={orderQuery}
                 onChange={(e) => setOrderQuery(e.target.value)}
-                placeholder="N° de commande (ex: TD-8492)"
+                placeholder="N° de commande (ex: TW-8492)"
                 style={{ width: '100%', padding: '13px 16px', borderRadius: '8px', border: '1px solid #D1D5DB', fontSize: '0.95rem', outline: 'none' }}
               />
             </div>
@@ -78,26 +79,19 @@ export default function TrackingView() {
               <span>{errorMessage}</span>
             </div>
           )}
-
-          {/* Quick Demo Pickers */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '16px', fontSize: '0.78rem', color: '#9CA3AF', flexWrap: 'wrap' }}>
-            <span>Tester une commande de démo :</span>
-            {['TD-8492', 'TD-8475', 'TD-8410', 'TD-8498'].map((id) => (
-              <button
-                key={id}
-                type="button"
-                onClick={() => {
-                  setOrderQuery(id);
-                  const found = orders.find(o => o.id === id);
-                  if (found) setSearchedOrder(found);
-                }}
-                style={{ background: '#F3EFEA', padding: '4px 10px', borderRadius: '6px', color: 'var(--obsidian-900)', fontWeight: '600' }}
-              >
-                {id}
-              </button>
-            ))}
-          </div>
         </div>
+
+        {!searchedOrder && (
+          <div style={{ background: '#FFFFFF', borderRadius: '16px', border: '1px solid #EFEAE2', padding: '40px 24px', textAlign: 'center', color: '#6B7280' }}>
+            <ShieldCheck size={40} color="var(--gold-600)" style={{ margin: '0 auto 12px auto' }} />
+            <h3 style={{ fontSize: '1.15rem', color: 'var(--obsidian-900)', marginBottom: '8px' }}>
+              Suivi de Colis Sécurisé
+            </h3>
+            <p style={{ fontSize: '0.9rem', maxWidth: '480px', margin: '0 auto', lineHeight: '1.5' }}>
+              Entrez votre identifiant de commande commençant par <strong>TW-</strong> pour afficher en temps réel l'avancement de votre livraison et l'état du paiement.
+            </p>
+          </div>
+        )}
 
         {/* Order Status Result Card */}
         {searchedOrder && (

@@ -20,7 +20,11 @@ import {
   ExternalLink,
   ShieldCheck,
   FileText,
-  X
+  X,
+  Lock,
+  LogOut,
+  Store,
+  KeyRound
 } from 'lucide-react';
 
 export default function AdminView() {
@@ -35,7 +39,43 @@ export default function AdminView() {
     kpis 
   } = useAdmin();
 
-  const { addToast } = useStore();
+  const { addToast, navigateTo } = useStore();
+
+  // Authentication State
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    try {
+      return sessionStorage.getItem('twishiyat_admin_session') === 'active';
+    } catch (e) {
+      return false;
+    }
+  });
+  const [passwordInput, setPasswordInput] = useState('');
+  const [authError, setAuthError] = useState(false);
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (passwordInput === 'TwishiyatSousou') {
+      try {
+        sessionStorage.setItem('twishiyat_admin_session', 'active');
+      } catch (err) {}
+      setIsAuthenticated(true);
+      setAuthError(false);
+      addToast('Accès autorisé. Bienvenue dans l’Espace Pro TWISHIYAT !');
+    } else {
+      setAuthError(true);
+      addToast('Mot de passe incorrect.', 'error');
+    }
+  };
+
+  const handleLogout = () => {
+    try {
+      sessionStorage.removeItem('twishiyat_admin_session');
+    } catch (err) {}
+    setIsAuthenticated(false);
+    setPasswordInput('');
+    addToast('Vous êtes déconnecté de l’Espace Pro.');
+    navigateTo('home');
+  };
 
   const [activeTab, setActiveTab] = useState('orders'); // 'orders', 'products', 'coupons', 'reviews'
   const [orderStatusFilter, setOrderStatusFilter] = useState('all');
@@ -91,6 +131,80 @@ export default function AdminView() {
     addToast('Nouveau produit ajouté au catalogue avec succès !');
   };
 
+  if (!isAuthenticated) {
+    return (
+      <div style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '60px 20px', background: '#F8F9FA' }}>
+        <div style={{ maxWidth: '440px', width: '100%', background: '#FFFFFF', borderRadius: '20px', border: '1px solid #E5E7EB', boxShadow: '0 20px 40px rgba(0,0,0,0.08)', padding: '40px 32px', textAlign: 'center' }}>
+          {/* Crest Monogram */}
+          <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'var(--obsidian-900)', border: '2px solid var(--gold-500)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px auto', color: 'var(--gold-400)' }}>
+            <Lock size={28} />
+          </div>
+
+          <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--gold-700)', fontWeight: '700' }}>
+            Accès Réservé
+          </span>
+          <h1 style={{ fontSize: '1.75rem', color: 'var(--obsidian-950)', margin: '8px 0 12px 0', fontFamily: 'var(--font-serif)' }}>
+            Espace Pro TWISHIYAT
+          </h1>
+          <p style={{ color: '#6B7280', fontSize: '0.88rem', lineHeight: '1.5', marginBottom: '28px' }}>
+            Veuillez entrer votre mot de passe pour accéder à la gestion des commandes, des livraisons et des stocks.
+          </p>
+
+          <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div style={{ textAlign: 'left' }}>
+              <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: '600', color: 'var(--obsidian-900)', marginBottom: '6px' }}>
+                Mot de Passe Administrateur
+              </label>
+              <div style={{ position: 'relative' }}>
+                <input
+                  type="password"
+                  required
+                  autoFocus
+                  value={passwordInput}
+                  onChange={(e) => { setPasswordInput(e.target.value); setAuthError(false); }}
+                  placeholder="Entrez votre mot de passe..."
+                  style={{
+                    width: '100%',
+                    padding: '13px 16px 13px 40px',
+                    borderRadius: '10px',
+                    border: authError ? '1px solid #DC2626' : '1px solid #D1D5DB',
+                    fontSize: '0.95rem',
+                    outline: 'none',
+                    background: '#FAF9F6'
+                  }}
+                />
+                <KeyRound size={18} color="#9CA3AF" style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)' }} />
+              </div>
+              {authError && (
+                <span style={{ display: 'block', color: '#DC2626', fontSize: '0.8rem', marginTop: '6px' }}>
+                  Mot de passe incorrect. Veuillez réessayer.
+                </span>
+              )}
+            </div>
+
+            <button
+              type="submit"
+              className="btn-gold"
+              style={{ width: '100%', padding: '14px', fontSize: '0.95rem', justifyContent: 'center' }}
+            >
+              <span>Déverrouiller l'Espace Pro</span>
+            </button>
+          </form>
+
+          <div style={{ marginTop: '24px', paddingTop: '20px', borderTop: '1px solid #F3F4F6' }}>
+            <button
+              onClick={() => navigateTo('home')}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', color: '#6B7280', fontSize: '0.85rem', fontWeight: '500' }}
+            >
+              <Store size={15} />
+              <span>Retour à la boutique publique</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div style={{ padding: '40px 0 100px 0', background: '#F8F9FA' }}>
       <div className="container">
@@ -98,8 +212,8 @@ export default function AdminView() {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', marginBottom: '32px' }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span className="badge-gold">Backoffice Maroc</span>
-              <span style={{ fontSize: '0.8rem', color: '#6B7280' }}>Boutique Officielle Casablanca</span>
+              <span className="badge-gold">Espace Pro Sécurisé</span>
+              <span style={{ fontSize: '0.8rem', color: '#6B7280' }}>TWISHIYAT Backoffice</span>
             </div>
             <h1 style={{ fontSize: '2.2rem', color: 'var(--obsidian-950)', margin: '4px 0' }}>
               Administration TWISHIYAT
@@ -109,7 +223,17 @@ export default function AdminView() {
             </p>
           </div>
 
-          <div style={{ display: 'flex', gap: '10px' }}>
+          <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+            <button
+              onClick={() => navigateTo('home')}
+              className="btn-outline"
+              style={{ fontSize: '0.85rem', padding: '10px 16px' }}
+              title="Retour au site public"
+            >
+              <Store size={16} />
+              <span>Boutique Publique</span>
+            </button>
+
             <button
               className="btn-gold"
               onClick={() => setNewProductModal(true)}
@@ -117,6 +241,27 @@ export default function AdminView() {
             >
               <Plus size={16} />
               <span>Nouveau Produit</span>
+            </button>
+
+            <button
+              onClick={handleLogout}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                background: '#FEE2E2',
+                color: '#DC2626',
+                border: '1px solid #FECACA',
+                padding: '10px 16px',
+                borderRadius: '8px',
+                fontSize: '0.85rem',
+                fontWeight: '600',
+                cursor: 'pointer'
+              }}
+              title="Fermer la session administrateur"
+            >
+              <LogOut size={16} />
+              <span>Déconnexion</span>
             </button>
           </div>
         </div>

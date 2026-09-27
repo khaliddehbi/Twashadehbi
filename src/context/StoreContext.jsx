@@ -65,10 +65,26 @@ export function StoreProvider({ children }) {
   // Sync hash routing on mount and hashchange
   useEffect(() => {
     const handleHash = () => {
-      const hash = window.location.hash.replace('#', '');
-      if (['admin', 'catalog', 'tracking', 'account', 'checkout'].includes(hash)) {
-        setCurrentView(hash);
-      } else if (!hash) {
+      const rawHash = window.location.hash.replace(/^#\/?/, '');
+      const [route, queryString] = rawHash.split('?');
+      const params = new URLSearchParams(queryString || window.location.search);
+
+      // Deep Linking for Products (Ads from Instagram/Facebook)
+      const productId = params.get('product') || params.get('id');
+      if (productId) {
+        const found = PRODUCTS.find(p => p.id === productId || p.slug === productId);
+        if (found) {
+          setSelectedProductId(found.id);
+          setCurrentView('product');
+          return;
+        }
+      }
+
+      if (['espace-pro', 'admin'].includes(route)) {
+        setCurrentView('admin');
+      } else if (['catalog', 'tracking', 'account', 'checkout', 'product'].includes(route)) {
+        setCurrentView(route);
+      } else if (!rawHash) {
         setCurrentView('home');
       }
     };
@@ -114,6 +130,8 @@ export function StoreProvider({ children }) {
     setCurrentView(view);
     if (view === 'home') {
       history.pushState(null, '', window.location.pathname);
+    } else if (view === 'admin') {
+      window.location.hash = '#/espace-pro';
     } else {
       window.location.hash = `#${view}`;
     }

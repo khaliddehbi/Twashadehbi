@@ -129,11 +129,6 @@ export default function Footer() {
                   Suivi de Commande en Direct
                 </a>
               </li>
-              <li>
-                <a href="#" onClick={(e) => { e.preventDefault(); navigateTo('admin'); }} style={{ color: 'var(--gold-300)', fontWeight: '600' }}>
-                  ⚙️ Portail Administration (Backoffice)
-                </a>
-              </li>
             </ul>
           </div>
 
