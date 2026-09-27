@@ -38,7 +38,6 @@ export default function Header() {
     { key: 'navRings', view: 'catalog', payload: 'rings' },
     { key: 'navSets', view: 'catalog', payload: 'sets' },
     { key: 'navTracking', view: 'tracking' },
-    { key: 'navAdmin', view: 'admin' },
   ];
 
   return (
@@ -93,30 +92,6 @@ export default function Header() {
 
             {/* Currency Tag */}
             <span style={{ color: 'var(--gold-400)', fontWeight: '600' }}>🇲🇦 MAD (DH)</span>
-
-            <span style={{ color: '#444' }}>•</span>
-
-            {/* Admin Quick Link */}
-            <button
-              onClick={() => navigateTo('admin')}
-              style={{
-                background: 'rgba(212, 175, 55, 0.2)',
-                color: 'var(--gold-300)',
-                border: '1px solid var(--gold-500)',
-                borderRadius: '16px',
-                padding: '3px 10px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '5px',
-                fontSize: '0.75rem',
-                fontWeight: '700',
-                cursor: 'pointer'
-              }}
-              title="Portail Administration"
-            >
-              <SlidersHorizontal size={12} color="var(--gold-400)" />
-              <span>{t('navAdmin')}</span>
-            </button>
           </div>
         </div>
       </aside>
