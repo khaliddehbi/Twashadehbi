@@ -148,7 +148,9 @@ export default function Footer() {
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <Mail size={18} color="var(--gold-400)" style={{ flexShrink: 0 }} />
-                <span>contact@twishiyat.ma</span>
+                <a href="mailto:twishiyatcontact@gmail.com" style={{ color: 'inherit', textDecoration: 'none', transition: 'color 0.2s' }} onMouseOver={(e) => e.target.style.color = 'var(--gold-400)'} onMouseOut={(e) => e.target.style.color = 'inherit'}>
+                  twishiyatcontact@gmail.com
+                </a>
               </div>
               <div style={{ background: 'rgba(212, 175, 55, 0.08)', padding: '10px 14px', borderRadius: '6px', border: '1px solid rgba(212, 175, 55, 0.2)', marginTop: '6px' }}>
                 <span style={{ color: 'var(--gold-300)', fontWeight: '600', fontSize: '0.8rem' }}>
