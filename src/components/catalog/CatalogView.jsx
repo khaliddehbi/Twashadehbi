@@ -27,7 +27,8 @@ export default function CatalogView() {
     genderFilter,
     setGenderFilter,
     priceRange,
-    setPriceRange
+    setPriceRange,
+    products
   } = useStore();
 
   const [sortBy, setSortBy] = useState('featured');
@@ -35,7 +36,7 @@ export default function CatalogView() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   // Filter products
-  const filteredProducts = PRODUCTS.filter((product) => {
+  const filteredProducts = products.filter((product) => {
     // Category filter
     if (categoryFilter !== 'all') {
       if (categoryFilter === 'men' && product.gender !== 'men') return false;

@@ -17,12 +17,12 @@ import {
 } from 'lucide-react';
 
 export default function AccountView() {
-  const { wishlist, toggleWishlist, navigateTo, addToCart } = useStore();
+  const { wishlist, toggleWishlist, navigateTo, addToCart, products } = useStore();
   const { orders } = useAdmin();
 
   const [activeTab, setActiveTab] = useState('orders'); // 'orders', 'wishlist', 'addresses', 'profile'
 
-  const wishlistProducts = PRODUCTS.filter((p) => wishlist.includes(p.id));
+  const wishlistProducts = products.filter((p) => wishlist.includes(p.id));
 
   return (
     <div style={{ padding: '50px 0 100px 0', background: '#FBF9F5' }}>

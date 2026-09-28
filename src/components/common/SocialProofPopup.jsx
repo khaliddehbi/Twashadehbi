@@ -4,7 +4,7 @@ import { ShoppingBag, CheckCircle, X } from 'lucide-react';
 import { PRODUCTS } from '../../data/products';
 
 export default function SocialProofPopup() {
-  const { language, navigateTo } = useStore();
+  const { language, navigateTo, products } = useStore();
   const [visible, setVisible] = useState(false);
   const [notification, setNotification] = useState(null);
 
@@ -20,7 +20,8 @@ export default function SocialProofPopup() {
     let index = 0;
     const interval = setInterval(() => {
       const data = purchasers[index % purchasers.length];
-      const prod = PRODUCTS[data.productIndex] || PRODUCTS[0];
+      const prodList = products && products.length > 0 ? products : PRODUCTS;
+      const prod = prodList[data.productIndex % prodList.length] || prodList[0];
       setNotification({
         name: data.name,
         city: data.city,

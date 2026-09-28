@@ -4,18 +4,18 @@ import { PRODUCTS } from '../../data/products';
 import { Search, X, ArrowRight, Star } from 'lucide-react';
 
 export default function SearchModal() {
-  const { isSearchOpen, setIsSearchOpen, navigateTo, language, t } = useStore();
+  const { isSearchOpen, setIsSearchOpen, navigateTo, language, t, products } = useStore();
   const [searchTerm, setSearchTerm] = useState('');
 
   if (!isSearchOpen) return null;
 
-  const results = searchTerm.trim() === '' ? [] : PRODUCTS.filter(p => {
+  const results = searchTerm.trim() === '' ? [] : products.filter(p => {
     const q = searchTerm.toLowerCase();
     return (
       p.name.toLowerCase().includes(q) ||
       (p.nameAr && p.nameAr.includes(q)) ||
-      p.category.toLowerCase().includes(q) ||
-      p.shortDescription.toLowerCase().includes(q)
+      (p.category && p.category.toLowerCase().includes(q)) ||
+      (p.shortDescription && p.shortDescription.toLowerCase().includes(q))
     );
   });
 
@@ -28,7 +28,7 @@ export default function SearchModal() {
       >
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
           <span style={{ fontFamily: 'var(--font-serif)', fontSize: '1.25rem', fontWeight: '700', color: 'var(--obsidian-900)' }}>
-            {language === 'ar' ? 'البحث في منتجات طواشة ذهبي' : 'Rechercher un bijou ou accessoire'}
+            {language === 'ar' ? 'البحث في منتجات تويشيات' : 'Rechercher un bijou ou accessoire'}
           </span>
           <button onClick={() => setIsSearchOpen(false)} style={{ color: '#6B7280', padding: '4px' }}>
             <X size={22} />

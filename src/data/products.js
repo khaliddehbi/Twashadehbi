@@ -7,6 +7,17 @@ import ringOnyx from '../assets/images/ring_onyx.jpg';
 import ringEmerald from '../assets/images/ring_emerald.jpg';
 import giftBox from '../assets/images/gift_box.jpg';
 
+export const IMAGE_PRESETS = [
+  { id: 'watch-gold', label: 'Montre Or 18K Cadran Vert', image: watchGold },
+  { id: 'watch-leather', label: 'Montre Cuir Prestige Noir', image: watchLeather },
+  { id: 'bracelet-cuff', label: 'Bracelet Jonc Doré Ciselé', image: braceletCuff },
+  { id: 'bracelet-cuban', label: 'Gourmette Cubaine Or 18K', image: braceletCuban },
+  { id: 'jewelry-women', label: 'Accessoire Femme Perles & Or', image: jewelryWomen },
+  { id: 'ring-onyx', label: 'Chevalière Royale Onyx Noir', image: ringOnyx },
+  { id: 'ring-emerald', label: 'Bague Émeraude Royale', image: ringEmerald },
+  { id: 'gift-box', label: 'Coffret Cadeau Écrin TWISHIYAT', image: giftBox }
+];
+
 export const CATEGORIES = [
   { id: 'all', name: 'Tous les Produits', nameAr: 'جميع المنتجات', nameEn: 'All Products', count: 8 },
   { id: 'watches', name: 'Montres', nameAr: 'ساعات فاخرة', nameEn: 'Watches', count: 2, image: watchGold },

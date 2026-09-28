@@ -34,12 +34,13 @@ export default function ProductDetailView() {
     t, 
     addToast,
     trackPixel,
-    setLastPlacedOrder
+    setLastPlacedOrder,
+    products
   } = useStore();
 
   const { addOrder } = useAdmin();
 
-  const product = PRODUCTS.find((p) => p.id === selectedProductId) || PRODUCTS[0];
+  const product = products.find((p) => p.id === selectedProductId) || products[0];
 
   const [activeImage, setActiveImage] = useState(product.image);
   const [selectedVariant, setSelectedVariant] = useState(product.variants?.[0] || null);
@@ -62,7 +63,7 @@ export default function ProductDetailView() {
   const [reviewSuccess, setReviewSuccess] = useState(false);
 
   const inWish = wishlist.includes(product.id);
-  const relatedProducts = PRODUCTS.filter((p) => p.id !== product.id && p.category === product.category).slice(0, 3);
+  const relatedProducts = products.filter((p) => p.id !== product.id && p.category === product.category).slice(0, 3);
   const productReviews = CUSTOMER_REVIEWS.filter((r) => r.productId === product.id);
 
   // Moroccan 1-Click Express COD Order Handler

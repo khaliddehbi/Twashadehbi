@@ -36,7 +36,8 @@ export default function HomeView() {
     addToCart, 
     wishlist, 
     toggleWishlist, 
-    setQuickViewProduct 
+    setQuickViewProduct,
+    products
   } = useStore();
 
   // Countdown timer for Flash Sale
@@ -56,8 +57,8 @@ export default function HomeView() {
     return () => clearInterval(timer);
   }, []);
 
-  const bestSellers = PRODUCTS.filter(p => p.isBestSeller).slice(0, 4);
-  const flashSaleItems = PRODUCTS.filter(p => p.isFlashSale).slice(0, 3);
+  const bestSellers = products.filter(p => p.isBestSeller).slice(0, 4);
+  const flashSaleItems = products.filter(p => p.isFlashSale).slice(0, 3);
 
   const handleNewsletterSubmit = (e) => {
     e.preventDefault();
@@ -263,7 +264,7 @@ export default function HomeView() {
               onClick={() => navigateTo('catalog')}
               style={{ padding: '14px 36px' }}
             >
-              <span>Voir Tous Les Produits ({PRODUCTS.length})</span>
+              <span>Voir Tous Les Produits ({products.length})</span>
               <ArrowRight size={18} />
             </button>
           </div>
@@ -540,7 +541,7 @@ export default function HomeView() {
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
-            {PRODUCTS.slice(0, 5).map((prod, idx) => (
+            {products.slice(0, 5).map((prod, idx) => (
               <div
                 key={prod.id}
                 onClick={() => navigateTo('product', prod.id)}

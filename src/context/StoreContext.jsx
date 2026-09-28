@@ -38,6 +38,97 @@ export function StoreProvider({ children }) {
       localStorage.setItem('twishiyat_wishlist', JSON.stringify(wishlist));
     } catch (e) {}
   }, [wishlist]);
+  const [products, setProducts] = useState(() => {
+    try {
+      const saved = localStorage.getItem('twishiyat_products') || localStorage.getItem('twasha_products');
+      return saved ? JSON.parse(saved) : PRODUCTS;
+    } catch (e) {
+      return PRODUCTS;
+    }
+  });
+
+  // Persist products to localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem('twishiyat_products', JSON.stringify(products));
+    } catch (e) {}
+  }, [products]);
+
+  const addNewProduct = (productData) => {
+    const idPrefix = productData.category === 'watches' ? 'TW-W' : (productData.category === 'bracelets' ? 'TW-B' : (productData.category === 'rings' ? 'TW-R' : 'TW-S'));
+    const newId = `${idPrefix}${Date.now().toString().slice(-4)}`;
+    const price = Number(productData.price) || 0;
+    const originalPrice = productData.originalPrice ? Number(productData.originalPrice) : Math.round(price * 1.35);
+    const discountPercent = originalPrice > price ? Math.round(((originalPrice - price) / originalPrice) * 100) : 0;
+    
+    const newProd = {
+      id: newId,
+      slug: (productData.name || 'produit').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+      name: productData.name,
+      nameAr: productData.nameAr || productData.name,
+      nameEn: productData.nameEn || productData.name,
+      category: productData.category || 'watches',
+      gender: productData.gender || 'men',
+      price: price,
+      originalPrice: originalPrice,
+      discountPercent: discountPercent,
+      stock: Number(productData.stock) || 10,
+      badge: productData.badge || '',
+      isBestSeller: productData.badge === 'Best-Seller',
+      isNewArrival: productData.badge === 'Nouveauté',
+      isFlashSale: productData.badge === 'Vente Flash',
+      image: productData.image || (products[0] ? products[0].image : PRODUCTS[0].image),
+      gallery: (productData.gallery && productData.gallery.length > 0) ? productData.gallery : [productData.image || (products[0] ? products[0].image : PRODUCTS[0].image)],
+      videoUrl: productData.videoUrl || '',
+      shortDescription: productData.shortDescription || 'Élégance et raffinement signés TWISHIYAT.',
+      shortDescriptionAr: productData.shortDescriptionAr || '',
+      description: productData.description || 'Accessoire d’exception issu de la collection TWISHIYAT. Conçu avec des matériaux nobles sélectionnés pour une durabilité maximale au quotidien. Livré dans son écrin de protection.',
+      descriptionAr: productData.descriptionAr || '',
+      specs: productData.specs || {
+        'Matériau': 'Acier Inoxydable 316L & Finition Haute Précision',
+        'Étanchéité': 'Water Resistant (Résiste à l’eau)',
+        'Garantie': 'Garantie 1 An incluse'
+      },
+      variants: (productData.variants && productData.variants.length > 0) ? productData.variants : [
+        { id: 'v1', name: 'Finition Or 18K', colorHex: '#D4AF37' }
+      ],
+      sizes: (productData.sizes && productData.sizes.length > 0) ? productData.sizes : ['Taille Unique Ajustable'],
+      rating: 5.0,
+      reviewsCount: 1
+    };
+
+    setProducts((prev) => [newProd, ...prev]);
+    return newProd;
+  };
+
+  const updateProduct = (productId, fields) => {
+    setProducts((prev) =>
+      prev.map((p) => {
+        if (p.id === productId) {
+          const updated = { ...p, ...fields };
+          const pr = Number(updated.price);
+          const orig = Number(updated.originalPrice);
+          if (orig > pr) {
+            updated.discountPercent = Math.round(((orig - pr) / orig) * 100);
+          } else {
+            updated.discountPercent = 0;
+          }
+          if (fields.badge !== undefined) {
+            updated.isBestSeller = fields.badge === 'Best-Seller';
+            updated.isNewArrival = fields.badge === 'Nouveauté';
+            updated.isFlashSale = fields.badge === 'Vente Flash';
+          }
+          return updated;
+        }
+        return p;
+      })
+    );
+  };
+
+  const deleteProduct = (productId) => {
+    setProducts((prev) => prev.filter((p) => p.id !== productId));
+  };
+
   const [currentView, setCurrentView] = useState('home'); // home, catalog, product, cart, checkout, confirmation, tracking, account, admin
   const [selectedProductId, setSelectedProductId] = useState(PRODUCTS[0].id);
   const [selectedOrderId, setSelectedOrderId] = useState('TW-8492');
@@ -72,7 +163,7 @@ export function StoreProvider({ children }) {
       // Deep Linking for Products (Ads from Instagram/Facebook)
       const productId = params.get('product') || params.get('id');
       if (productId) {
-        const found = PRODUCTS.find(p => p.id === productId || p.slug === productId);
+        const found = products.find(p => p.id === productId || p.slug === productId);
         if (found) {
           setSelectedProductId(found.id);
           setCurrentView('product');
@@ -119,7 +210,7 @@ export function StoreProvider({ children }) {
   const navigateTo = (view, payload = null) => {
     if (view === 'product' && payload) {
       setSelectedProductId(payload);
-      const prod = PRODUCTS.find(p => p.id === payload);
+      const prod = products.find(p => p.id === payload);
       trackPixel('ViewContent', { id: payload, name: prod?.name, price: prod?.price });
     } else if (view === 'tracking' && payload) {
       setSelectedOrderId(payload);
@@ -227,6 +318,11 @@ export function StoreProvider({ children }) {
   return (
     <StoreContext.Provider
       value={{
+        products,
+        setProducts,
+        addNewProduct,
+        updateProduct,
+        deleteProduct,
         language,
         setLanguage,
         currency,

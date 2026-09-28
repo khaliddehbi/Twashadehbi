@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useStore } from './StoreContext';
 import { INITIAL_ORDERS } from '../data/initialOrders';
 import { PRODUCTS } from '../data/products';
 import { CUSTOMER_REVIEWS } from '../data/reviews';
@@ -7,21 +8,20 @@ import { supabase } from '../lib/supabase';
 const AdminContext = createContext();
 
 export function AdminProvider({ children }) {
+  const {
+    products,
+    setProducts,
+    addNewProduct,
+    updateProduct,
+    deleteProduct
+  } = useStore();
+
   const [orders, setOrders] = useState(() => {
     try {
       const saved = localStorage.getItem('twishiyat_orders') || localStorage.getItem('twasha_orders');
       return saved ? JSON.parse(saved) : INITIAL_ORDERS;
     } catch (e) {
       return INITIAL_ORDERS;
-    }
-  });
-
-  const [products, setProducts] = useState(() => {
-    try {
-      const saved = localStorage.getItem('twishiyat_products') || localStorage.getItem('twasha_products');
-      return saved ? JSON.parse(saved) : PRODUCTS;
-    } catch (e) {
-      return PRODUCTS;
     }
   });
 
@@ -146,11 +146,7 @@ export function AdminProvider({ children }) {
     } catch (e) {}
   }, [orders]);
 
-  useEffect(() => {
-    try {
-      localStorage.setItem('twishiyat_products', JSON.stringify(products));
-    } catch (e) {}
-  }, [products]);
+
 
   useEffect(() => {
     try {
@@ -248,26 +244,7 @@ export function AdminProvider({ children }) {
     }
   };
 
-  const updateProduct = (productId, fields) => {
-    setProducts((prev) =>
-      prev.map((p) => (p.id === productId ? { ...p, ...fields } : p))
-    );
-  };
 
-  const addNewProduct = (productData) => {
-    const newProd = {
-      ...productData,
-      id: `TD-${Date.now().toString().slice(-4)}`,
-      rating: 5.0,
-      reviewsCount: 1,
-      gallery: [productData.image]
-    };
-    setProducts((prev) => [newProd, ...prev]);
-  };
-
-  const deleteProduct = (productId) => {
-    setProducts((prev) => prev.filter((p) => p.id !== productId));
-  };
 
   // KPIs Calculations
   const totalSales = orders
