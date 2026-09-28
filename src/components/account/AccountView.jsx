@@ -229,7 +229,7 @@ export default function AccountView() {
               <p style={{ fontSize: '0.88rem', color: '#4B5563', lineHeight: '1.5' }}>
                 24 Rue Abou Al Alaa Al Maarri, Maarif<br />
                 Casablanca 20100<br />
-                Téléphone : 06 61 24 58 90
+                Téléphone : 07 08 75 95 10
               </p>
             </div>
 
@@ -241,7 +241,7 @@ export default function AccountView() {
               <p style={{ fontSize: '0.88rem', color: '#4B5563', lineHeight: '1.5' }}>
                 Avenue Fal Ould Oumeir, N° 45<br />
                 Rabat Agdal<br />
-                Téléphone : 06 61 24 58 90
+                Téléphone : 07 08 75 95 10
               </p>
             </div>
           </div>
@@ -258,7 +258,7 @@ export default function AccountView() {
               </div>
               <div>
                 <label style={{ fontSize: '0.82rem', color: '#6B7280', display: 'block', marginBottom: '4px' }}>Numéro WhatsApp Marocain</label>
-                <input type="text" readOnly value="06 61 24 58 90" style={{ width: '100%', padding: '10px 14px', borderRadius: '6px', border: '1px solid #D1D5DB', background: '#F9FAFB' }} />
+                <input type="text" readOnly value="07 08 75 95 10" style={{ width: '100%', padding: '10px 14px', borderRadius: '6px', border: '1px solid #D1D5DB', background: '#F9FAFB' }} />
               </div>
               <div>
                 <label style={{ fontSize: '0.82rem', color: '#6B7280', display: 'block', marginBottom: '4px' }}>Email</label>

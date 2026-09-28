@@ -147,7 +147,7 @@ export default function ProductDetailView() {
 
   const handleWhatsAppInquiry = () => {
     const text = `Salam TWISHIYAT ! Je souhaite commander le produit : "${product.name}" au prix de ${product.price} DH. Est-il disponible ?`;
-    window.open(`https://wa.me/212661245890?text=${encodeURIComponent(text)}`, '_blank');
+    window.open(`https://wa.me/212708759510?text=${encodeURIComponent(text)}`, '_blank');
   };
 
   const handleReviewSubmit = (e) => {

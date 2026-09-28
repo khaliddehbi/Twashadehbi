@@ -637,7 +637,7 @@ export default function AdminView() {
                 <strong style={{ display: 'block', marginBottom: '4px', color: '#6B7280' }}>EXPÉDITEUR :</strong>
                 TWISHIYAT - Expéditions Maroc<br />
                 Bd Al Massira, Maarif, Casablanca<br />
-                Tél : 06 61 24 58 90
+                Tél : 07 08 75 95 10
               </div>
               <div style={{ background: '#FAF8F5', padding: '12px', borderRadius: '6px' }}>
                 <strong style={{ display: 'block', marginBottom: '4px', color: '#6B7280' }}>DESTINATAIRE :</strong>

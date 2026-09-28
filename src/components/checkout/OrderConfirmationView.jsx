@@ -35,7 +35,7 @@ export default function OrderConfirmationView() {
     date: new Date().toISOString(),
     customer: {
       fullName: 'Client TWISHIYAT',
-      phone: '0661245890',
+      phone: '0708759510',
       city: 'Casablanca',
       address: 'Adresse de livraison'
     },
@@ -48,7 +48,7 @@ export default function OrderConfirmationView() {
 
   const handleWhatsAppConfirm = () => {
     const text = `Salam TWISHIYAT ! Je confirme ma commande N° ${order.id} pour un montant de ${order.total} DH à livrer à ${order.customer.city} (${order.customer.fullName}). Merci !`;
-    window.open(`https://wa.me/212661245890?text=${encodeURIComponent(text)}`, '_blank');
+    window.open(`https://wa.me/212708759510?text=${encodeURIComponent(text)}`, '_blank');
   };
 
   return (

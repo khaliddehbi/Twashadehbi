@@ -63,7 +63,7 @@ export default function Footer() {
                 <Phone size={24} />
               </div>
               <h4 style={{ color: '#FFFFFF', fontSize: '1rem', fontWeight: '600' }}>Service Client WhatsApp</h4>
-              <p style={{ fontSize: '0.82rem', color: '#9CA3AF' }}>Conseillers dédiés disponibles 7j/7 au 06 61 24 58 90</p>
+              <p style={{ fontSize: '0.82rem', color: '#9CA3AF' }}>Conseillers dédiés disponibles 7j/7 au 07 08 75 95 10</p>
             </div>
           </div>
         </div>
@@ -92,7 +92,7 @@ export default function Footer() {
               <a href="https://facebook.com" target="_blank" rel="noreferrer" style={{ width: '38px', height: '38px', borderRadius: '50%', background: 'rgba(255, 255, 255, 0.06)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--gold-400)' }}>
                 <FacebookIcon size={18} />
               </a>
-              <a href="https://wa.me/212661245890" target="_blank" rel="noreferrer" style={{ width: '38px', height: '38px', borderRadius: '50%', background: 'rgba(37, 211, 102, 0.2)', border: '1px solid #25D366', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#25D366' }}>
+              <a href="https://wa.me/212708759510" target="_blank" rel="noreferrer" style={{ width: '38px', height: '38px', borderRadius: '50%', background: 'rgba(37, 211, 102, 0.2)', border: '1px solid #25D366', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#25D366' }}>
                 <Phone size={18} />
               </a>
             </div>
@@ -144,7 +144,7 @@ export default function Footer() {
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <Phone size={18} color="var(--gold-400)" style={{ flexShrink: 0 }} />
-                <span>+212 6 61 24 58 90 (WhatsApp Direct)</span>
+                <span>+212 7 08 75 95 10 (WhatsApp Direct)</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <Mail size={18} color="var(--gold-400)" style={{ flexShrink: 0 }} />

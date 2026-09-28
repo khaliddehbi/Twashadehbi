@@ -6,7 +6,7 @@ export default function WhatsAppWidget() {
   const { language } = useStore();
   const [isOpen, setIsOpen] = useState(false);
 
-  const phoneNum = '212661245890'; // Moroccan mobile
+  const phoneNum = '212708759510'; // Moroccan mobile
 
   const openChat = (messageText) => {
     const encoded = encodeURIComponent(messageText);

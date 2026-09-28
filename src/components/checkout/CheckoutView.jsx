@@ -73,7 +73,7 @@ export default function CheckoutView() {
     }
 
     if (!validateMoroccanPhone(phone)) {
-      addToast('Numéro de téléphone marocain invalide. Exemple : 06 61 24 58 90', 'error');
+      addToast('Numéro de téléphone marocain invalide. Exemple : 07 08 75 95 10', 'error');
       return;
     }
 

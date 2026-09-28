@@ -85,7 +85,7 @@ export const TRANSLATIONS = {
     estimatedDelivery: 'Délai estimé de livraison',
     trackingTitle: 'Suivi de Commande en Temps Réel',
     trackingSearchPlaceholder: 'Entrez votre numéro de commande (ex: TW-8492)',
-    trackingPhonePlaceholder: 'Votre numéro de téléphone (ex: 0661245890)',
+    trackingPhonePlaceholder: 'Votre numéro de téléphone (ex: 0708759510)',
     trackNow: 'Rechercher mon colis'
   },
   ar: {
@@ -174,7 +174,7 @@ export const TRANSLATIONS = {
     estimatedDelivery: 'وقت التوصيل المتوقع',
     trackingTitle: 'تتبع شحنتك خطوة بخطوة',
     trackingSearchPlaceholder: 'أدخل رقم الطلب (مثال: TW-8492)',
-    trackingPhonePlaceholder: 'رقم هاتفك (مثال: 0661245890)',
+    trackingPhonePlaceholder: 'رقم هاتفك (مثال: 0708759510)',
     trackNow: 'بحث وتتبع الطلبية'
   },
   en: {
@@ -263,7 +263,7 @@ export const TRANSLATIONS = {
     estimatedDelivery: 'Estimated Delivery Time',
     trackingTitle: 'Real-Time Order Tracking',
     trackingSearchPlaceholder: 'Enter order number (e.g., TW-8492)',
-    trackingPhonePlaceholder: 'Your phone number (e.g., 0661245890)',
+    trackingPhonePlaceholder: 'Your phone number (e.g., 0708759510)',
     trackNow: 'Track Shipment'
   }
 };

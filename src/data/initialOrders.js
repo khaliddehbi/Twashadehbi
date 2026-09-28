@@ -4,7 +4,7 @@ export const INITIAL_ORDERS = [
     date: '2026-09-19T14:30:00Z',
     customer: {
       fullName: 'Othmane Bennani',
-      phone: '0661245890',
+      phone: '0708759510',
       city: 'Casablanca',
       address: '24 Rue Abou Al Alaa Al Maarri, Maarif',
       neighborhood: 'Maarif Extension',
