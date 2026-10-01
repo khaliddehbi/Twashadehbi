@@ -1,5 +1,6 @@
 import React from 'react';
 import { useStore } from '../../context/StoreContext';
+import brandLogo from '../../assets/images/logo.jpg';
 import { 
   ShieldCheck, 
   Truck, 
@@ -74,13 +75,29 @@ export default function Footer() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '40px' }}>
           {/* Brand Info */}
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
-              <div style={{ width: '38px', height: '38px', borderRadius: '50%', background: 'var(--obsidian-900)', border: '1px solid var(--gold-500)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--gold-400)', fontWeight: 'bold' }}>
-                TW
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+              <img
+                src={brandLogo}
+                alt="TWISHIYAT"
+                style={{
+                  width: '46px',
+                  height: '46px',
+                  borderRadius: '50%',
+                  objectFit: 'cover',
+                  border: '1.5px solid var(--gold-500)',
+                  boxShadow: '0 0 12px rgba(212, 175, 55, 0.3)',
+                  background: '#000000',
+                  flexShrink: 0
+                }}
+              />
+              <div>
+                <span style={{ fontFamily: 'var(--font-serif)', fontSize: '1.35rem', fontWeight: '700', color: '#FFFFFF', letterSpacing: '0.08em', display: 'block', lineHeight: 1.1 }}>
+                  TWISHIYAT
+                </span>
+                <span style={{ fontSize: '0.75rem', color: 'var(--gold-400)', letterSpacing: '0.05em' }}>
+                  توشيات • Montres & Bracelets
+                </span>
               </div>
-              <span style={{ fontFamily: 'var(--font-serif)', fontSize: '1.3rem', fontWeight: '700', color: '#FFFFFF', letterSpacing: '0.08em' }}>
-                TWISHIYAT
-              </span>
             </div>
             <p style={{ fontSize: '0.85rem', color: '#9CA3AF', lineHeight: '1.6', marginBottom: '20px' }}>
               {t('footerAbout')}

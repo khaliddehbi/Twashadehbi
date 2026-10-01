@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAdmin } from '../../context/AdminContext';
 import { useStore } from '../../context/StoreContext';
+import brandLogo from '../../assets/images/logo.jpg';
 import { IMAGE_PRESETS } from '../../data/products';
 import { 
   DollarSign, 
@@ -283,10 +284,22 @@ export default function AdminView() {
     return (
       <div style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '60px 20px', background: '#F8F9FA' }}>
         <div style={{ maxWidth: '440px', width: '100%', background: '#FFFFFF', borderRadius: '20px', border: '1px solid #E5E7EB', boxShadow: '0 20px 40px rgba(0,0,0,0.08)', padding: '40px 32px', textAlign: 'center' }}>
-          {/* Crest Monogram */}
-          <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'var(--obsidian-900)', border: '2px solid var(--gold-500)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px auto', color: 'var(--gold-400)' }}>
-            <Lock size={28} />
-          </div>
+          {/* Brand Logo */}
+          <img
+            src={brandLogo}
+            alt="TWISHIYAT Logo"
+            style={{
+              width: '80px',
+              height: '80px',
+              borderRadius: '50%',
+              objectFit: 'cover',
+              border: '2px solid var(--gold-500)',
+              boxShadow: '0 0 20px rgba(212, 175, 55, 0.3)',
+              margin: '0 auto 20px auto',
+              display: 'block',
+              background: '#000000'
+            }}
+          />
 
           <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--gold-700)', fontWeight: '700' }}>
             Accès Réservé
@@ -358,17 +371,33 @@ export default function AdminView() {
       <div className="container">
         {/* Admin Header */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', marginBottom: '32px' }}>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span className="badge-gold">Espace Pro Sécurisé</span>
-              <span style={{ fontSize: '0.8rem', color: '#6B7280' }}>TWISHIYAT Backoffice</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <img
+              src={brandLogo}
+              alt="TWISHIYAT"
+              style={{
+                width: '56px',
+                height: '56px',
+                borderRadius: '50%',
+                objectFit: 'cover',
+                border: '1.5px solid var(--gold-500)',
+                boxShadow: '0 0 12px rgba(212, 175, 55, 0.25)',
+                background: '#000000',
+                flexShrink: 0
+              }}
+            />
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span className="badge-gold">Espace Pro Sécurisé</span>
+                <span style={{ fontSize: '0.8rem', color: '#6B7280' }}>TWISHIYAT Backoffice</span>
+              </div>
+              <h1 style={{ fontSize: '2rem', color: 'var(--obsidian-950)', margin: '4px 0' }}>
+                Administration TWISHIYAT
+              </h1>
+              <p style={{ color: '#6B7280', fontSize: '0.9rem', margin: 0 }}>
+                Gestion des commandes en espèces (COD), expéditions Amana/Cathedis et catalogue.
+              </p>
             </div>
-            <h1 style={{ fontSize: '2.2rem', color: 'var(--obsidian-950)', margin: '4px 0' }}>
-              Administration TWISHIYAT
-            </h1>
-            <p style={{ color: '#6B7280', fontSize: '0.9rem' }}>
-              Gestion des commandes en espèces (COD), expéditions Amana/Cathedis et catalogue.
-            </p>
           </div>
 
           <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
@@ -384,7 +413,7 @@ export default function AdminView() {
 
             <button
               className="btn-gold"
-              onClick={() => setNewProductModal(true)}
+              onClick={handleOpenAddProduct}
               style={{ fontSize: '0.85rem', padding: '10px 18px' }}
             >
               <Plus size={16} />
@@ -917,9 +946,23 @@ export default function AdminView() {
         <div className="modal-overlay" onClick={() => setPrintableSlipOrder(null)}>
           <div className="modal-card" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '600px', padding: '32px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '2px solid var(--obsidian-900)', paddingBottom: '16px', marginBottom: '20px' }}>
-              <div>
-                <h2 style={{ fontSize: '1.4rem', margin: 0 }}>TWISHIYAT</h2>
-                <span style={{ fontSize: '0.8rem', color: '#6B7280' }}>Bordereau d'Expédition & Encaissement COD</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <img
+                  src={brandLogo}
+                  alt="TWISHIYAT"
+                  style={{
+                    width: '44px',
+                    height: '44px',
+                    borderRadius: '50%',
+                    objectFit: 'cover',
+                    border: '1.5px solid #000',
+                    background: '#000'
+                  }}
+                />
+                <div>
+                  <h2 style={{ fontSize: '1.4rem', margin: 0 }}>TWISHIYAT</h2>
+                  <span style={{ fontSize: '0.8rem', color: '#6B7280' }}>Bordereau d'Expédition & Encaissement COD</span>
+                </div>
               </div>
               <div style={{ textAlign: 'right' }}>
                 <span style={{ fontWeight: '800', fontSize: '1.1rem' }}>{printableSlipOrder.id}</span>

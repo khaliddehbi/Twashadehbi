@@ -360,6 +360,23 @@ img {
   box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
 }
 
+.brand-crest-img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid var(--gold-500);
+  background: #000000;
+  box-shadow: 0 0 12px rgba(212, 175, 55, 0.25);
+  flex-shrink: 0;
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.brand-logo:hover .brand-crest-img {
+  transform: scale(1.05);
+  box-shadow: 0 0 16px rgba(212, 175, 55, 0.45);
+}
+
 .brand-text {
   display: flex;
   flex-direction: column;

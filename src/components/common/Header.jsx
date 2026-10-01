@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useStore } from '../../context/StoreContext';
+import brandLogo from '../../assets/images/logo.jpg';
 import {
   ShoppingBag,
   Heart,
@@ -110,11 +111,10 @@ export default function Header() {
 
           {/* Brand Logo & Monogram */}
           <a href="#" className="brand-logo" onClick={(e) => { e.preventDefault(); navigateTo('home'); }}>
-            <div className="brand-crest">
-              <span>TW</span>
-            </div>
+            <img src={brandLogo} alt="TWISHIYAT Logo" className="brand-crest-img" />
             <div className="brand-text">
               <span className="brand-name">TWISHIYAT</span>
+              <span className="brand-arabic">توشيات • Montres & Bijoux</span>
             </div>
           </a>
 
