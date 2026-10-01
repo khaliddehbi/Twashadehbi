@@ -21,7 +21,7 @@ export const INITIAL_ORDERS = [
       }
     ],
     subtotal: 499,
-    deliveryFee: 0, // Free over 350 DH
+    deliveryFee: 0, // Free delivery site-wide
     discount: 0,
     total: 499,
     paymentMethod: 'cod',

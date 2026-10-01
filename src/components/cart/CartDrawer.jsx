@@ -35,9 +35,7 @@ export default function CartDrawer() {
 
   if (!isCartOpen) return null;
 
-  const remainingForFreeShipping = Math.max(0, FREE_SHIPPING_THRESHOLD - cartSubtotal);
-  const progressPercent = Math.min(100, Math.round((cartSubtotal / FREE_SHIPPING_THRESHOLD) * 100));
-  const shippingFee = isFreeShipping || cart.length === 0 ? 0 : 25; // standard base shipping
+  const shippingFee = 0; // 100% Free Shipping site-wide
   const finalTotal = Math.max(0, cartSubtotal - discountAmount + shippingFee);
 
   const handleApplyCoupon = (e) => {
@@ -66,26 +64,15 @@ export default function CartDrawer() {
           </button>
         </div>
 
-        {/* Dynamic Free Shipping Progress Bar */}
-        <div style={{ background: '#FAF8F5', padding: '14px 24px', borderBottom: '1px solid #EFEAE2' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', marginBottom: '8px', color: 'var(--obsidian-900)' }}>
-            <Truck size={16} color="var(--gold-600)" />
-            <span>
-              {isFreeShipping
-                ? t('freeShippingUnlocked')
-                : t('freeShippingThresholdText').replace('{amount}', remainingForFreeShipping)}
-            </span>
+        {/* 100% Free Shipping Banner */}
+        <div style={{ background: '#FAF8F5', padding: '12px 24px', borderBottom: '1px solid #EFEAE2', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.84rem', fontWeight: '600', color: '#059669' }}>
+            <Truck size={17} color="#059669" />
+            <span>{t('freeShippingUnlocked')}</span>
           </div>
-          <div style={{ width: '100%', height: '6px', background: '#E5E7EB', borderRadius: '3px', overflow: 'hidden' }}>
-            <div 
-              style={{ 
-                width: `${progressPercent}%`, 
-                height: '100%', 
-                background: 'var(--grad-gold)', 
-                transition: 'width 0.4s ease' 
-              }} 
-            />
-          </div>
+          <span style={{ fontSize: '0.74rem', background: '#ECFDF5', color: '#065F46', padding: '3px 10px', borderRadius: '12px', fontWeight: '700' }}>
+            GRATUITE
+          </span>
         </div>
 
         {/* Items List */}

@@ -46,8 +46,7 @@ export default function CheckoutView() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Delivery calculation
-  const cityData = MOROCCAN_CITIES.find(c => c.name === city) || MOROCCAN_CITIES[0];
-  const standardDeliveryFee = (cartSubtotal >= 350 || isFreeShipping) ? 0 : cityData.deliveryFee;
+  const standardDeliveryFee = 0; // 100% Free Shipping site-wide
   const giftBoxFee = includeGiftBox ? 29 : 0;
   const finalTotal = Math.max(0, cartSubtotal - discountAmount + standardDeliveryFee + giftBoxFee);
 

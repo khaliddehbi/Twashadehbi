@@ -1,6 +1,6 @@
 export const TRANSLATIONS = {
   fr: {
-    announcement: '⚡ LIVRAISON GRATUITE PARTOUT AU MAROC DÈS 350 DH | 🇲🇦 PAIEMENT À LA LIVRAISON (COD)',
+    announcement: '⚡ LIVRAISON GRATUITE PARTOUT AU MAROC | 🇲🇦 PAIEMENT À LA LIVRAISON (COD)',
     brandTagline: 'L’Élégance Marocaine Réinventée',
     navHome: 'Accueil',
     navCatalog: 'Boutique',
@@ -70,8 +70,8 @@ export const TRANSLATIONS = {
     cartTotal: 'Total à payer à la livraison',
     promoCode: 'Code promo',
     applyPromo: 'Appliquer',
-    freeShippingThresholdText: 'Ajoutez encore {amount} DH pour bénéficier de la livraison GRATUITE !',
-    freeShippingUnlocked: 'Félicitations ! Livraison gratuite débloquée 🎉',
+    freeShippingThresholdText: 'Livraison 100% GRATUITE offerte sur toute commande partout au Maroc !',
+    freeShippingUnlocked: 'Livraison Gratuite Partout au Maroc 🎉',
     checkoutTitle: 'Finaliser ma Commande',
     paymentMethod: 'Mode de Règlement',
     paymentCod: 'Paiement en espèces à la livraison (Recommandé)',
@@ -89,7 +89,7 @@ export const TRANSLATIONS = {
     trackNow: 'Rechercher mon colis'
   },
   ar: {
-    announcement: '⚡ توصيل مجاني لجميع مدن المغرب ابتداءً من 350 درهم | 🇲🇦 الدفع عند الاستلام بعد المعاينة',
+    announcement: '⚡ توصيل مجاني لجميع مدن المغرب | 🇲🇦 الدفع عند الاستلام بعد المعاينة',
     brandTagline: 'الأناقة المغربية برؤية عصرية',
     navHome: 'الرئيسية',
     navCatalog: 'المتجر',
@@ -159,8 +159,8 @@ export const TRANSLATIONS = {
     cartTotal: 'المبلغ الإجمالي عند الاستلام',
     promoCode: 'كوبون الخصم',
     applyPromo: 'تفعيل الكوبون',
-    freeShippingThresholdText: 'أضف منتجات بقيمة {amount} درهم للاستفادة من التوصيل المجاني !',
-    freeShippingUnlocked: 'مبروك ! حصلت على توصيل مجاني لباب منزلك 🎉',
+    freeShippingThresholdText: 'توصيل مجاني 100% مهدى لجميع مدن المغرب !',
+    freeShippingUnlocked: 'توصيل مجاني لجميع مدن المغرب 🎉',
     checkoutTitle: 'إتمام الطلب',
     paymentMethod: 'طريقة الدفع',
     paymentCod: 'الدفع نقداً عند الاستلام بعد المعاينة (الموصى به)',
@@ -178,7 +178,7 @@ export const TRANSLATIONS = {
     trackNow: 'بحث وتتبع الطلبية'
   },
   en: {
-    announcement: '⚡ FREE DELIVERY ACROSS MOROCCO ON ORDERS OVER 350 DH | 🇲🇦 CASH ON DELIVERY (COD)',
+    announcement: '⚡ FREE DELIVERY ACROSS MOROCCO | 🇲🇦 CASH ON DELIVERY (COD)',
     brandTagline: 'Moroccan Elegance Reimagined',
     navHome: 'Home',
     navCatalog: 'Shop',
@@ -248,8 +248,8 @@ export const TRANSLATIONS = {
     cartTotal: 'Total upon delivery',
     promoCode: 'Promo code',
     applyPromo: 'Apply',
-    freeShippingThresholdText: 'Add {amount} DH more to unlock FREE delivery across Morocco!',
-    freeShippingUnlocked: 'Congratulations! Free shipping unlocked 🎉',
+    freeShippingThresholdText: '100% FREE Delivery across Morocco on all orders!',
+    freeShippingUnlocked: 'Free Delivery Across Morocco 🎉',
     checkoutTitle: 'Checkout',
     paymentMethod: 'Payment Method',
     paymentCod: 'Cash on Delivery (Pay upon receiving & inspection)',

@@ -86,8 +86,8 @@ export default function ProductDetailView() {
 
     const cityData = MOROCCAN_CITIES.find(c => c.name === expressCity) || MOROCCAN_CITIES[0];
     const totalOrderAmount = product.price * quantity;
-    const isFree = totalOrderAmount >= 350;
-    const shippingFee = isFree ? 0 : cityData.deliveryFee;
+    const isFree = true;
+    const shippingFee = 0;
     const orderId = `TD-${Math.floor(1000 + Math.random() * 9000)}`;
 
     const newOrder = {
@@ -470,8 +470,8 @@ export default function ProductDetailView() {
                     <label style={{ fontSize: '0.8rem', fontWeight: '600', color: 'var(--obsidian-800)', display: 'block', marginBottom: '4px' }}>
                       Frais de port
                     </label>
-                    <div style={{ padding: '11px 12px', background: '#FAF8F5', border: '1px solid #E5E7EB', borderRadius: '6px', fontSize: '0.85rem', fontWeight: '700', color: product.price * quantity >= 350 ? '#059669' : 'var(--obsidian-900)' }}>
-                      {product.price * quantity >= 350 ? 'GRATUIT' : `${MOROCCAN_CITIES.find(c => c.name === expressCity)?.deliveryFee || 25} DH`}
+                    <div style={{ padding: '11px 12px', background: '#ECFDF5', border: '1px solid #A7F3D0', borderRadius: '6px', fontSize: '0.85rem', fontWeight: '700', color: '#059669' }}>
+                      GRATUIT
                     </div>
                   </div>
                 </div>
@@ -494,7 +494,7 @@ export default function ProductDetailView() {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px dashed #E5E7EB', paddingTop: '10px', marginTop: '4px' }}>
                   <span style={{ fontSize: '0.9rem', color: '#6B7280' }}>Total à payer à la livraison :</span>
                   <span style={{ fontSize: '1.3rem', fontWeight: '800', color: 'var(--obsidian-950)' }}>
-                    {product.price * quantity + (product.price * quantity >= 350 ? 0 : (MOROCCAN_CITIES.find(c => c.name === expressCity)?.deliveryFee || 25))} DH
+                    {product.price * quantity} DH
                   </span>
                 </div>
 

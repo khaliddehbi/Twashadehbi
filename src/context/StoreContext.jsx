@@ -310,7 +310,7 @@ export function StoreProvider({ children }) {
   // Cart Calculations
   const cartSubtotal = cart.reduce((acc, item) => acc + item.product.price * item.quantity, 0);
   const cartItemCount = cart.reduce((acc, item) => acc + item.quantity, 0);
-  const isFreeShipping = cartSubtotal >= FREE_SHIPPING_THRESHOLD || appliedCoupon?.freeShipping;
+  const isFreeShipping = true; // 100% Free Shipping site-wide across Morocco
   const discountAmount = appliedCoupon?.discountPercent
     ? Math.round((cartSubtotal * appliedCoupon.discountPercent) / 100)
     : 0;

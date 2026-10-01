@@ -21,7 +21,7 @@ export const MOROCCAN_CITIES = [
   { name: 'Laâyoune', nameAr: 'العيون', region: 'Laâyoune-Sakia El Hamra', deliveryFee: 45, deliveryHours: '72h', expressAvailable: false }
 ];
 
-export const FREE_SHIPPING_THRESHOLD = 350; // MAD
+export const FREE_SHIPPING_THRESHOLD = 0; // 100% Free Shipping site-wide across Morocco
 
 export function validateMoroccanPhone(phone) {
   if (!phone) return false;
