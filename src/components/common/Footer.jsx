@@ -103,13 +103,37 @@ export default function Footer() {
               {t('footerAbout')}
             </p>
             <div style={{ display: 'flex', gap: '12px' }}>
-              <a href="https://instagram.com" target="_blank" rel="noreferrer" style={{ width: '38px', height: '38px', borderRadius: '50%', background: 'rgba(255, 255, 255, 0.06)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--gold-400)' }}>
+              <a
+                href="https://www.instagram.com/twishiyat_/"
+                target="_blank"
+                rel="noreferrer"
+                title="Page Instagram Officielle @twishiyat_"
+                style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(255, 255, 255, 0.06)', border: '1px solid rgba(212, 175, 55, 0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--gold-400)', transition: 'all 0.3s ease' }}
+                onMouseOver={(e) => { e.currentTarget.style.background = 'linear-gradient(45deg, #f09433, #dc2743, #bc1888)'; e.currentTarget.style.color = '#FFFFFF'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+                onMouseOut={(e) => { e.currentTarget.style.background = 'rgba(255, 255, 255, 0.06)'; e.currentTarget.style.color = 'var(--gold-400)'; e.currentTarget.style.transform = 'translateY(0)'; }}
+              >
                 <InstagramIcon size={18} />
               </a>
-              <a href="https://facebook.com" target="_blank" rel="noreferrer" style={{ width: '38px', height: '38px', borderRadius: '50%', background: 'rgba(255, 255, 255, 0.06)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--gold-400)' }}>
+              <a
+                href="https://www.facebook.com/profile.php?id=61594978681127"
+                target="_blank"
+                rel="noreferrer"
+                title="Page Facebook Officielle TWISHIYAT"
+                style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(255, 255, 255, 0.06)', border: '1px solid rgba(212, 175, 55, 0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--gold-400)', transition: 'all 0.3s ease' }}
+                onMouseOver={(e) => { e.currentTarget.style.background = '#1877F2'; e.currentTarget.style.color = '#FFFFFF'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+                onMouseOut={(e) => { e.currentTarget.style.background = 'rgba(255, 255, 255, 0.06)'; e.currentTarget.style.color = 'var(--gold-400)'; e.currentTarget.style.transform = 'translateY(0)'; }}
+              >
                 <FacebookIcon size={18} />
               </a>
-              <a href="https://wa.me/212708759510" target="_blank" rel="noreferrer" style={{ width: '38px', height: '38px', borderRadius: '50%', background: 'rgba(37, 211, 102, 0.2)', border: '1px solid #25D366', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#25D366' }}>
+              <a
+                href="https://wa.me/212708759510"
+                target="_blank"
+                rel="noreferrer"
+                title="WhatsApp Direct : 07 08 75 95 10"
+                style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(37, 211, 102, 0.15)', border: '1px solid #25D366', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#25D366', transition: 'all 0.3s ease' }}
+                onMouseOver={(e) => { e.currentTarget.style.background = '#25D366'; e.currentTarget.style.color = '#FFFFFF'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+                onMouseOut={(e) => { e.currentTarget.style.background = 'rgba(37, 211, 102, 0.15)'; e.currentTarget.style.color = '#25D366'; e.currentTarget.style.transform = 'translateY(0)'; }}
+              >
                 <Phone size={18} />
               </a>
             </div>

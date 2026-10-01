@@ -15,6 +15,20 @@ import {
   Truck
 } from 'lucide-react';
 
+const InstagramIcon = ({ size = 16, color = 'currentColor', style = {} }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={style}>
+    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+  </svg>
+);
+
+const FacebookIcon = ({ size = 16, color = 'currentColor', style = {} }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={style}>
+    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+  </svg>
+);
+
 export default function Header() {
   const {
     language,
@@ -46,8 +60,34 @@ export default function Header() {
       {/* Top Announcement Bar */}
       <aside aria-label="Annonces promotionnelles" className="announcement-bar">
         <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-          <div className="announcement-center">
-            <span>{t('announcement')}</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <div className="announcement-center">
+              <span>{t('announcement')}</span>
+            </div>
+
+            <div className="announcement-socials" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <a
+                href="https://www.instagram.com/twishiyat_/"
+                target="_blank"
+                rel="noreferrer"
+                title="Page Instagram @twishiyat_"
+                style={{ color: 'var(--gold-400)', display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.74rem', textDecoration: 'none' }}
+              >
+                <InstagramIcon size={12} />
+                <span>@twishiyat_</span>
+              </a>
+              <span style={{ color: '#555' }}>•</span>
+              <a
+                href="https://www.facebook.com/profile.php?id=61594978681127"
+                target="_blank"
+                rel="noreferrer"
+                title="Page Facebook TWISHIYAT"
+                style={{ color: 'var(--gold-400)', display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.74rem', textDecoration: 'none' }}
+              >
+                <FacebookIcon size={12} />
+                <span>Facebook</span>
+              </a>
+            </div>
           </div>
 
           <div className="announcement-actions">
@@ -228,12 +268,64 @@ export default function Header() {
                 <Truck size={15} />
                 <span>{t('navTracking')}</span>
               </button>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginTop: '6px' }}>
+                <a
+                  href="https://www.instagram.com/twishiyat_/"
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px',
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    background: '#FDF2F4',
+                    border: '1px solid #FBCFE8',
+                    color: '#BE185D',
+                    fontSize: '0.8rem',
+                    fontWeight: '600',
+                    textDecoration: 'none'
+                  }}
+                >
+                  <InstagramIcon size={15} color="#BE185D" />
+                  <span>@twishiyat_</span>
+                </a>
+                <a
+                  href="https://www.facebook.com/profile.php?id=61594978681127"
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px',
+                    padding: '9px 12px',
+                    borderRadius: '8px',
+                    background: '#EFF6FF',
+                    border: '1px solid #BFDBFE',
+                    color: '#1D4ED8',
+                    fontSize: '0.8rem',
+                    fontWeight: '600',
+                    textDecoration: 'none'
+                  }}
+                >
+                  <FacebookIcon size={15} color="#1D4ED8" />
+                  <span>Facebook</span>
+                </a>
+              </div>
             </div>
           </div>
         )}
       </header>
 
       <style>{`
+        @media (max-width: 860px) {
+          .announcement-socials {
+            display: none !important;
+          }
+        }
         @media (max-width: 1024px) {
           .mobile-menu-btn {
             display: flex !important;

@@ -28,6 +28,12 @@ const InstagramIcon = ({ size = 24, color = 'currentColor', style = {} }) => (
   </svg>
 );
 
+const FacebookIcon = ({ size = 24, color = 'currentColor', style = {} }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={style}>
+    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+  </svg>
+);
+
 export default function HomeView() {
   const { 
     t, 
@@ -538,6 +544,57 @@ export default function HomeView() {
             <span className="section-pretitle">Rejoignez-Nous</span>
             <h2 className="section-title">{t('instaTitle')}</h2>
             <p className="section-desc">{t('instaSub')}</p>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '14px', marginTop: '20px', flexWrap: 'wrap' }}>
+              <a
+                href="https://www.instagram.com/twishiyat_/"
+                target="_blank"
+                rel="noreferrer"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  background: 'linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)',
+                  color: '#FFFFFF',
+                  padding: '11px 22px',
+                  borderRadius: '30px',
+                  fontSize: '0.88rem',
+                  fontWeight: '600',
+                  textDecoration: 'none',
+                  boxShadow: '0 4px 14px rgba(220, 39, 67, 0.3)',
+                  transition: 'transform 0.2s, box-shadow 0.2s'
+                }}
+                onMouseOver={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(220, 39, 67, 0.45)'; }}
+                onMouseOut={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 14px rgba(220, 39, 67, 0.3)'; }}
+              >
+                <InstagramIcon size={18} color="#FFFFFF" />
+                <span>Suivre @twishiyat_</span>
+              </a>
+
+              <a
+                href="https://www.facebook.com/profile.php?id=61594978681127"
+                target="_blank"
+                rel="noreferrer"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  background: '#1877F2',
+                  color: '#FFFFFF',
+                  padding: '11px 22px',
+                  borderRadius: '30px',
+                  fontSize: '0.88rem',
+                  fontWeight: '600',
+                  textDecoration: 'none',
+                  boxShadow: '0 4px 14px rgba(24, 119, 242, 0.3)',
+                  transition: 'transform 0.2s, box-shadow 0.2s'
+                }}
+                onMouseOver={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(24, 119, 242, 0.45)'; }}
+                onMouseOut={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 14px rgba(24, 119, 242, 0.3)'; }}
+              >
+                <FacebookIcon size={18} color="#FFFFFF" />
+                <span>Page Facebook</span>
+              </a>
+            </div>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>

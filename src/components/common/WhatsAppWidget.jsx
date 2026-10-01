@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useStore } from '../../context/StoreContext';
 import { Phone, X, MessageCircle, Send, CheckCircle } from 'lucide-react';
+import brandLogo from '../../assets/images/logo.png';
 
 export default function WhatsAppWidget() {
   const { language } = useStore();
@@ -45,9 +46,19 @@ export default function WhatsAppWidget() {
         >
           {/* Header */}
           <div style={{ background: '#075E54', color: '#FFFFFF', padding: '16px 20px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: '#FFFFFF', border: '2px solid #25D366', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#075E54', fontWeight: 'bold' }}>
-              TW
-            </div>
+            <img
+              src={brandLogo}
+              alt="TWISHIYAT"
+              style={{
+                width: '42px',
+                height: '42px',
+                borderRadius: '50%',
+                objectFit: 'cover',
+                border: '2px solid #25D366',
+                background: '#F7F3EC',
+                flexShrink: 0
+              }}
+            />
             <div>
               <h4 style={{ fontSize: '0.95rem', fontWeight: '700', color: '#FFFFFF', margin: 0 }}>
                 TWISHIYAT Service Client
@@ -137,9 +148,16 @@ export default function WhatsAppWidget() {
             </div>
           </div>
 
-          {/* Footer Note */}
-          <div style={{ padding: '10px', textAlign: 'center', background: '#FFFFFF', fontSize: '0.72rem', color: '#9CA3AF', borderTop: '1px solid #F3F4F6' }}>
-            Service client officiel TWISHIYAT • Maroc
+          {/* Footer Note with Social Links */}
+          <div style={{ padding: '10px 14px', textAlign: 'center', background: '#F9FAFB', fontSize: '0.74rem', color: '#6B7280', borderTop: '1px solid #F3F4F6', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }}>
+            <span>Nos réseaux :</span>
+            <a href="https://www.instagram.com/twishiyat_/" target="_blank" rel="noreferrer" style={{ color: '#E1306C', fontWeight: '600', textDecoration: 'none' }}>
+              Instagram
+            </a>
+            <span>•</span>
+            <a href="https://www.facebook.com/profile.php?id=61594978681127" target="_blank" rel="noreferrer" style={{ color: '#1877F2', fontWeight: '600', textDecoration: 'none' }}>
+              Facebook
+            </a>
           </div>
         </div>
       )}
