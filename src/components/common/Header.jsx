@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useStore } from '../../context/StoreContext';
-import brandLogo from '../../assets/images/logo.jpg';
+import brandLogo from '../../assets/images/logo.png';
 import {
   ShoppingBag,
   Heart,

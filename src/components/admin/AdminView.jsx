@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAdmin } from '../../context/AdminContext';
 import { useStore } from '../../context/StoreContext';
-import brandLogo from '../../assets/images/logo.jpg';
+import brandLogo from '../../assets/images/logo.png';
 import { IMAGE_PRESETS } from '../../data/products';
 import { 
   DollarSign, 
@@ -289,15 +289,15 @@ export default function AdminView() {
             src={brandLogo}
             alt="TWISHIYAT Logo"
             style={{
-              width: '80px',
-              height: '80px',
+              width: '84px',
+              height: '84px',
               borderRadius: '50%',
               objectFit: 'cover',
               border: '2px solid var(--gold-500)',
               boxShadow: '0 0 20px rgba(212, 175, 55, 0.3)',
               margin: '0 auto 20px auto',
               display: 'block',
-              background: '#000000'
+              background: '#F7F3EC'
             }}
           />
 
@@ -382,7 +382,7 @@ export default function AdminView() {
                 objectFit: 'cover',
                 border: '1.5px solid var(--gold-500)',
                 boxShadow: '0 0 12px rgba(212, 175, 55, 0.25)',
-                background: '#000000',
+                background: '#F7F3EC',
                 flexShrink: 0
               }}
             />
@@ -951,12 +951,12 @@ export default function AdminView() {
                   src={brandLogo}
                   alt="TWISHIYAT"
                   style={{
-                    width: '44px',
-                    height: '44px',
+                    width: '46px',
+                    height: '46px',
                     borderRadius: '50%',
                     objectFit: 'cover',
-                    border: '1.5px solid #000',
-                    background: '#000'
+                    border: '1.5px solid #D4AF37',
+                    background: '#F7F3EC'
                   }}
                 />
                 <div>

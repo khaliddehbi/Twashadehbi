@@ -361,12 +361,12 @@ img {
 }
 
 .brand-crest-img {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   object-fit: cover;
   border: 1.5px solid var(--gold-500);
-  background: #000000;
+  background: #F7F3EC;
   box-shadow: 0 0 12px rgba(212, 175, 55, 0.25);
   flex-shrink: 0;
   transition: transform var(--transition-normal), box-shadow var(--transition-normal);

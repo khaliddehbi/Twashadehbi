@@ -1,6 +1,6 @@
 import React from 'react';
 import { useStore } from '../../context/StoreContext';
-import brandLogo from '../../assets/images/logo.jpg';
+import brandLogo from '../../assets/images/logo.png';
 import { 
   ShieldCheck, 
   Truck, 
@@ -80,13 +80,13 @@ export default function Footer() {
                 src={brandLogo}
                 alt="TWISHIYAT"
                 style={{
-                  width: '46px',
-                  height: '46px',
+                  width: '48px',
+                  height: '48px',
                   borderRadius: '50%',
                   objectFit: 'cover',
                   border: '1.5px solid var(--gold-500)',
                   boxShadow: '0 0 12px rgba(212, 175, 55, 0.3)',
-                  background: '#000000',
+                  background: '#F7F3EC',
                   flexShrink: 0
                 }}
               />
