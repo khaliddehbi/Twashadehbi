@@ -1,0 +1,30 @@
+# Robots.txt for TWISHIYAT Maroc (https://www.twishiyat.ma)
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /account
+
+# Google, Bing, Facebook, Instagram, TikTok crawlers
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Facebot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: TikTokBot
+Allow: /
+
+User-agent: ByteSpider
+Allow: /
+
+# XML Sitemap
+Sitemap: https://www.twishiyat.ma/sitemap.xml

@@ -7,6 +7,7 @@ import CartDrawer from './components/cart/CartDrawer';
 import QuickViewModal from './components/catalog/QuickViewModal';
 import SearchModal from './components/common/SearchModal';
 import WhatsAppWidget from './components/common/WhatsAppWidget';
+import SEOHead from './components/common/SEOHead';
 import PixelTrackerHUD from './components/common/PixelTrackerHUD';
 import SocialProofPopup from './components/common/SocialProofPopup';
 import ToastContainer from './components/common/ToastContainer';
@@ -49,6 +50,7 @@ function MainRouter() {
 
   return (
     <div className="app-layout" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <SEOHead />
       <Header />
 
       <main style={{ flexGrow: 1 }}>
