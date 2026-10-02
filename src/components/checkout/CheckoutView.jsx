@@ -28,16 +28,18 @@ export default function CheckoutView() {
     addToast,
     trackPixel,
     setLastPlacedOrder,
-    setCart
+    setCart,
+    customerProfile,
+    recordCustomerOrder
   } = useStore();
 
   const { addOrder } = useAdmin();
 
-  // Form Fields
-  const [fullName, setFullName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [city, setCity] = useState('Casablanca');
-  const [address, setAddress] = useState('');
+  // Form Fields (Pre-populated from customerProfile if saved)
+  const [fullName, setFullName] = useState(() => customerProfile?.fullName || '');
+  const [phone, setPhone] = useState(() => customerProfile?.phone || '');
+  const [city, setCity] = useState(() => customerProfile?.city || 'Casablanca');
+  const [address, setAddress] = useState(() => customerProfile?.address || '');
   const [neighborhood, setNeighborhood] = useState('');
   const [orderNotes, setOrderNotes] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('cod'); // 'cod' or 'card'
@@ -126,6 +128,7 @@ export default function CheckoutView() {
 
     setTimeout(() => {
       addOrder(newOrder);
+      recordCustomerOrder(newOrder);
       setLastPlacedOrder(newOrder);
       trackPixel('Purchase', { id: orderId, value: finalTotal, currency: 'MAD' });
       setCart([]); // Empty cart

@@ -146,6 +146,54 @@ export function StoreProvider({ children }) {
   const [showPixelHUD, setShowPixelHUD] = useState(false);
   const [lastPlacedOrder, setLastPlacedOrder] = useState(null);
 
+  // Real Customer Profile (Local to this specific visitor's browser)
+  const [customerProfile, setCustomerProfile] = useState(() => {
+    try {
+      const saved = localStorage.getItem('twishiyat_customer_profile');
+      return saved ? JSON.parse(saved) : { fullName: '', phone: '', email: '', city: 'Casablanca', address: '' };
+    } catch (e) {
+      return { fullName: '', phone: '', email: '', city: 'Casablanca', address: '' };
+    }
+  });
+
+  const updateCustomerProfile = (updates) => {
+    setCustomerProfile((prev) => {
+      const updated = { ...prev, ...updates };
+      try {
+        localStorage.setItem('twishiyat_customer_profile', JSON.stringify(updated));
+      } catch (e) {}
+      return updated;
+    });
+  };
+
+  // Real Customer Orders (Only orders placed by this specific client)
+  const [customerOrders, setCustomerOrders] = useState(() => {
+    try {
+      const saved = localStorage.getItem('twishiyat_my_orders');
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+      return [];
+    }
+  });
+
+  const recordCustomerOrder = (newOrder) => {
+    setCustomerOrders((prev) => {
+      const updated = [newOrder, ...prev.filter(o => o.id !== newOrder.id)];
+      try {
+        localStorage.setItem('twishiyat_my_orders', JSON.stringify(updated));
+      } catch (e) {}
+      return updated;
+    });
+    if (newOrder.customer) {
+      updateCustomerProfile({
+        fullName: newOrder.customer.fullName || '',
+        phone: newOrder.customer.phone || '',
+        city: newOrder.customer.city || '',
+        address: newOrder.customer.address || ''
+      });
+    }
+  };
+
   // Sync RTL and language on html tag
   useEffect(() => {
     const isRtl = language === 'ar';
@@ -366,7 +414,11 @@ export function StoreProvider({ children }) {
         showPixelHUD,
         setShowPixelHUD,
         lastPlacedOrder,
-        setLastPlacedOrder
+        setLastPlacedOrder,
+        customerProfile,
+        updateCustomerProfile,
+        customerOrders,
+        recordCustomerOrder
       }}
     >
       {children}

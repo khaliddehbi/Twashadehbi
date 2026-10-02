@@ -35,7 +35,8 @@ export default function ProductDetailView() {
     addToast,
     trackPixel,
     setLastPlacedOrder,
-    products
+    products,
+    recordCustomerOrder
   } = useStore();
 
   const { addOrder } = useAdmin();
@@ -130,6 +131,7 @@ export default function ProductDetailView() {
 
     setTimeout(() => {
       addOrder(newOrder);
+      recordCustomerOrder(newOrder);
       setLastPlacedOrder(newOrder);
       trackPixel('Purchase', { id: orderId, value: newOrder.total, currency: 'MAD' });
       setExpressSubmitting(false);
