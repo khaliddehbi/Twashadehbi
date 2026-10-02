@@ -90,7 +90,7 @@ export default function CatalogView() {
               : (CATEGORIES.find(c => c.id === categoryFilter)?.name || 'Boutique')}
           </h1>
           <p style={{ color: '#6B7280', fontSize: '0.95rem' }}>
-            Montres de précision, bracelets et bagues en or 18k avec paiement à la livraison au Maroc.
+            Montres de précision, bracelets et bagues d’exception avec paiement à la livraison au Maroc.
           </p>
         </div>
 

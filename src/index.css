@@ -1005,3 +1005,19 @@ img {
     font-size: 1.8rem;
   }
 }
+
+/* Mobile Sticky Buy Bar */
+.mobile-sticky-buy-bar {
+  padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px)) !important;
+}
+
+@media (min-width: 769px) {
+  .mobile-sticky-buy-bar {
+    max-width: 540px !important;
+    left: auto !important;
+    right: 24px !important;
+    bottom: 24px !important;
+    border-radius: 14px !important;
+    border: 1px solid var(--border-gold) !important;
+  }
+}

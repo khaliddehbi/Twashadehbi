@@ -76,95 +76,170 @@ export default function HomeView() {
   return (
     <div>
       {/* 1. HERO SECTION */}
-      <section className="hero-section">
+      <section className="hero-section" style={{ minHeight: '620px', display: 'flex', alignItems: 'center' }}>
         <img src={heroBanner} alt="TWISHIYAT Lifestyle" className="hero-bg" />
-        <div className="hero-overlay"></div>
-        <div className="container" style={{ position: 'relative', zIndex: 5 }}>
-          <div className="hero-content">
-            <div className="hero-tag">
-              <Sparkles size={14} color="var(--gold-400)" />
-              <span>{t('brandTagline')}</span>
+        <div className="hero-overlay" style={{ background: 'linear-gradient(90deg, rgba(12,13,14,0.92) 0%, rgba(12,13,14,0.78) 55%, rgba(12,13,14,0.45) 100%)' }}></div>
+        <div className="container" style={{ position: 'relative', zIndex: 5, padding: '40px 20px' }}>
+          <div className="hero-content" style={{ maxWidth: '680px' }}>
+            
+            {/* Top Badge */}
+            <div className="hero-tag" style={{ background: 'rgba(212,175,55,0.18)', border: '1px solid rgba(212,175,55,0.45)', backdropFilter: 'blur(8px)' }}>
+              <Sparkles size={15} color="var(--gold-400)" />
+              <span style={{ letterSpacing: '0.12em', fontWeight: '700' }}>ÉLÉGANCE MAROCAINE • NOUVELLE COLLECTION</span>
             </div>
             
-            <h1 className="hero-title">
-              {t('heroTitle')}
+            <h1 className="hero-title" style={{ fontSize: 'clamp(2.2rem, 5vw, 3.4rem)', lineHeight: '1.18', margin: '14px 0 16px 0', fontFamily: 'var(--font-serif)', color: '#FFFFFF' }}>
+              L’Éclat du Raffinement, <br />
+              <span style={{ background: 'linear-gradient(135deg, #F9E7B9 0%, #D4AF37 50%, #AA7C11 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                le Style du Maroc
+              </span>
             </h1>
 
-            <p className="hero-subtitle">
-              {t('heroSubtitle')}
+            <p className="hero-subtitle" style={{ fontSize: '1.05rem', color: '#E5E7EB', lineHeight: '1.65', marginBottom: '24px' }}>
+              Montres d’exception et bijoux de prestige à l’éclat inaltérable. 
+              Sublimez votre allure au quotidien avec un raffinement accessible.
             </p>
 
-            <div className="hero-actions">
+            {/* Above-The-Fold Trust Pillars */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginBottom: '28px' }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(6px)', border: '1px solid rgba(255,255,255,0.18)', padding: '6px 12px', borderRadius: '20px', fontSize: '0.8rem', color: '#F3F4F6' }}>
+                <ShieldCheck size={15} color="var(--gold-400)" />
+                <span><strong>Ouvrez avant de payer</strong></span>
+              </div>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(6px)', border: '1px solid rgba(255,255,255,0.18)', padding: '6px 12px', borderRadius: '20px', fontSize: '0.8rem', color: '#F3F4F6' }}>
+                <Truck size={15} color="var(--gold-400)" />
+                <span><strong>Livraison Gratuite 24h-48h</strong></span>
+              </div>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(6px)', border: '1px solid rgba(255,255,255,0.18)', padding: '6px 12px', borderRadius: '20px', fontSize: '0.8rem', color: '#F3F4F6' }}>
+                <Gift size={15} color="var(--gold-400)" />
+                <span><strong>Écrin Velours Offert</strong></span>
+              </div>
+            </div>
+
+            {/* Hero CTAs */}
+            <div className="hero-actions" style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
               <button 
                 className="btn-gold"
                 onClick={() => navigateTo('catalog')}
+                style={{ padding: '15px 32px', fontSize: '0.95rem', fontWeight: '700', boxShadow: '0 8px 24px rgba(212,175,55,0.35)' }}
               >
-                <span>{t('shopNow')}</span>
+                <span>COMMANDER MAINTENANT</span>
                 <ArrowRight size={18} />
               </button>
 
               <button 
                 className="btn-dark"
                 onClick={() => navigateTo('catalog', 'watches')}
+                style={{ padding: '15px 28px', fontSize: '0.92rem', background: 'rgba(12,13,14,0.7)', border: '1px solid rgba(255,255,255,0.3)', backdropFilter: 'blur(8px)' }}
               >
-                <span>{t('exploreBestsellers')}</span>
+                <span>Explorer les Montres</span>
               </button>
             </div>
 
             {/* Quick Micro Proof */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginTop: '36px', color: '#E5E7EB', fontSize: '0.82rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginTop: '30px', color: '#E5E7EB', fontSize: '0.84rem' }}>
               <div style={{ display: 'flex', color: 'var(--gold-400)' }}>
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} size={15} fill="var(--gold-400)" />
                 ))}
               </div>
-              <span><strong>Sélection Exclusive</strong> • Livraison sécurisée partout au Maroc</span>
+              <span><strong>+4 800 Clients Satisfaits</strong> • Note 4.9/5 partout au Maroc 🇲🇦</span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 2. MOROCCAN TRUST BADGES STRIP */}
+      {/* 🌟 1.5 QUICK MOBILE CATEGORY STORY-PILLS (Instant browsing driver) 🌟 */}
+      <section style={{ background: '#FFFFFF', padding: '18px 0', borderBottom: '1px solid #EAE5DC', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+        <div className="container">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '18px', minWidth: 'max-content', padding: '4px 0' }}>
+            <span style={{ fontSize: '0.78rem', fontWeight: '800', color: 'var(--gold-800)', textTransform: 'uppercase', letterSpacing: '0.08em', display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <Sparkles size={14} color="var(--gold-600)" />
+              Collections :
+            </span>
+
+            {CATEGORIES.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => navigateTo('catalog', cat.id)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '7px 14px',
+                  borderRadius: '30px',
+                  border: '1.5px solid #E5E7EB',
+                  background: '#FAF8F5',
+                  cursor: 'pointer',
+                  transition: 'all 0.25s ease',
+                  flexShrink: 0
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = 'var(--gold-500)';
+                  e.currentTarget.style.background = '#FFFFFF';
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = '#E5E7EB';
+                  e.currentTarget.style.background = '#FAF8F5';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                }}
+              >
+                {cat.image ? (
+                  <img src={cat.image} alt={cat.name} style={{ width: '24px', height: '24px', borderRadius: '50%', objectFit: 'cover' }} />
+                ) : (
+                  <Sparkles size={14} color="var(--gold-600)" />
+                )}
+                <span style={{ fontSize: '0.84rem', fontWeight: '700', color: 'var(--obsidian-900)' }}>
+                  {language === 'ar' ? cat.nameAr : cat.name}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 2. MOROCCAN TRUST BADGES STRIP (Ultra-Reassuring) */}
       <section className="trust-strip">
         <div className="container">
           <div className="trust-grid">
             <div className="trust-item">
-              <div className="trust-icon-box">
+              <div className="trust-icon-box" style={{ background: '#FEF3C7', color: '#B45309' }}>
                 <ShieldCheck size={26} />
               </div>
               <div>
-                <h4 className="trust-title">{t('trustCodTitle')}</h4>
-                <p className="trust-desc">{t('trustCodDesc')}</p>
+                <h4 className="trust-title">Vérification Avant Paiement</h4>
+                <p className="trust-desc">Ouvrez votre colis et inspectez votre bijou avec le livreur avant de régler en espèces.</p>
               </div>
             </div>
 
             <div className="trust-item">
-              <div className="trust-icon-box">
+              <div className="trust-icon-box" style={{ background: '#ECFDF5', color: '#059669' }}>
                 <Truck size={26} />
               </div>
               <div>
-                <h4 className="trust-title">{t('trustDeliveryTitle')}</h4>
-                <p className="trust-desc">{t('trustDeliveryDesc')}</p>
+                <h4 className="trust-title">Livraison Gratuite 24h-48h</h4>
+                <p className="trust-desc">Expédition rapide et soignée directement à domicile dans toutes les villes du Royaume.</p>
               </div>
             </div>
 
             <div className="trust-item">
-              <div className="trust-icon-box">
+              <div className="trust-icon-box" style={{ background: '#EFF6FF', color: '#1D4ED8' }}>
                 <Sparkles size={26} />
               </div>
               <div>
-                <h4 className="trust-title">{t('trustGuaranteeTitle')}</h4>
-                <p className="trust-desc">{t('trustGuaranteeDesc')}</p>
+                <h4 className="trust-title">Garantie & Éclat Durable</h4>
+                <p className="trust-desc">Finitions haute précision avec traitement protecteur résistant à l’eau et au temps.</p>
               </div>
             </div>
 
             <div className="trust-item">
-              <div className="trust-icon-box">
+              <div className="trust-icon-box" style={{ background: '#FDF2F8', color: '#BE185D' }}>
                 <Gift size={26} />
               </div>
               <div>
-                <h4 className="trust-title">{t('trustBoxTitle')}</h4>
-                <p className="trust-desc">{t('trustBoxDesc')}</p>
+                <h4 className="trust-title">Écrin Velours Offert</h4>
+                <p className="trust-desc">Chaque création est livrée dans son luxueux coffret rigide TWISHIYAT prêt à offrir.</p>
               </div>
             </div>
           </div>
@@ -345,10 +420,10 @@ export default function HomeView() {
               </div>
 
               <h2 style={{ fontSize: '2.5rem', color: '#FFFFFF', marginBottom: '16px', lineHeight: '1.2' }}>
-                Jusqu'à -40% sur la Collection Or 18K
+                Jusqu'à -40% sur la Sélection Prestige
               </h2>
               <p style={{ color: '#9CA3AF', fontSize: '1rem', marginBottom: '24px', lineHeight: '1.6' }}>
-                {t('flashSaleSub')} Paiement en espèces à la livraison partout au Maroc et écrin velours inclus.
+                {t('flashSaleSub')} Paiement en espèces après vérification du colis partout au Maroc et écrin velours inclus.
               </p>
 
               {/* Countdown Pills */}
@@ -432,9 +507,9 @@ export default function HomeView() {
               <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: 'var(--sand-100)', color: 'var(--gold-700)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px auto', border: '1px solid var(--border-gold)' }}>
                 <Sparkles size={28} />
               </div>
-              <h3 style={{ fontSize: '1.2rem', marginBottom: '10px', color: 'var(--obsidian-900)' }}>Placage Or PVD 18K Inaltérable</h3>
+              <h3 style={{ fontSize: '1.2rem', marginBottom: '10px', color: 'var(--obsidian-900)' }}>Finitions d’Exception Inaltérables</h3>
               <p style={{ fontSize: '0.88rem', color: '#6B7280', lineHeight: '1.6' }}>
-                Notre procédé sous vide PVD garantit un éclat qui résiste à l’eau, aux parfums et à l'humidité du climat marocain.
+                Notre procédé protecteur garantit un éclat durable qui résiste à l’eau, aux parfums et à l'humidité du quotidien.
               </p>
             </div>
 
@@ -442,7 +517,7 @@ export default function HomeView() {
               <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: 'var(--sand-100)', color: 'var(--gold-700)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px auto', border: '1px solid var(--border-gold)' }}>
                 <Award size={28} />
               </div>
-              <h3 style={{ fontSize: '1.2rem', marginBottom: '10px', color: 'var(--obsidian-900)' }}>Acier Inoxydable Chirurgical 316L</h3>
+              <h3 style={{ fontSize: '1.2rem', marginBottom: '10px', color: 'var(--obsidian-900)' }}>Alliage Noble Haute Résistance</h3>
               <p style={{ fontSize: '0.88rem', color: '#6B7280', lineHeight: '1.6' }}>
                 100% hypoallergénique, sans nickel ni plomb. Ne noircit jamais et convient aux peaux les plus sensibles.
               </p>
@@ -454,7 +529,7 @@ export default function HomeView() {
               </div>
               <h3 style={{ fontSize: '1.2rem', marginBottom: '10px', color: 'var(--obsidian-900)' }}>Vérification du Colis Avant Paiement</h3>
               <p style={{ fontSize: '0.88rem', color: '#6B7280', lineHeight: '1.6' }}>
-                Achetez en toute sérénité. Vous n'avez rien à avancer en ligne : inspectez votre bijou avec le livreur chez vous.
+                Achetez en toute sérénité. Vous n'avez rien à avancer en ligne : inspectez votre bijou avec le livreur chez vous avant de payer.
               </p>
             </div>
 
@@ -462,9 +537,9 @@ export default function HomeView() {
               <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: 'var(--sand-100)', color: 'var(--gold-700)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px auto', border: '1px solid var(--border-gold)' }}>
                 <Truck size={28} />
               </div>
-              <h3 style={{ fontSize: '1.2rem', marginBottom: '10px', color: 'var(--obsidian-900)' }}>Hub Logistique à Casablanca</h3>
+              <h3 style={{ fontSize: '1.2rem', marginBottom: '10px', color: 'var(--obsidian-900)' }}>Expédition Express Partout au Maroc</h3>
               <p style={{ fontSize: '0.88rem', color: '#6B7280', lineHeight: '1.6' }}>
-                Expédition quotidienne via nos partenaires Amana et Cathedis. Suivi de colis par SMS et WhatsApp.
+                Expédition quotidienne rapide et soignée. Suivi de votre colis par SMS et WhatsApp dans toutes les villes du Royaume.
               </p>
             </div>
           </div>

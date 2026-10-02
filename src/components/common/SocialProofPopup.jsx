@@ -9,7 +9,7 @@ export default function SocialProofPopup() {
   const [notification, setNotification] = useState(null);
 
   const purchasers = [
-    { name: 'Othmane', city: 'Casablanca (Maarif)', productIndex: 0, timeAgo: 'il y a 3 minutes' },
+    { name: 'Youssef', city: 'Casablanca (Maarif)', productIndex: 0, timeAgo: 'il y a 3 minutes' },
     { name: 'Salma', city: 'Rabat (Agdal)', productIndex: 2, timeAgo: 'il y a 8 minutes' },
     { name: 'Mehdi', city: 'Marrakech (Guéliz)', productIndex: 7, timeAgo: 'il y a 14 minutes' },
     { name: 'Kenza', city: 'Tanger (Malabata)', productIndex: 4, timeAgo: 'il y a 22 minutes' },

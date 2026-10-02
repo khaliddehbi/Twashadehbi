@@ -85,12 +85,12 @@ export function StoreProvider({ children }) {
       description: productData.description || 'Accessoire d’exception issu de la collection TWISHIYAT. Conçu avec des matériaux nobles sélectionnés pour une durabilité maximale au quotidien. Livré dans son écrin de protection.',
       descriptionAr: productData.descriptionAr || '',
       specs: productData.specs || {
-        'Matériau': 'Acier Inoxydable 316L & Finition Haute Précision',
+        'Matériau': 'Alliage Haute Résistance & Finition Dorée Haute Précision',
         'Étanchéité': 'Water Resistant (Résiste à l’eau)',
         'Garantie': 'Garantie 1 An incluse'
       },
       variants: (productData.variants && productData.variants.length > 0) ? productData.variants : [
-        { id: 'v1', name: 'Finition Or 18K', colorHex: '#D4AF37' }
+        { id: 'v1', name: 'Doré Brillant', colorHex: '#D4AF37' }
       ],
       sizes: (productData.sizes && productData.sizes.length > 0) ? productData.sizes : ['Taille Unique Ajustable'],
       rating: 5.0,

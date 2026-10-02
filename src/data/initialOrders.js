@@ -13,8 +13,8 @@ export const INITIAL_ORDERS = [
     items: [
       {
         productId: 'TD-W01',
-        name: 'Montre Royale Saphir Or 18K',
-        variant: 'Or Jaune & Vert Émeraude',
+        name: 'Montre Royale Saphir Dorée',
+        variant: 'Finition Dorée & Vert Émeraude',
         price: 499,
         quantity: 1,
         image: 'watch_gold.jpg'
@@ -36,7 +36,7 @@ export const INITIAL_ORDERS = [
     timeline: [
       { status: 'received', title: 'Commande Reçue', date: '19 Sept 14:30', completed: true },
       { status: 'confirmed', title: 'Confirmée par WhatsApp', date: '19 Sept 14:45', completed: true },
-      { status: 'processing', title: 'Préparée en Hub Casablanca', date: '19 Sept 15:30', completed: true },
+      { status: 'processing', title: 'Préparation et contrôle qualité', date: '19 Sept 15:30', completed: true },
       { status: 'shipped', title: 'Prise en charge livreur', date: '19 Sept 16:15', completed: true },
       { status: 'out_for_delivery', title: 'Livreur en route vers votre adresse', date: '19 Sept 17:10', current: true },
       { status: 'delivered', title: 'Livraison & Encaissement espèces', date: 'Prévue avant 19h30', completed: false }
@@ -56,8 +56,8 @@ export const INITIAL_ORDERS = [
     items: [
       {
         productId: 'TD-B01',
-        name: 'Bracelet Jonc Zahra Ciselé Or 18K',
-        variant: 'Or Jaune 18K / Taille M',
+        name: 'Bracelet Jonc Zahra Ciselé Doré',
+        variant: 'Doré Brillant / Taille M',
         price: 279,
         quantity: 1,
         image: 'bracelet_cuff.jpg'

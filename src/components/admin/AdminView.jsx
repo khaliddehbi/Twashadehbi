@@ -108,7 +108,7 @@ export default function AdminView() {
     shortDescriptionAr: '',
     description: '',
     descriptionAr: '',
-    material: 'Acier Inoxydable 316L & Placage Or 18K PVD',
+    material: 'Alliage Haute Résistance & Finition Dorée Haute Précision',
     waterResistance: '5 ATM / 50 Mètres (Résiste aux ablutions et éclaboussures)',
     glass: 'Saphir Inrayable traité antireflet',
     movement: 'Quartz Haute Précision Chronographe',
@@ -154,7 +154,7 @@ export default function AdminView() {
       shortDescriptionAr: prod.shortDescriptionAr || '',
       description: prod.description || '',
       descriptionAr: prod.descriptionAr || '',
-      material: prod.specs?.['Matériau'] || 'Acier Inoxydable 316L & Placage Or 18K PVD',
+      material: prod.specs?.['Matériau'] || 'Alliage Haute Résistance & Finition Dorée Haute Précision',
       waterResistance: prod.specs?.['Étanchéité'] || '5 ATM / 50 Mètres (Résiste aux ablutions et éclaboussures)',
       glass: prod.specs?.['Verre'] || 'Saphir Inrayable traité antireflet',
       movement: prod.specs?.['Mouvement'] || 'Quartz Haute Précision Chronographe',
@@ -230,7 +230,7 @@ export default function AdminView() {
       description: productFormData.description || `Chef-d’œuvre d’accessoire inspiré du raffinement marocain. Livré dans son écrin de luxe TWISHIYAT avec certificat d’authenticité et garantie 1 an.`,
       descriptionAr: productFormData.descriptionAr || '',
       specs: {
-        'Matériau': productFormData.material || 'Acier Inoxydable 316L & Finition Or 18K',
+        'Matériau': productFormData.material || 'Alliage Haute Résistance & Finition Dorée Prestige',
         'Étanchéité': productFormData.waterResistance || 'Water Resistant (Résiste à l’eau)',
         'Verre': productFormData.glass || 'Verre Saphir Inrayable',
         'Mouvement': productFormData.movement || 'Quartz Haute Précision',
@@ -1101,7 +1101,7 @@ export default function AdminView() {
                         required
                         value={productFormData.name}
                         onChange={(e) => setProductFormData({ ...productFormData, name: e.target.value })}
-                        placeholder="ex: Montre Royale Chronographe Saphir Or 18K"
+                        placeholder="ex: Montre Royale Chronographe Saphir Dorée"
                         style={{ width: '100%', padding: '11px 14px', borderRadius: '8px', border: '1px solid #D1D5DB', fontSize: '0.92rem' }}
                       />
                     </div>
@@ -1458,7 +1458,7 @@ export default function AdminView() {
                           type="text"
                           value={productFormData.material}
                           onChange={(e) => setProductFormData({ ...productFormData, material: e.target.value })}
-                          placeholder="ex: Acier Inoxydable 316L & Placage Or 18K PVD"
+                          placeholder="ex: Alliage Haute Résistance & Finition Dorée Haute Précision"
                           style={{ width: '100%', padding: '10px 12px', borderRadius: '6px', border: '1px solid #D1D5DB', fontSize: '0.85rem' }}
                         />
                       </div>
@@ -1542,7 +1542,7 @@ export default function AdminView() {
                         type="text"
                         value={productFormData.shortDescription}
                         onChange={(e) => setProductFormData({ ...productFormData, shortDescription: e.target.value })}
-                        placeholder="ex: Chronographe d’exception avec cadran vert soleillé et finitions dorées 18k."
+                        placeholder="ex: Chronographe d’exception avec cadran vert soleillé et finitions dorées haute précision."
                         style={{ width: '100%', padding: '10px 12px', borderRadius: '6px', border: '1px solid #D1D5DB', fontSize: '0.88rem' }}
                       />
                     </div>

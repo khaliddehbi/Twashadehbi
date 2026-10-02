@@ -8,10 +8,10 @@ import ringEmerald from '../assets/images/ring_emerald.jpg';
 import giftBox from '../assets/images/gift_box.jpg';
 
 export const IMAGE_PRESETS = [
-  { id: 'watch-gold', label: 'Montre Or 18K Cadran Vert', image: watchGold },
+  { id: 'watch-gold', label: 'Montre Dorée Cadran Vert', image: watchGold },
   { id: 'watch-leather', label: 'Montre Cuir Prestige Noir', image: watchLeather },
   { id: 'bracelet-cuff', label: 'Bracelet Jonc Doré Ciselé', image: braceletCuff },
-  { id: 'bracelet-cuban', label: 'Gourmette Cubaine Or 18K', image: braceletCuban },
+  { id: 'bracelet-cuban', label: 'Gourmette Cubaine Dorée', image: braceletCuban },
   { id: 'jewelry-women', label: 'Accessoire Femme Perles & Or', image: jewelryWomen },
   { id: 'ring-onyx', label: 'Chevalière Royale Onyx Noir', image: ringOnyx },
   { id: 'ring-emerald', label: 'Bague Émeraude Royale', image: ringEmerald },
@@ -31,10 +31,10 @@ export const CATEGORIES = [
 export const PRODUCTS = [
   {
     id: 'TD-W01',
-    name: 'Montre Royale Saphir Or 18K',
-    nameAr: 'ساعة ملكية ذهبية ياقوتية 18 قيراط',
-    nameEn: 'Royal Sapphire Chronograph 18K Gold',
-    slug: 'montre-royale-saphir-or-18k',
+    name: 'Montre Royale Saphir Dorée',
+    nameAr: 'ساعة ملكية ذهبية ياقوتية فاخرة',
+    nameEn: 'Royal Sapphire Chronograph Gold',
+    slug: 'montre-royale-saphir-doree',
     category: 'watches',
     gender: 'men',
     price: 499,
@@ -48,22 +48,22 @@ export const PRODUCTS = [
     isFlashSale: true,
     image: watchGold,
     gallery: [watchGold, watchLeather, giftBox],
-    shortDescription: 'Chronographe d’exception avec cadran vert émeraude soleillé et finitions en or 18k.',
-    shortDescriptionAr: 'كرونوغراف استثنائي بمينا أخضر زمردي ولمسات ذهبية 18 قيراط مقاومة للماء.',
-    description: 'Chef-d’œuvre de l’horlogerie moderne inspiré du raffinement marocain. Dotée d’un boîtier en acier inoxydable 316L avec placage PVD or jaune 18K inaltérable, d’un cadran vert émeraude soleillé emblématique et d’un verre saphir inrayable. Livrée dans son écrin de luxe TWISHIYAT avec certificat d’authenticité et garantie 1 an.',
-    descriptionAr: 'تحفة فنية في صناعة الساعات الراقية مستوحاة من الأناقة المغربية العصرية. هيكل فولاذي 316L مطلي بطبقة الذهب عيار 18 المقاوم لتغير اللون مع زجاج الياقوت المضاد للخدش.',
+    shortDescription: 'Chronographe d’exception avec cadran vert émeraude soleillé et finitions dorées haute précision.',
+    shortDescriptionAr: 'كرونوغراف استثنائي بمينا أخضر زمردي ولمسات ذهبية راقية مقاومة للماء.',
+    description: 'Chef-d’œuvre de l’horlogerie moderne inspiré du raffinement marocain. Dotée d’un boîtier haute résistance avec dorure protectrice inaltérable, d’un cadran vert émeraude soleillé emblématique et d’un verre saphir inrayable. Livrée dans son écrin de luxe TWISHIYAT avec certificat d’authenticité et garantie 1 an.',
+    descriptionAr: 'تحفة فنية في صناعة الساعات الراقية مستوحاة من الأناقة المغربية العصرية. هيكل متين فائق الجودة مطلي بطبقة ذهبية متألقة مقاومة لتغير اللون مع زجاج الياقوت المضاد للخدش.',
     specs: {
-      'Matériau': 'Acier Inoxydable 316L & Placage Or 18K PVD',
+      'Matériau': 'Alliage Haute Résistance & Finition Dorée Haute Précision',
       'Cadran': 'Vert Émeraude Soleillé avec guichet date',
       'Mouvement': 'Quartz Haute Précision Chronographe',
       'Verre': 'Saphir Inrayable traité antireflet',
       'Étanchéité': '5 ATM / 50 Mètres (Résiste à l’eau)',
       'Diamètre': '41 mm',
-      'Garantie': 'Garantie Or 1 An incluse'
+      'Garantie': 'Garantie 1 An incluse'
     },
     variants: [
-      { id: 'gold-green', name: 'Or Jaune & Vert Émeraude', nameAr: 'ذهب أصفر ومينا أخضر', colorHex: '#D4AF37' },
-      { id: 'gold-black', name: 'Or Jaune & Noir Intense', nameAr: 'ذهب أصفر ومينا أسود', colorHex: '#1A1A1A' }
+      { id: 'gold-green', name: 'Finition Dorée & Vert Émeraude', nameAr: 'ذهب أصفر ومينا أخضر', colorHex: '#D4AF37' },
+      { id: 'gold-black', name: 'Finition Dorée & Noir Intense', nameAr: 'ذهب أصفر ومينا أسود', colorHex: '#1A1A1A' }
     ],
     sizes: ['Taille Unique Ajustable (Outil de réglage offert)'],
     badge: 'Best-Seller'
@@ -87,12 +87,12 @@ export const PRODUCTS = [
     isFlashSale: false,
     image: watchLeather,
     gallery: [watchLeather, watchGold],
-    shortDescription: 'Boîtier extra-plat finition or 18k et bracelet en cuir véritable gaufré crocodile.',
+    shortDescription: 'Boîtier extra-plat finition dorée et bracelet en cuir véritable gaufré crocodile.',
     shortDescriptionAr: 'ساعة كلاسيكية أنيقة فائقة النحافة بإطار ذهبي وحزام جلد طبيعي فاخر.',
     description: 'La sobriété à son apogée. Boîtier ultra-plat de 7 mm en or poli, cadran blanc ivoire épuré et bracelet en cuir marocain véritable travaillé selon les traditions d’excellence.',
     descriptionAr: 'الأناقة الكلاسيكية الخالصة. إطار فائق النحافة بسماكة 7 مم مطلي ببريق الذهب مع حزام جلدي فاخر.',
     specs: {
-      'Matériau': 'Boîtier Acier Inox 316L plaqué Or 18K',
+      'Matériau': 'Boîtier Haute Résistance Finition Dorée Prestige',
       'Bracelet': 'Cuir Véritable surpiqué marron havane',
       'Épaisseur': '7 mm (Profil ultra-plat)',
       'Mouvement': 'Miyota Quartz Japonais Calibre Slim',
@@ -108,10 +108,10 @@ export const PRODUCTS = [
   },
   {
     id: 'TD-B01',
-    name: 'Bracelet Jonc Zahra Ciselé Or 18K',
-    nameAr: 'سوار زهرة المحفور بالذهب الخالص 18 قيراط',
-    nameEn: 'Zahra Engraved Cuff Bangle 18K Gold',
-    slug: 'bracelet-jonc-zahra-cisele-or-18k',
+    name: 'Bracelet Jonc Zahra Ciselé Doré',
+    nameAr: 'سوار زهرة المحفور ببريق الذهب الخالص',
+    nameEn: 'Zahra Engraved Cuff Bangle Gold',
+    slug: 'bracelet-jonc-zahra-cisele-dore',
     category: 'bracelets',
     gender: 'women',
     price: 279,
@@ -130,14 +130,14 @@ export const PRODUCTS = [
     description: 'Une pièce maîtresse signée TWISHIYAT. Le jonc Zahra fusionne les lignes de l’architecture arabo-andalouse avec la pureté du bijou moderne. Résistant à l’eau, aux parfums et à la transpiration.',
     descriptionAr: 'قطعة فنية تجسد الزخرفة المعمارية المغربية بروح معاصرة. مقاومة للماء والعطور ولا يتغير لونها أبدًا.',
     specs: {
-      'Matériau': 'Acier Titane Haute Densité + Triple placage Or 18K',
+      'Matériau': 'Alliage Haute Densité + Triple dorure protectrice',
       'Finition': 'Ciselure Haute Précision laser',
       'Fermoir': 'Ouverture facile à ressort invisible',
       'Hypoallergénique': '100% sans nickel ni plomb',
       'Poids': '34 g'
     },
     variants: [
-      { id: 'gold-18k', name: 'Or Jaune 18K', nameAr: 'ذهب أصفر 18 قيراط', colorHex: '#D4AF37' },
+      { id: 'gold-finish', name: 'Doré Brillant', nameAr: 'ذهب أصفر لامع', colorHex: '#D4AF37' },
       { id: 'rose-gold', name: 'Or Rose Impérial', nameAr: 'ذهب وردي', colorHex: '#E0A899' },
       { id: 'silver-rhodium', name: 'Argent Rhodié', nameAr: 'فضة بلاتين', colorHex: '#D1D5DB' }
     ],
@@ -170,12 +170,12 @@ export const PRODUCTS = [
     specs: {
       'Largeur': '12 mm',
       'Longueur': '20 cm / 22 cm',
-      'Matériau': 'Acier Inoxydable qualité chirurgicale 316L',
-      'Placage': 'Or PVD 18K sous vide (Tenue 2+ ans)',
+      'Matériau': 'Alliage Haute Résistance hypoallergénique',
+      'Finition': 'Dorure protectrice sous vide (Éclat durable 2+ ans)',
       'Poids': '68 g'
     },
     variants: [
-      { id: 'gold-cuban', name: 'Or 18K Brillant', nameAr: 'ذهب عيار 18 لامع', colorHex: '#D4AF37' }
+      { id: 'gold-cuban', name: 'Doré Brillant', nameAr: 'ذهب لامع', colorHex: '#D4AF37' }
     ],
     sizes: ['20 cm (Standard)', '22 cm (Confort)'],
     badge: 'Tendance'
@@ -199,13 +199,13 @@ export const PRODUCTS = [
     isFlashSale: true,
     image: jewelryWomen,
     gallery: [jewelryWomen, braceletCuff],
-    shortDescription: '5 motifs trèfle porte-bonheur en nacre blanche naturelle et monture perlée or 18k.',
+    shortDescription: '5 motifs trèfle porte-bonheur en nacre blanche naturelle et monture perlée dorée.',
     shortDescriptionAr: 'سوار أيقوني بخمس حبات نادرة من عرق اللؤلؤ الطبيعي محاطة بحبيبات الذهب.',
     description: 'Icône de la haute joaillerie. Les motifs quadrilobés en nacre naturelle scintillent délicatement à la lumière. Chaîne ajustable avec fermoir mousqueton gravé.',
     descriptionAr: 'رمز الحظ والأناقة الرفيعة. قطع عرق اللؤلؤ الطبيعي ذات الانعكاسات الحريرية على سلسلة ذهبية ناعمة.',
     specs: {
       'Pierres': 'Nacre Blanche Naturelle irisée',
-      'Monture': 'Plaqué Or 18 Carats 3 microns',
+      'Monture': 'Finition Dorée Haute Précision 3 microns',
       'Longueur': '18 cm ajustable (chaînette + 3 cm)',
       'Hypoallergénique': 'Oui, testé dermatologiquement'
     },
@@ -235,15 +235,15 @@ export const PRODUCTS = [
     isFlashSale: false,
     image: ringOnyx,
     gallery: [ringOnyx, braceletCuban],
-    shortDescription: 'Or brossé satiné 18k orné d’un onyx noir naturel taillé sur mesure.',
+    shortDescription: 'Finition dorée brossée satinée ornée d’un onyx noir naturel taillé sur mesure.',
     shortDescriptionAr: 'خاتم رجالي فخم من الذهب المطفي بنقش أطلسي وحجر الأونيكس الطبيعي المصقول.',
-    description: 'Inspirée de la force et de la majesté des montagnes de l’Atlas marocain. Le contraste saisissant entre l’or jaune brossé et la profondeur de l’onyx noir confère un charisme incomparable.',
-    descriptionAr: 'مستوحى من شموخ جبال الأطلس المغربية. التباين الساحر بين الذهب الأصفر المطفي وعمق العقيق الأسود يمنحك هيبة لا تضاهى.',
+    description: 'Inspirée de la force et de la majesté des montagnes de l’Atlas marocain. Le contraste saisissant entre la dorure brossée et la profondeur de l’onyx noir confère un charisme incomparable.',
+    descriptionAr: 'مستوحى من شموخ جبال الأطلس المغربية. التباين الساحر بين البريق الذهبي المطفي وعمق العقيق الأسود يمنحك هيبة لا تضاهى.',
     specs: {
-      'Matériau': 'Acier 316L brossé + Placage Or 18K 5 couches',
+      'Matériau': 'Alliage brossé + Dorure protectrice 5 couches',
       'Pierre': 'Véritable Onyx Noir naturel poli',
       'Bordure': 'Gravure tressée arabo-berbère',
-      'Gravure intérieure': 'TWISHIYAT 18K'
+      'Gravure intérieure': 'TWISHIYAT LUXE'
     },
     variants: [
       { id: 'gold-onyx', name: 'Or Brossé & Onyx Noir', nameAr: 'ذهب مطفي وعقيق أسود', colorHex: '#D4AF37' }
@@ -255,7 +255,7 @@ export const PRODUCTS = [
     id: 'TD-R02',
     name: 'Bague Solitaire Émeraude Impériale',
     nameAr: 'خاتم زمردي إمبراطوري مرصع بأحجار متلألئة',
-    nameEn: 'Imperial Emerald Solitaire Ring 18K Gold',
+    nameEn: 'Imperial Emerald Solitaire Ring Gold',
     slug: 'bague-solitaire-emeraude-imperiale',
     category: 'rings',
     gender: 'women',
@@ -272,12 +272,12 @@ export const PRODUCTS = [
     gallery: [ringEmerald, jewelryWomen],
     shortDescription: 'Pierre centrale taille émeraude vert profond flanquée de diamants baguettes scintillants.',
     shortDescriptionAr: 'خاتم سهرة ساحر بحجر زمردي مركزي مستطيل وأحجار جانبية براقة على طوق مذهب.',
-    description: 'Une splendeur digne des plus grands palais. La nuance vert émeraude intense rappelle les célèbres jardins Majorelle de Marrakech. Monture ouvragée en or 18k avec micropavage éclatant.',
+    description: 'Une splendeur digne des plus grands palais. La nuance vert émeraude intense rappelle les célèbres jardins Majorelle de Marrakech. Monture ouvragée dorée avec micropavage éclatant.',
     descriptionAr: 'بريق ملكي يستحضر سحر حدائق ماجوريل بمراكش. حجر زمردي مشع محاط بصفوة من الأحجار اللامعة.',
     specs: {
       'Pierre Centrale': 'Cristal Saphir Vert Émeraude taille émeraude (8x10 mm)',
       'Pierres Latérales': 'Zircons cubiques AAA taille baguette et brillants',
-      'Métal': 'Argent 925 doré à l’Or fin 18K (Vermeil)',
+      'Métal': 'Argent 925 doré à l’Or fin (Vermeil de prestige)',
       'Poinçon': 'S925 & TW'
     },
     variants: [
@@ -307,10 +307,10 @@ export const PRODUCTS = [
     gallery: [giftBox, watchGold, braceletCuff],
     shortDescription: 'L’ensemble signature TWISHIYAT dans son luxueux écrin en velours noir et or.',
     shortDescriptionAr: 'طقم الهدايا الأيقوني الكامل في علبة مخملية سوداء فاخرة بختم ذهبي.',
-    description: 'Le cadeau par excellence pour célébrer un anniversaire, une réussite ou un mariage marocain. Comprend la Montre Royale Saphir or ainsi que le Jonc Zahra assorti, protégés dans un coffret rigide en velours noir stamped or avec ruban satiné.',
+    description: 'Le cadeau par excellence pour célébrer un anniversaire, une réussite ou un mariage marocain. Comprend la Montre Royale Saphir ainsi que le Jonc Zahra assorti, protégés dans un coffret rigide en velours noir stamped or avec ruban satiné.',
     descriptionAr: 'الهدية المثالية لأغلى المناسبات والأعياد. يجمع بين الساعة الياقوتية الفخمة والسوار الذهبي المحفور داخل علبة مخملية ملكية.',
     specs: {
-      'Contenu': '1x Montre Royale + 1x Jonc Ciselé Or 18K + Outil de réglage',
+      'Contenu': '1x Montre Royale + 1x Jonc Ciselé Doré + Outil de réglage',
       'Packaging': 'Écrin rigide velours noir doublé satin or avec sceau armoiries',
       'Accessoires': 'Certificat de garantie 1 an + Sac cadeau TWISHIYAT',
       'Idéal': 'Cadeau de mariage, Fêtes, Anniversaires'

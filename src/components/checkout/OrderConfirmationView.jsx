@@ -40,7 +40,7 @@ export default function OrderConfirmationView() {
       address: 'Adresse de livraison'
     },
     items: [
-      { name: 'Montre Royale Saphir Or 18K', price: 499, quantity: 1 }
+      { name: 'Montre Royale Saphir Dorée', price: 499, quantity: 1 }
     ],
     total: 499,
     carrier: 'Cathedis Casablanca'
