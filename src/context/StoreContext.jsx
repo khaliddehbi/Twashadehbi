@@ -255,13 +255,22 @@ export function StoreProvider({ children }) {
   useEffect(() => {
     const handleHash = () => {
       const rawHash = window.location.hash.replace(/^#\/?/, '');
-      const [route, queryString] = rawHash.split('?');
+      const [routePart, queryString] = rawHash.split('?');
       const params = new URLSearchParams(queryString || window.location.search);
 
-      // Deep Linking for Products (Ads from Instagram/Facebook)
-      const productId = params.get('product') || params.get('id');
-      if (productId) {
-        const found = products.find(p => p.id === productId || p.slug === productId);
+      // 1. Check path segments: e.g. "produit/montre-chrono-style" or "product/TD-W03"
+      const segments = routePart.split('/').filter(Boolean);
+      const firstSegment = segments[0] || '';
+      const secondSegment = segments[1] || '';
+
+      if (['produit', 'product', 'watches', 'bracelets', 'rings', 'sets'].includes(firstSegment) && secondSegment) {
+        const found = products.find(
+          (p) =>
+            p.slug === secondSegment ||
+            p.id === secondSegment ||
+            (p.slug && p.slug.toLowerCase() === secondSegment.toLowerCase()) ||
+            (p.id && p.id.toLowerCase() === secondSegment.toLowerCase())
+        );
         if (found) {
           setSelectedProductId(found.id);
           setCurrentView('product');
@@ -269,18 +278,73 @@ export function StoreProvider({ children }) {
         }
       }
 
-      if (['espace-pro', 'admin'].includes(route)) {
+      // 2. Query param deep linking: ?product=... or ?id=...
+      const queryProd = params.get('product') || params.get('id') || params.get('p');
+      if (queryProd) {
+        const found = products.find(
+          (p) =>
+            p.id === queryProd ||
+            p.slug === queryProd ||
+            (p.slug && p.slug.toLowerCase() === queryProd.toLowerCase()) ||
+            (p.id && p.id.toLowerCase() === queryProd.toLowerCase())
+        );
+        if (found) {
+          setSelectedProductId(found.id);
+          setCurrentView('product');
+          return;
+        }
+      }
+
+      // 3. Category & Collections deep linking
+      if (['categorie', 'category', 'collection'].includes(firstSegment) && secondSegment) {
+        setCategoryFilter(secondSegment);
+        setCurrentView('catalog');
+        return;
+      }
+      if (['boutique', 'catalog'].includes(firstSegment)) {
+        setCurrentView('catalog');
+        return;
+      }
+
+      // 4. Tracking
+      if (['suivi', 'tracking'].includes(firstSegment)) {
+        if (secondSegment) setSelectedOrderId(secondSegment);
+        setCurrentView('tracking');
+        return;
+      }
+
+      // 5. Account / Client
+      if (['mon-compte', 'account'].includes(firstSegment)) {
+        setCurrentView('account');
+        return;
+      }
+
+      // 6. Admin / Espace Pro
+      if (['espace-pro', 'admin'].includes(firstSegment) || ['espace-pro', 'admin'].includes(routePart)) {
         setCurrentView('admin');
-      } else if (['catalog', 'tracking', 'account', 'checkout', 'product'].includes(route)) {
-        setCurrentView(route);
-      } else if (!rawHash) {
+        return;
+      }
+
+      // 7. Checkout & Confirmation
+      if (['commander', 'checkout'].includes(firstSegment)) {
+        setCurrentView('checkout');
+        return;
+      }
+      if (['confirmation'].includes(firstSegment)) {
+        setCurrentView('confirmation');
+        return;
+      }
+
+      // Fallback to home if root or empty
+      if (!rawHash) {
         setCurrentView('home');
       }
     };
+
     handleHash();
     window.addEventListener('hashchange', handleHash);
     return () => window.removeEventListener('hashchange', handleHash);
-  }, []);
+  }, [products]);
 
   const t = (key) => {
     return TRANSLATIONS[language]?.[key] || TRANSLATIONS['fr']?.[key] || key;
@@ -307,23 +371,71 @@ export function StoreProvider({ children }) {
 
   const navigateTo = (view, payload = null) => {
     if (view === 'product' && payload) {
-      setSelectedProductId(payload);
-      const prod = products.find(p => p.id === payload);
-      trackPixel('ViewContent', { id: payload, name: prod?.name, price: prod?.price });
-    } else if (view === 'tracking' && payload) {
-      setSelectedOrderId(payload);
-    } else if (view === 'catalog') {
+      const prod = products.find((p) => p.id === payload || p.slug === payload);
+      const prodId = prod ? prod.id : payload;
+      const prodSlug = prod?.slug || prodId;
+      setSelectedProductId(prodId);
+      trackPixel('ViewContent', { id: prodId, name: prod?.name, price: prod?.price });
+      setCurrentView('product');
+      window.location.hash = `#/produit/${prodSlug}`;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    if (view === 'tracking') {
+      if (payload) setSelectedOrderId(payload);
+      setCurrentView('tracking');
+      window.location.hash = payload ? `#/suivi/${payload}` : '#/suivi';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    if (view === 'catalog') {
       if (payload) setCategoryFilter(payload);
       trackPixel('ViewCategory', { category: payload || 'all' });
+      setCurrentView('catalog');
+      window.location.hash = payload && payload !== 'all' ? `#/collection/${payload}` : '#/boutique';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
     }
-    setCurrentView(view);
-    if (view === 'home') {
-      history.pushState(null, '', window.location.pathname);
-    } else if (view === 'admin') {
+
+    if (view === 'admin') {
+      setCurrentView('admin');
       window.location.hash = '#/espace-pro';
-    } else {
-      window.location.hash = `#${view}`;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
     }
+
+    if (view === 'account') {
+      setCurrentView('account');
+      window.location.hash = '#/mon-compte';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    if (view === 'checkout') {
+      setCurrentView('checkout');
+      window.location.hash = '#/commander';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    if (view === 'confirmation') {
+      setCurrentView('confirmation');
+      window.location.hash = '#/confirmation';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    if (view === 'home') {
+      setCurrentView('home');
+      history.pushState(null, '', window.location.pathname);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    setCurrentView(view);
+    window.location.hash = `#${view}`;
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 

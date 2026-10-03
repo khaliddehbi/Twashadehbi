@@ -21,7 +21,7 @@ export default function SEOHead() {
         const prodName = language === 'ar' ? prod.nameAr : prod.name;
         title = `${prodName} (${prod.price} DH) | TWISHIYAT™ Maroc`;
         description = `${prod.shortDescription || prod.name} — Prix : ${prod.price} DH. Livraison express gratuite partout au Maroc. Paiement en espèces après vérification de votre colis.`;
-        url = `https://www.twishiyat.ma/?view=product&id=${prod.id}`;
+        url = `https://www.twishiyat.ma/#/produit/${prod.slug || prod.id}`;
 
         // Schema.org Product Rich Snippet
         productSchema = {
@@ -54,15 +54,18 @@ export default function SEOHead() {
             'reviewCount': prod.reviewsCount || '45'
           }
         };
+
+        let ogImg = document.querySelector('meta[property="og:image"]');
+        if (ogImg && prod.image) ogImg.setAttribute('content', prod.image);
       }
     } else if (currentView === 'tracking') {
       title = 'Suivi de Colis en Temps Réel | TWISHIYAT Maroc';
       description = 'Suivez l’acheminement de votre commande TWISHIYAT en temps réel par SMS et WhatsApp partout au Maroc.';
-      url = 'https://www.twishiyat.ma/?view=tracking';
+      url = 'https://www.twishiyat.ma/#/suivi';
     } else if (currentView === 'account') {
       title = 'Mon Espace Client | TWISHIYAT Maroc';
       description = 'Consultez l’historique de vos commandes, vos favoris et vos informations de livraison sécurisées chez TWISHIYAT.';
-      url = 'https://www.twishiyat.ma/?view=account';
+      url = 'https://www.twishiyat.ma/#/mon-compte';
     }
 
     // Update Document Title

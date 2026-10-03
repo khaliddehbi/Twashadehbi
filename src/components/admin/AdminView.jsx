@@ -1349,6 +1349,31 @@ export default function AdminView() {
                                   </button>
 
                                   <button
+                                    onClick={() => {
+                                      const url = `${window.location.origin}/#/produit/${p.slug || p.id}`;
+                                      if (navigator.clipboard) {
+                                        navigator.clipboard.writeText(url);
+                                        addToast(`Lien copié : ${url}`);
+                                      }
+                                    }}
+                                    style={{
+                                      padding: '7px 10px',
+                                      borderRadius: '8px',
+                                      background: '#FFFFFF',
+                                      border: '1px solid #CBD5E1',
+                                      color: '#475569',
+                                      fontSize: '0.8rem',
+                                      display: 'inline-flex',
+                                      alignItems: 'center',
+                                      gap: '4px',
+                                      cursor: 'pointer'
+                                    }}
+                                    title="Copier l'URL directe de ce produit"
+                                  >
+                                    <ExternalLink size={13} />
+                                  </button>
+
+                                  <button
                                     onClick={() => handleDuplicateProduct(p)}
                                     style={{
                                       padding: '7px 10px',

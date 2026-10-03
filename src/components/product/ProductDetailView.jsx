@@ -20,7 +20,8 @@ import {
   Sparkles,
   ArrowRight,
   Flame,
-  UserCheck
+  UserCheck,
+  Share2
 } from 'lucide-react';
 
 export default function ProductDetailView() {
@@ -220,13 +221,31 @@ export default function ProductDetailView() {
                 </span>
               )}
 
-              <button
-                className={`product-wishlist-btn ${inWish ? 'active' : ''}`}
-                onClick={() => toggleWishlist(product.id)}
-                style={{ top: '16px', right: '16px' }}
-              >
-                <Heart size={20} fill={inWish ? '#DC2626' : 'none'} />
-              </button>
+              <div style={{ position: 'absolute', top: '16px', right: '16px', display: 'flex', gap: '8px', zIndex: 10 }}>
+                <button
+                  className="product-wishlist-btn"
+                  onClick={() => {
+                    const fullUrl = `${window.location.origin}/#/produit/${product.slug || product.id}`;
+                    if (navigator.clipboard) {
+                      navigator.clipboard.writeText(fullUrl);
+                      addToast('Lien direct du produit copié ! Prêt à être partagé.');
+                    }
+                  }}
+                  style={{ position: 'static' }}
+                  title="Copier le lien de ce produit"
+                >
+                  <Share2 size={18} />
+                </button>
+
+                <button
+                  className={`product-wishlist-btn ${inWish ? 'active' : ''}`}
+                  onClick={() => toggleWishlist(product.id)}
+                  style={{ position: 'static' }}
+                  title="Ajouter aux favoris"
+                >
+                  <Heart size={20} fill={inWish ? '#DC2626' : 'none'} />
+                </button>
+              </div>
             </div>
 
             {/* Thumbnail Row */}
