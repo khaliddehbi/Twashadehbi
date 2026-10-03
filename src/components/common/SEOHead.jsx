@@ -6,14 +6,14 @@ export default function SEOHead() {
   const { currentView, selectedProductId, products, language } = useStore();
 
   useEffect(() => {
-    let title = 'TWISHIYAT™ | Montres & Bijoux d’Exception au Maroc — Paiement à la Livraison';
-    let description = 'Boutique officielle TWISHIYAT au Maroc : Montres de précision, bracelets & bagues à l’éclat inaltérable. Livraison Express Gratuite 24h/48h & Paiement en espèces après vérification du colis.';
+    let title = 'TWISHIYAT™ | Montres, Bijoux & Accessoires au Maroc — #twishiyat';
+    let description = 'Boutique officielle TWISHIYAT au Maroc : Montres de précision, bijoux & accessoires d’exception. Idées cadeaux & anniversaires (#twishiyat #atawish). Livraison Express Gratuite 24h/48h & Paiement COD.';
     let url = 'https://www.twishiyat.ma/';
     let productSchema = null;
 
     if (currentView === 'catalog') {
-      title = 'Boutique & Collections | TWISHIYAT Maroc — Montres, Bracelets & Bagues';
-      description = 'Explorez les créations TWISHIYAT : montres élégantes, joncs ciselés, chevalières et coffrets cadeaux avec livraison gratuite partout au Maroc.';
+      title = 'Boutique & Collections | TWISHIYAT Maroc — Montres, Bijoux & Cadeaux';
+      description = 'Explorez les créations TWISHIYAT : montres, bijoux, accessoires, joncs ciselés et coffrets cadeaux pour anniversaire avec livraison gratuite partout au Maroc.';
       url = 'https://www.twishiyat.ma/?view=catalog';
     } else if (currentView === 'product' && selectedProductId) {
       const prod = products.find((p) => p.id === selectedProductId) || products[0];

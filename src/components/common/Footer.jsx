@@ -106,7 +106,7 @@ export default function Footer() {
               <a
                 href="https://www.instagram.com/twishiyat_/"
                 target="_blank"
-                rel="noreferrer"
+                rel="me noopener noreferrer"
                 title="Page Instagram Officielle @twishiyat_"
                 style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(255, 255, 255, 0.06)', border: '1px solid rgba(212, 175, 55, 0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--gold-400)', transition: 'all 0.3s ease' }}
                 onMouseOver={(e) => { e.currentTarget.style.background = 'linear-gradient(45deg, #f09433, #dc2743, #bc1888)'; e.currentTarget.style.color = '#FFFFFF'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
@@ -117,7 +117,7 @@ export default function Footer() {
               <a
                 href="https://www.facebook.com/profile.php?id=61594978681127"
                 target="_blank"
-                rel="noreferrer"
+                rel="me noopener noreferrer"
                 title="Page Facebook Officielle TWISHIYAT"
                 style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(255, 255, 255, 0.06)', border: '1px solid rgba(212, 175, 55, 0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--gold-400)', transition: 'all 0.3s ease' }}
                 onMouseOver={(e) => { e.currentTarget.style.background = '#1877F2'; e.currentTarget.style.color = '#FFFFFF'; e.currentTarget.style.transform = 'translateY(-2px)'; }}

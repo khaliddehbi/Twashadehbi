@@ -69,7 +69,7 @@ export default function Header() {
               <a
                 href="https://www.instagram.com/twishiyat_/"
                 target="_blank"
-                rel="noreferrer"
+                rel="me noopener noreferrer"
                 title="Page Instagram @twishiyat_"
                 style={{ color: 'var(--gold-400)', display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.74rem', textDecoration: 'none' }}
               >
@@ -80,7 +80,7 @@ export default function Header() {
               <a
                 href="https://www.facebook.com/profile.php?id=61594978681127"
                 target="_blank"
-                rel="noreferrer"
+                rel="me noopener noreferrer"
                 title="Page Facebook TWISHIYAT"
                 style={{ color: 'var(--gold-400)', display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.74rem', textDecoration: 'none' }}
               >
@@ -273,7 +273,7 @@ export default function Header() {
                 <a
                   href="https://www.instagram.com/twishiyat_/"
                   target="_blank"
-                  rel="noreferrer"
+                  rel="me noopener noreferrer"
                   style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -295,7 +295,7 @@ export default function Header() {
                 <a
                   href="https://www.facebook.com/profile.php?id=61594978681127"
                   target="_blank"
-                  rel="noreferrer"
+                  rel="me noopener noreferrer"
                   style={{
                     display: 'flex',
                     alignItems: 'center',

@@ -623,7 +623,7 @@ export default function HomeView() {
               <a
                 href="https://www.instagram.com/twishiyat_/"
                 target="_blank"
-                rel="noreferrer"
+                rel="me noopener noreferrer"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -648,7 +648,7 @@ export default function HomeView() {
               <a
                 href="https://www.facebook.com/profile.php?id=61594978681127"
                 target="_blank"
-                rel="noreferrer"
+                rel="me noopener noreferrer"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
