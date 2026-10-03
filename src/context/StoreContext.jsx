@@ -38,20 +38,52 @@ export function StoreProvider({ children }) {
       localStorage.setItem('twishiyat_wishlist', JSON.stringify(wishlist));
     } catch (e) {}
   }, [wishlist]);
+  const saveProductsSafely = (list) => {
+    try {
+      localStorage.setItem('twishiyat_products', JSON.stringify(list));
+    } catch (e) {
+      console.warn('LocalStorage save error, attempting cleanup:', e);
+      try {
+        localStorage.removeItem('twasha_products');
+        localStorage.setItem('twishiyat_products', JSON.stringify(list));
+      } catch (err) {
+        console.error('Critical localStorage quota exceeded:', err);
+      }
+    }
+  };
+
   const [products, setProducts] = useState(() => {
     try {
+      const deletedIds = new Set(JSON.parse(localStorage.getItem('twishiyat_deleted_products') || '[]'));
       const saved = localStorage.getItem('twishiyat_products') || localStorage.getItem('twasha_products');
-      return saved ? JSON.parse(saved) : PRODUCTS;
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          const mergedMap = new Map();
+          // 1. Add all base PRODUCTS (excluding deleted ones)
+          PRODUCTS.forEach((p) => {
+            if (!deletedIds.has(p.id)) {
+              mergedMap.set(p.id, p);
+            }
+          });
+          // 2. Merge user-saved or edited products
+          parsed.forEach((p) => {
+            if (!deletedIds.has(p.id)) {
+              mergedMap.set(p.id, p);
+            }
+          });
+          return Array.from(mergedMap.values());
+        }
+      }
+      return PRODUCTS.filter((p) => !deletedIds.has(p.id));
     } catch (e) {
       return PRODUCTS;
     }
   });
 
-  // Persist products to localStorage
+  // Persist products to localStorage whenever products changes
   useEffect(() => {
-    try {
-      localStorage.setItem('twishiyat_products', JSON.stringify(products));
-    } catch (e) {}
+    saveProductsSafely(products);
   }, [products]);
 
   const addNewProduct = (productData) => {
@@ -72,7 +104,7 @@ export function StoreProvider({ children }) {
       price: price,
       originalPrice: originalPrice,
       discountPercent: discountPercent,
-      stock: Number(productData.stock) || 10,
+      stock: Number(productData.stock) >= 0 ? Number(productData.stock) : 10,
       badge: productData.badge || '',
       isBestSeller: productData.badge === 'Best-Seller',
       isNewArrival: productData.badge === 'Nouveauté',
@@ -80,30 +112,34 @@ export function StoreProvider({ children }) {
       image: productData.image || (products[0] ? products[0].image : PRODUCTS[0].image),
       gallery: (productData.gallery && productData.gallery.length > 0) ? productData.gallery : [productData.image || (products[0] ? products[0].image : PRODUCTS[0].image)],
       videoUrl: productData.videoUrl || '',
-      shortDescription: productData.shortDescription || 'Élégance et raffinement signés TWISHIYAT.',
+      shortDescription: productData.shortDescription || `${productData.name} - Sélection prestige TWISHIYAT.`,
       shortDescriptionAr: productData.shortDescriptionAr || '',
       description: productData.description || 'Accessoire d’exception issu de la collection TWISHIYAT. Conçu avec des matériaux nobles sélectionnés pour une durabilité maximale au quotidien. Livré dans son écrin de protection.',
       descriptionAr: productData.descriptionAr || '',
       specs: productData.specs || {
         'Matériau': 'Alliage Haute Résistance & Finition Dorée Haute Précision',
-        'Étanchéité': 'Water Resistant (Résiste à l’eau)',
-        'Garantie': 'Garantie 1 An incluse'
+        'Étanchéité': '5 ATM / 50 Mètres (Résiste aux ablutions et éclaboussures)',
+        'Garantie': 'Garantie Prestige 1 An incluse'
       },
       variants: (productData.variants && productData.variants.length > 0) ? productData.variants : [
-        { id: 'v1', name: 'Doré Brillant', colorHex: '#D4AF37' }
+        { id: 'v1', name: 'Finition Prestige', colorHex: '#D4AF37' }
       ],
       sizes: (productData.sizes && productData.sizes.length > 0) ? productData.sizes : ['Taille Unique Ajustable'],
       rating: 5.0,
       reviewsCount: 1
     };
 
-    setProducts((prev) => [newProd, ...prev]);
+    setProducts((prev) => {
+      const next = [newProd, ...prev.filter(p => p.id !== newId)];
+      saveProductsSafely(next);
+      return next;
+    });
     return newProd;
   };
 
   const updateProduct = (productId, fields) => {
-    setProducts((prev) =>
-      prev.map((p) => {
+    setProducts((prev) => {
+      const next = prev.map((p) => {
         if (p.id === productId) {
           const updated = { ...p, ...fields };
           const pr = Number(updated.price);
@@ -121,12 +157,26 @@ export function StoreProvider({ children }) {
           return updated;
         }
         return p;
-      })
-    );
+      });
+      saveProductsSafely(next);
+      return next;
+    });
   };
 
   const deleteProduct = (productId) => {
-    setProducts((prev) => prev.filter((p) => p.id !== productId));
+    try {
+      const deleted = JSON.parse(localStorage.getItem('twishiyat_deleted_products') || '[]');
+      if (!deleted.includes(productId)) {
+        deleted.push(productId);
+        localStorage.setItem('twishiyat_deleted_products', JSON.stringify(deleted));
+      }
+    } catch (e) {}
+
+    setProducts((prev) => {
+      const next = prev.filter((p) => p.id !== productId);
+      saveProductsSafely(next);
+      return next;
+    });
   };
 
   const [currentView, setCurrentView] = useState('home'); // home, catalog, product, cart, checkout, confirmation, tracking, account, admin

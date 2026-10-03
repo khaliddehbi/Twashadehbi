@@ -1,5 +1,6 @@
 import watchGold from '../assets/images/watch_gold.jpg';
 import watchLeather from '../assets/images/watch_leather.jpg';
+import watchPrxGreen from '../assets/images/watch_prx_green.jpg';
 import braceletCuff from '../assets/images/bracelet_cuff.jpg';
 import braceletCuban from '../assets/images/bracelet_cuban.jpg';
 import jewelryWomen from '../assets/images/jewelry_women.jpg';
@@ -8,6 +9,7 @@ import ringEmerald from '../assets/images/ring_emerald.jpg';
 import giftBox from '../assets/images/gift_box.jpg';
 
 export const IMAGE_PRESETS = [
+  { id: 'watch-prx-green', label: 'Montre Chrono Style Cadran Vert', image: watchPrxGreen },
   { id: 'watch-gold', label: 'Montre Dorée Cadran Vert', image: watchGold },
   { id: 'watch-leather', label: 'Montre Cuir Prestige Noir', image: watchLeather },
   { id: 'bracelet-cuff', label: 'Bracelet Jonc Doré Ciselé', image: braceletCuff },
@@ -19,12 +21,12 @@ export const IMAGE_PRESETS = [
 ];
 
 export const CATEGORIES = [
-  { id: 'all', name: 'Tous les Produits', nameAr: 'جميع المنتجات', nameEn: 'All Products', count: 8 },
-  { id: 'watches', name: 'Montres', nameAr: 'ساعات فاخرة', nameEn: 'Watches', count: 2, image: watchGold },
+  { id: 'all', name: 'Tous les Produits', nameAr: 'جميع المنتجات', nameEn: 'All Products', count: 9 },
+  { id: 'watches', name: 'Montres', nameAr: 'ساعات فاخرة', nameEn: 'Watches', count: 3, image: watchPrxGreen },
   { id: 'bracelets', name: 'Bracelets', nameAr: 'أساور ودمالج', nameEn: 'Bracelets', count: 3, image: braceletCuff },
   { id: 'rings', name: 'Bagues', nameAr: 'خواتم ملكية', nameEn: 'Rings', count: 2, image: ringOnyx },
   { id: 'sets', name: 'Coffrets Cadeaux', nameAr: 'علب هدايا فاخرة', nameEn: 'Gift Sets', count: 1, image: giftBox },
-  { id: 'men', name: 'Accessoires Homme', nameAr: 'إكسسوارات رجالية', nameEn: "Men's Accessories", count: 4, image: ringOnyx },
+  { id: 'men', name: 'Accessoires Homme', nameAr: 'إكسسوارات رجالية', nameEn: "Men's Accessories", count: 5, image: watchPrxGreen },
   { id: 'women', name: 'Accessoires Femme', nameAr: 'إكسسوارات نسائية', nameEn: "Women's Accessories", count: 4, image: jewelryWomen },
 ];
 
@@ -105,6 +107,44 @@ export const PRODUCTS = [
     ],
     sizes: ['Bracelet Ajustable Standard (16 - 22 cm)'],
     badge: 'Nouveau'
+  },
+  {
+    id: 'TD-W03',
+    name: 'Montre Chrono Style – Cadran Argent Brossé',
+    nameAr: 'ساعة كرونو ستايل – مينا زمردي مع إطار فضي مصقول',
+    nameEn: 'Chrono Style Watch – Brushed Silver & Emerald Dial',
+    slug: 'montre-chrono-style-cadran-argent-brosse',
+    category: 'watches',
+    gender: 'men',
+    price: 299,
+    originalPrice: 399,
+    discountPercent: 25,
+    rating: 5.0,
+    reviewsCount: 1,
+    stock: 6,
+    isBestSeller: true,
+    isNewArrival: true,
+    isFlashSale: false,
+    image: watchPrxGreen,
+    gallery: [watchPrxGreen, watchGold, giftBox],
+    shortDescription: 'Design : Cadran soleillé argenté ultra-lumineux. Confort : Bracelet en silicone résistant à l’eau et à la transpiration, parfait au quotidien comme en soirée.',
+    shortDescriptionAr: 'تصميم راقي بمينا أخضر زمردي جذاب وسوار سيليكون مريح ومقاوم للماء.',
+    description: "Design : Cadran soleillé argenté ultra-lumineux. Confort : Bracelet en silicone, résistant à l'eau et à la transpiration, parfait au quotidien comme en soirée. Fonctions : Guichet dateur intégré à 3h, aiguilles luminescentes et finition soignée. Contenu du pack : Montre + Coffret rigide cadeau Twishiyat.ma + Carte de remerciement. Livraison : Rapide partout au Maroc (24h/48h) - Paiement à la livraison après vérification du produit.",
+    descriptionAr: 'ساعة عصرية تجمع بين الفخامة والعملية اليومية. مينا أخضر زمردي مميز، سوار سيليكون عالي الجودة مضاد للماء والتعرق، ونافذة لعرض التاريخ. تأتي في علبة هدايا فاخرة من توشيات مع بطاقة شكر وضمان لمدة سنة كاملة.',
+    specs: {
+      'Matériau': 'Alliage Haute Résistance & Finition Argentée Brossée',
+      'Cadran': 'Vert Émeraude Guilloché avec guichet date',
+      'Mouvement': 'Quartz Haute Précision Chronographe',
+      'Verre': 'Saphir Inrayable traité antireflet',
+      'Étanchéité': '5 ATM / 50 Mètres (Résiste aux ablutions et éclaboussures)',
+      'Bracelet': 'Silicone Haute Densité Confort',
+      'Garantie': 'Garantie Prestige 1 An incluse avec carte TWISHIYAT'
+    },
+    variants: [
+      { id: 'prx-green', name: 'Vert Émeraude & Argent Brossé', nameAr: 'أخضر زمردي وفضي', colorHex: '#1B4D3E' }
+    ],
+    sizes: ['Taille Unique Ajustable'],
+    badge: 'Best-Seller'
   },
   {
     id: 'TD-B01',

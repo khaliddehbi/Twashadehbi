@@ -239,35 +239,66 @@ export default function AdminView() {
     addToast(`Stock mis à jour pour ${prod.name} : ${newStock} unités.`);
   };
 
-  const handleFileUpload = (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    if (file.size > 5 * 1024 * 1024) {
-      addToast('Image trop volumineuse (maximum 5 Mo)', 'error');
-      return;
-    }
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      setProductFormData(prev => ({ ...prev, image: ev.target.result }));
-      addToast('Photo principale chargée avec succès !');
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const handleGalleryUpload = (e) => {
-    const files = Array.from(e.target.files || []);
-    if (!files.length) return;
-    files.slice(0, 3).forEach(file => {
+  const compressImage = (file, maxDim = 800, quality = 0.82) => {
+    return new Promise((resolve) => {
       const reader = new FileReader();
-      reader.onload = (ev) => {
-        setProductFormData(prev => ({
-          ...prev,
-          gallery: [...(prev.gallery || []).slice(0, 3), ev.target.result]
-        }));
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          let width = img.width;
+          let height = img.height;
+          if (width > maxDim || height > maxDim) {
+            if (width > height) {
+              height = Math.round((height * maxDim) / width);
+              width = maxDim;
+            } else {
+              width = Math.round((width * maxDim) / height);
+              height = maxDim;
+            }
+          }
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+          resolve(canvas.toDataURL('image/jpeg', quality));
+        };
+        img.onerror = () => resolve(e.target.result);
+        img.src = e.target.result;
       };
+      reader.onerror = () => resolve(null);
       reader.readAsDataURL(file);
     });
-    addToast('Photo(s) additionnelle(s) ajoutée(s) à la galerie !');
+  };
+
+  const handleFileUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      const compressed = await compressImage(file, 800, 0.82);
+      if (compressed) {
+        setProductFormData(prev => ({ ...prev, image: compressed }));
+        addToast('Photo principale chargée et optimisée pour la boutique !');
+      }
+    } catch (err) {
+      addToast('Erreur lors du traitement de l’image.', 'error');
+    }
+  };
+
+  const handleGalleryUpload = async (e) => {
+    const files = Array.from(e.target.files || []).slice(0, 3);
+    if (!files.length) return;
+    try {
+      const compressedList = await Promise.all(files.map(f => compressImage(f, 800, 0.82)));
+      const valid = compressedList.filter(Boolean);
+      setProductFormData(prev => ({
+        ...prev,
+        gallery: [...(prev.gallery || []).slice(0, 3), ...valid].slice(0, 4)
+      }));
+      addToast('Photo(s) additionnelle(s) optimisée(s) et ajoutée(s) à la galerie !');
+    } catch (err) {
+      addToast('Erreur lors de l’ajout des photos.', 'error');
+    }
   };
 
   const handleSaveProduct = (e) => {
@@ -319,6 +350,11 @@ export default function AdminView() {
       addNewProduct(payload);
       addToast(`Nouveau produit "${payload.name}" ajouté avec succès au catalogue !`);
     }
+
+    // Reset filters to guarantee the product is visible in the list
+    setProductSearch('');
+    setProductCategoryFilter('all');
+    setProductStockFilter('all');
 
     setProductModalOpen(false);
     setIsEditingMode(false);
