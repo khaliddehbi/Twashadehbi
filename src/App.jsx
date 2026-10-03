@@ -48,24 +48,30 @@ function MainRouter() {
     }
   };
 
+  const isAdmin = currentView === 'admin';
+
   return (
     <div className="app-layout" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <SEOHead />
-      <Header />
+      {!isAdmin && <Header />}
 
-      <main style={{ flexGrow: 1 }}>
+      <main style={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
         {renderView()}
       </main>
 
-      <Footer />
+      {!isAdmin && <Footer />}
 
       {/* Global Modals & Micro-Interactions */}
-      <CartDrawer />
-      <QuickViewModal />
-      <SearchModal />
-      <WhatsAppWidget />
-      <PixelTrackerHUD />
-      <SocialProofPopup />
+      {!isAdmin && (
+        <>
+          <CartDrawer />
+          <QuickViewModal />
+          <SearchModal />
+          <WhatsAppWidget />
+          <PixelTrackerHUD />
+          <SocialProofPopup />
+        </>
+      )}
       <ToastContainer />
     </div>
   );
