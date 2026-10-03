@@ -317,9 +317,15 @@ export default function CatalogView() {
                         <img src={product.image} alt={product.name} className="product-image" />
                         
                         <div className="product-badges">
-                          {product.badge && <span className="badge-gold">{product.badge}</span>}
-                          {product.discountPercent && (
-                            <span className="badge-sale">-{product.discountPercent}%</span>
+                          {product.stock !== undefined && product.stock <= 0 ? (
+                            <span className="badge-sale" style={{ background: '#EF4444', color: '#FFFFFF' }}>Rupture</span>
+                          ) : (
+                            <>
+                              {product.badge && <span className="badge-gold">{product.badge}</span>}
+                              {product.discountPercent && (
+                                <span className="badge-sale">-{product.discountPercent}%</span>
+                              )}
+                            </>
                           )}
                         </div>
 
@@ -335,14 +341,24 @@ export default function CatalogView() {
                         </button>
 
                         <div className="product-quick-actions" onClick={(e) => e.stopPropagation()}>
-                          <button
-                            className="btn-gold"
-                            style={{ flex: 1, padding: '9px 12px', fontSize: '0.8rem' }}
-                            onClick={() => addToCart(product, 1)}
-                          >
-                            <ShoppingBag size={14} />
-                            <span>{t('addToCart')}</span>
-                          </button>
+                          {product.stock !== undefined && product.stock <= 0 ? (
+                            <button
+                              className="btn-dark"
+                              style={{ flex: 1, padding: '9px 12px', fontSize: '0.8rem', background: '#475569' }}
+                              onClick={() => navigateTo('product', product.id)}
+                            >
+                              <span>Rupture de Stock</span>
+                            </button>
+                          ) : (
+                            <button
+                              className="btn-gold"
+                              style={{ flex: 1, padding: '9px 12px', fontSize: '0.8rem' }}
+                              onClick={() => addToCart(product, 1)}
+                            >
+                              <ShoppingBag size={14} />
+                              <span>{t('addToCart')}</span>
+                            </button>
+                          )}
                           <button
                             className="btn-dark"
                             style={{ padding: '9px 12px' }}

@@ -60,8 +60,11 @@ export default function AdminView() {
     coupons, 
     updateOrderStatus, 
     updateProduct, 
-    addNewProduct,
+    addNewProduct, 
     deleteProduct,
+    addCoupon,
+    toggleCoupon,
+    deleteCoupon,
     kpis 
   } = useAdmin();
 
@@ -404,7 +407,7 @@ export default function AdminView() {
     return { total, inStock, lowStock, outOfStock, totalInventoryValue };
   }, [products]);
 
-  // Unique Customers extracted from Orders
+  // Unique Customers extracted from Orders + Registered Customer Profile
   const customersList = useMemo(() => {
     const map = new Map();
     orders.forEach((ord) => {
@@ -425,6 +428,25 @@ export default function AdminView() {
         existing.ordersCount += 1;
       }
     });
+
+    // Check if client saved coordinates in Mon Compte
+    try {
+      const savedProfile = JSON.parse(localStorage.getItem('twishiyat_customer_profile') || '{}');
+      if (savedProfile && savedProfile.phone && savedProfile.fullName) {
+        if (!map.has(savedProfile.phone)) {
+          map.set(savedProfile.phone, {
+            fullName: savedProfile.fullName,
+            phone: savedProfile.phone,
+            city: savedProfile.city || 'Maroc',
+            address: savedProfile.address || '',
+            totalSpent: 0,
+            ordersCount: 0,
+            lastOrderDate: 'Profil Enregistré'
+          });
+        }
+      }
+    } catch (e) {}
+
     return Array.from(map.values());
   }, [orders]);
 
@@ -1588,30 +1610,210 @@ export default function AdminView() {
           {/* ======================================================== */}
           {activeNav === 'coupons' && (
             <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', flexWrap: 'wrap', gap: '16px' }}>
                 <div>
                   <h1 style={{ fontSize: '1.75rem', fontWeight: '800', color: '#0F172A', margin: 0 }}>
                     Codes Promotionnels & Offres
                   </h1>
                   <p style={{ color: '#64748B', fontSize: '0.88rem', marginTop: '4px', margin: 0 }}>
-                    Créez des remises spéciales pour booster vos conversions lors de vos campagnes publicitaires.
+                    Créez des remises spéciales synchronisées immédiatement avec le panier et la page de commande.
                   </p>
                 </div>
+
+                <button
+                  onClick={() => setShowAddCoupon(!showAddCoupon)}
+                  className="btn-gold"
+                  style={{ padding: '10px 18px', fontSize: '0.88rem' }}
+                >
+                  <Plus size={16} />
+                  <span>{showAddCoupon ? 'Fermer le formulaire' : 'Nouveau Code Promo'}</span>
+                </button>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
-                {coupons.map((c) => (
-                  <div key={c.code} style={{ background: '#FFFFFF', border: '2px dashed #CBD5E1', borderRadius: '14px', padding: '22px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                      <span style={{ fontWeight: '900', fontSize: '1.25rem', color: '#0F172A', letterSpacing: '0.05em' }}>{c.code}</span>
-                      <span style={{ background: '#ECFDF5', color: '#059669', fontSize: '0.75rem', fontWeight: '700', padding: '2px 8px', borderRadius: '999px' }}>Actif</span>
+              {/* Coupon Creation Card */}
+              {showAddCoupon && (
+                <div style={{ background: '#FFFFFF', border: '1px solid #CBD5E1', borderRadius: '16px', padding: '24px', marginBottom: '24px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
+                  <h3 style={{ fontSize: '1.1rem', fontWeight: '800', color: '#0F172A', margin: '0 0 16px 0' }}>
+                    Créer un nouveau code promotionnel
+                  </h3>
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      if (!newCouponCode.trim()) {
+                        addToast('Veuillez renseigner un code promo.', 'error');
+                        return;
+                      }
+                      addCoupon({
+                        code: newCouponCode.trim().toUpperCase(),
+                        type: newCouponType,
+                        value: Number(newCouponValue) || 10
+                      });
+                      addToast(`Code promo "${newCouponCode.trim().toUpperCase()}" créé et disponible au checkout !`);
+                      setNewCouponCode('');
+                      setShowAddCoupon(false);
+                    }}
+                    style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', alignItems: 'flex-end' }}
+                  >
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: '700', color: '#334155', marginBottom: '6px' }}>
+                        Code (ex: EID2026, SUMMER15)
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={newCouponCode}
+                        onChange={(e) => setNewCouponCode(e.target.value.toUpperCase())}
+                        placeholder="CODE EN MAJUSCULES..."
+                        style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '0.88rem', textTransform: 'uppercase', outline: 'none' }}
+                      />
                     </div>
-                    <p style={{ fontSize: '0.88rem', color: '#475569', margin: '6px 0' }}>
-                      {c.type === 'percentage' ? `-${c.value}% de réduction immédiate` : 'Livraison gratuite partout au Maroc'}
-                    </p>
-                    <span style={{ fontSize: '0.78rem', color: '#94A3B8' }}>Utilisé {c.uses} fois par les clients</span>
-                  </div>
-                ))}
+
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: '700', color: '#334155', marginBottom: '6px' }}>
+                        Type d'avantage
+                      </label>
+                      <select
+                        value={newCouponType}
+                        onChange={(e) => setNewCouponType(e.target.value)}
+                        style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '0.88rem', outline: 'none', background: '#FFF' }}
+                      >
+                        <option value="percentage">Pourcentage de réduction (%)</option>
+                        <option value="shipping">Livraison Gratuite Offerte</option>
+                      </select>
+                    </div>
+
+                    {newCouponType === 'percentage' && (
+                      <div>
+                        <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: '700', color: '#334155', marginBottom: '6px' }}>
+                          Valeur de remise (%)
+                        </label>
+                        <input
+                          type="number"
+                          min="1"
+                          max="90"
+                          value={newCouponValue}
+                          onChange={(e) => setNewCouponValue(e.target.value)}
+                          style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '0.88rem', outline: 'none' }}
+                        />
+                      </div>
+                    )}
+
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      <button
+                        type="submit"
+                        className="btn-gold"
+                        style={{ padding: '10px 20px', fontSize: '0.88rem', flexGrow: 1, justifyContent: 'center' }}
+                      >
+                        <Check size={16} />
+                        <span>Enregistrer</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setShowAddCoupon(false)}
+                        style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid #CBD5E1', background: '#F8FAFC', color: '#64748B', fontSize: '0.85rem', cursor: 'pointer' }}
+                      >
+                        Annuler
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              )}
+
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px' }}>
+                {coupons.map((c) => {
+                  const isActive = c.active !== false;
+
+                  return (
+                    <div
+                      key={c.code}
+                      style={{
+                        background: '#FFFFFF',
+                        border: isActive ? '2px dashed #CBD5E1' : '2px dashed #E2E8F0',
+                        opacity: isActive ? 1 : 0.7,
+                        borderRadius: '14px',
+                        padding: '22px',
+                        boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'space-between',
+                        gap: '16px'
+                      }}
+                    >
+                      <div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                          <span style={{ fontWeight: '900', fontSize: '1.3rem', color: '#0F172A', letterSpacing: '0.05em' }}>
+                            {c.code}
+                          </span>
+                          <span
+                            style={{
+                              background: isActive ? '#ECFDF5' : '#F1F5F9',
+                              color: isActive ? '#059669' : '#64748B',
+                              fontSize: '0.75rem',
+                              fontWeight: '700',
+                              padding: '3px 10px',
+                              borderRadius: '999px'
+                            }}
+                          >
+                            {isActive ? '● Actif' : '○ Inactif'}
+                          </span>
+                        </div>
+
+                        <p style={{ fontSize: '0.9rem', color: '#334155', fontWeight: '600', margin: '4px 0' }}>
+                          {c.type === 'percentage' ? `-${c.value}% de réduction immédiate` : 'Livraison gratuite partout au Maroc'}
+                        </p>
+                        <span style={{ fontSize: '0.78rem', color: '#94A3B8' }}>
+                          Utilisé {c.uses || 0} fois par les clients
+                        </span>
+                      </div>
+
+                      <div style={{ display: 'flex', gap: '8px', borderTop: '1px solid #F1F5F9', paddingTop: '14px' }}>
+                        <button
+                          onClick={() => {
+                            toggleCoupon(c.code);
+                            addToast(`Code "${c.code}" ${isActive ? 'désactivé' : 'activé'} avec succès.`);
+                          }}
+                          style={{
+                            flex: 1,
+                            padding: '8px 12px',
+                            borderRadius: '8px',
+                            border: '1px solid #CBD5E1',
+                            background: isActive ? '#FFFBEB' : '#ECFDF5',
+                            color: isActive ? '#B45309' : '#047857',
+                            fontSize: '0.8rem',
+                            fontWeight: '700',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          {isActive ? 'Désactiver' : 'Activer le code'}
+                        </button>
+
+                        <button
+                          onClick={() => {
+                            if (window.confirm(`Supprimer définitivement le code promo "${c.code}" ?`)) {
+                              deleteCoupon(c.code);
+                              addToast(`Code "${c.code}" supprimé.`);
+                            }
+                          }}
+                          style={{
+                            padding: '8px 12px',
+                            borderRadius: '8px',
+                            border: '1px solid #FCA5A5',
+                            background: '#FEF2F2',
+                            color: '#DC2626',
+                            fontSize: '0.8rem',
+                            cursor: 'pointer',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                          }}
+                          title="Supprimer ce code promo"
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           )}

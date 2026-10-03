@@ -18,10 +18,15 @@ export default function TrackingView() {
   const { orders } = useAdmin();
 
   const [orderQuery, setOrderQuery] = useState(selectedOrderId || '');
-  const [searchedOrder, setSearchedOrder] = useState(() => {
-    return selectedOrderId ? orders.find(o => o.id === selectedOrderId) || null : null;
-  });
+  const [activeTrackingId, setActiveTrackingId] = useState(selectedOrderId || '');
   const [errorMessage, setErrorMessage] = useState('');
+
+  // Dynamically resolve the live order from AdminContext so any status change in Espace Pro reflects instantly
+  const searchedOrder = React.useMemo(() => {
+    const idToFind = (activeTrackingId || selectedOrderId || '').trim().toUpperCase();
+    if (!idToFind) return null;
+    return orders.find((o) => o.id.toUpperCase() === idToFind) || null;
+  }, [orders, activeTrackingId, selectedOrderId]);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -29,11 +34,12 @@ export default function TrackingView() {
     const cleanId = orderQuery.trim().toUpperCase();
     if (!cleanId) return;
 
-    const found = orders.find(o => o.id.toUpperCase() === cleanId);
+    const found = orders.find((o) => o.id.toUpperCase() === cleanId);
     
     if (found) {
-      setSearchedOrder(found);
+      setActiveTrackingId(found.id);
       setSelectedOrderId(found.id);
+      window.location.hash = `#/suivi/${found.id}`;
     } else {
       setErrorMessage(`Aucune commande trouvée avec la référence "${cleanId}". Veuillez vérifier le numéro reçu lors de votre commande.`);
     }

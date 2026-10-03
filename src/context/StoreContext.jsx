@@ -216,15 +216,58 @@ export function StoreProvider({ children }) {
     });
   };
 
-  // Real Customer Orders (Only orders placed by this specific client)
+  // Real Customer Orders (Merged with live status from admin storage)
   const [customerOrders, setCustomerOrders] = useState(() => {
     try {
-      const saved = localStorage.getItem('twishiyat_my_orders');
-      return saved ? JSON.parse(saved) : [];
+      const savedMy = localStorage.getItem('twishiyat_my_orders');
+      const myOrders = savedMy ? JSON.parse(savedMy) : [];
+      const savedAll = localStorage.getItem('twishiyat_orders') || localStorage.getItem('twasha_orders');
+      if (savedAll && myOrders.length > 0) {
+        const allOrders = JSON.parse(savedAll);
+        const map = new Map(allOrders.map((o) => [o.id, o]));
+        return myOrders.map((ord) => {
+          const live = map.get(ord.id);
+          if (live) {
+            return {
+              ...ord,
+              status: live.status,
+              statusLabel: live.statusLabel,
+              carrier: live.carrier || ord.carrier,
+              timeline: live.timeline || ord.timeline
+            };
+          }
+          return ord;
+        });
+      }
+      return myOrders;
     } catch (e) {
       return [];
     }
   });
+
+  // Real-time synchronization listener for order status changes dispatched from Espace Pro
+  useEffect(() => {
+    const handleOrderUpdate = (e) => {
+      if (e.detail?.orderId) {
+        setCustomerOrders((prev) =>
+          prev.map((ord) => {
+            if (ord.id === e.detail.orderId) {
+              return {
+                ...ord,
+                status: e.detail.newStatus,
+                statusLabel: e.detail.statusLabel,
+                timeline: e.detail.timeline
+              };
+            }
+            return ord;
+          })
+        );
+      }
+    };
+
+    window.addEventListener('twishiyat_order_updated', handleOrderUpdate);
+    return () => window.removeEventListener('twishiyat_order_updated', handleOrderUpdate);
+  }, []);
 
   const recordCustomerOrder = (newOrder) => {
     setCustomerOrders((prev) => {
@@ -440,6 +483,16 @@ export function StoreProvider({ children }) {
   };
 
   const addToCart = (product, quantity = 1, variant = null, size = null) => {
+    if (product.stock !== undefined && Number(product.stock) <= 0) {
+      addToast(
+        language === 'ar'
+          ? 'عذراً، هذا المنتج غير متوفر في المخزون حالياً.'
+          : 'Ce produit est actuellement en rupture temporaire de stock.',
+        'error'
+      );
+      return false;
+    }
+
     const selectedVariant = variant || product.variants?.[0] || null;
     const selectedSize = size || product.sizes?.[0] || 'Standard';
 
@@ -466,6 +519,7 @@ export function StoreProvider({ children }) {
         ? `تمت إضافة "${product.nameAr}" إلى السلة`
         : `"${product.name}" a été ajouté à votre panier !`
     );
+    return true;
   };
 
   const removeFromCart = (index) => {
@@ -498,21 +552,72 @@ export function StoreProvider({ children }) {
   };
 
   const applyCouponCode = (code) => {
-    const clean = code.trim().toUpperCase();
-    if (clean === 'TWISHIYAT10' || clean === 'TWASHA10' || clean === 'TW10') {
-      setAppliedCoupon({ code: 'TWISHIYAT10', discountPercent: 10, label: '10% de réduction immédiate' });
-      addToast(language === 'ar' ? 'تم تفعيل كود الخصم 10% بنجاح!' : 'Code promo TWISHIYAT10 appliqué : -10% !');
+    const clean = code ? code.trim().toUpperCase() : '';
+    if (!clean) return false;
+
+    // 1. Retrieve coupons dynamically from Espace Pro storage
+    let availableCoupons = [];
+    try {
+      const saved = localStorage.getItem('twishiyat_coupons') || localStorage.getItem('twasha_coupons');
+      if (saved) {
+        availableCoupons = JSON.parse(saved);
+      }
+    } catch (e) {}
+
+    if (!Array.isArray(availableCoupons) || availableCoupons.length === 0) {
+      availableCoupons = [
+        { code: 'TWISHIYAT10', type: 'percentage', value: 10, active: true },
+        { code: 'MAROC', type: 'shipping', value: 0, active: true },
+        { code: 'VIP20', type: 'percentage', value: 20, active: true }
+      ];
+    }
+
+    // 2. Find matching coupon (exact or aliases)
+    const matched = availableCoupons.find(
+      (c) =>
+        c.code.toUpperCase() === clean ||
+        (clean === 'TWASHA10' && c.code.toUpperCase() === 'TWISHIYAT10') ||
+        (clean === 'TW10' && c.code.toUpperCase() === 'TWISHIYAT10') ||
+        (clean === 'CASA' && c.code.toUpperCase() === 'MAROC')
+    );
+
+    if (matched && matched.active !== false) {
+      if (matched.type === 'percentage') {
+        const val = Number(matched.value) || 10;
+        setAppliedCoupon({
+          code: matched.code,
+          discountPercent: val,
+          label: `${val}% de réduction immédiate`
+        });
+        addToast(
+          language === 'ar'
+            ? `تم تفعيل كود الخصم ${matched.code} بنجاح (-${val}%)!`
+            : `Code promo ${matched.code} appliqué : -${val}% !`
+        );
+      } else {
+        setAppliedCoupon({
+          code: matched.code,
+          freeShipping: true,
+          label: 'Livraison Gratuite offerte'
+        });
+        addToast(
+          language === 'ar'
+            ? `تم تفعيل كود ${matched.code} : التوصيل مجاني!`
+            : `Code ${matched.code} appliqué : Livraison gratuite offerte !`
+        );
+      }
       return true;
-    } else if (clean === 'MAROC' || clean === 'CASA') {
-      setAppliedCoupon({ code: clean, freeShipping: true, label: 'Livraison Gratuite offerte' });
-      addToast(language === 'ar' ? 'تم تفعيل التوصيل المجاني!' : 'Code MAROC appliqué : Livraison gratuite offerte !');
-      return true;
-    } else if (clean === 'VIP20') {
-      setAppliedCoupon({ code: 'VIP20', discountPercent: 20, label: 'Offre VIP 20%' });
-      addToast(language === 'ar' ? 'تم تفعيل كود VIP 20%!' : 'Code VIP20 appliqué : -20% de réduction !');
-      return true;
+    } else if (matched && matched.active === false) {
+      addToast(
+        language === 'ar' ? 'رمز الكوبون هذا منتهي الصلاحية حالياً.' : 'Ce code promo est actuellement inactif ou expiré.',
+        'error'
+      );
+      return false;
     } else {
-      addToast(language === 'ar' ? 'رمز الكوبون غير صالح' : 'Code promo non valide ou expiré.', 'error');
+      addToast(
+        language === 'ar' ? 'رمز الكوبون غير صالح' : 'Code promo non valide ou expiré.',
+        'error'
+      );
       return false;
     }
   };

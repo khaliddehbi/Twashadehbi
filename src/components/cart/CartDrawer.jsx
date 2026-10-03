@@ -125,9 +125,14 @@ export default function CartDrawer() {
                   </div>
 
                   {/* Variant / Size info */}
-                  <div style={{ fontSize: '0.78rem', color: '#6B7280', margin: '4px 0 8px 0' }}>
+                  <div style={{ fontSize: '0.78rem', color: '#6B7280', margin: '4px 0 8px 0', display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
                     {item.variant?.name && <span>{item.variant.name}</span>}
                     {item.size && <span> • {item.size}</span>}
+                    {item.product.stock !== undefined && item.product.stock <= 0 && (
+                      <span style={{ background: '#FEE2E2', color: '#DC2626', fontSize: '0.7rem', padding: '1px 6px', borderRadius: '4px', fontWeight: '700' }}>
+                        Rupture de stock
+                      </span>
+                    )}
                   </div>
 
                   {/* Quantity and Price */}
@@ -220,17 +225,34 @@ export default function CartDrawer() {
               </div>
             </div>
 
-            {/* Moroccan COD Reassurance */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(212, 175, 55, 0.1)', padding: '8px 12px', borderRadius: '6px', marginBottom: '16px', fontSize: '0.78rem', color: 'var(--gold-800)' }}>
-              <ShieldCheck size={18} color="var(--gold-600)" style={{ flexShrink: 0 }} />
-              <span>Paiement en espèces à la livraison après vérification du colis.</span>
-            </div>
+            {/* Moroccan COD Reassurance & Stock Warnings */}
+            {cart.some((item) => item.product.stock !== undefined && item.product.stock <= 0) ? (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#FEE2E2', border: '1px solid #FCA5A5', padding: '10px 12px', borderRadius: '8px', marginBottom: '16px', fontSize: '0.8rem', color: '#991B1B' }}>
+                <span style={{ fontWeight: '700' }}>⚠️ Un article dans votre panier est en rupture de stock. Veuillez le retirer pour continuer.</span>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(212, 175, 55, 0.1)', padding: '8px 12px', borderRadius: '6px', marginBottom: '16px', fontSize: '0.78rem', color: 'var(--gold-800)' }}>
+                <ShieldCheck size={18} color="var(--gold-600)" style={{ flexShrink: 0 }} />
+                <span>Paiement en espèces à la livraison après vérification du colis.</span>
+              </div>
+            )}
 
             {/* Checkout Button */}
             <button
               className="btn-gold"
-              style={{ width: '100%', padding: '14px', fontSize: '1rem' }}
+              disabled={cart.some((item) => item.product.stock !== undefined && item.product.stock <= 0)}
+              style={{
+                width: '100%',
+                padding: '14px',
+                fontSize: '1rem',
+                opacity: cart.some((item) => item.product.stock !== undefined && item.product.stock <= 0) ? 0.6 : 1,
+                cursor: cart.some((item) => item.product.stock !== undefined && item.product.stock <= 0) ? 'not-allowed' : 'pointer'
+              }}
               onClick={() => {
+                if (cart.some((item) => item.product.stock !== undefined && item.product.stock <= 0)) {
+                  addToast('Veuillez retirer les articles en rupture pour finaliser.', 'error');
+                  return;
+                }
                 setIsCartOpen(false);
                 navigateTo('checkout');
               }}

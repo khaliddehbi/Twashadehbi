@@ -21,7 +21,8 @@ import {
   ArrowRight,
   Flame,
   UserCheck,
-  Share2
+  Share2,
+  AlertCircle
 } from 'lucide-react';
 
 export default function ProductDetailView() {
@@ -103,6 +104,12 @@ export default function ProductDetailView() {
     const totalOrderAmount = product.price * quantity;
     const isFree = true;
     const shippingFee = 0;
+    if (product.stock !== undefined && product.stock <= 0) {
+      addToast('Ce produit est actuellement en rupture temporaire de stock.', 'error');
+      setExpressSubmitting(false);
+      return;
+    }
+
     const orderId = `TD-${Math.floor(1000 + Math.random() * 9000)}`;
 
     const newOrder = {
@@ -137,7 +144,7 @@ export default function ProductDetailView() {
       timeline: [
         { status: 'received', title: 'Commande Reçue sur le site', date: 'À l’instant', completed: true, current: true },
         { status: 'confirmed', title: 'Confirmation téléphonique en cours', date: 'Sous 15 min', completed: false },
-        { status: 'processing', title: 'Préparation en atelier Casablanca', date: 'Aujourd’hui', completed: false },
+        { status: 'processing', title: 'Préparation soignée en atelier TWISHIYAT', date: 'Aujourd’hui', completed: false },
         { status: 'shipped', title: `Expédition vers ${expressCity}`, date: cityData.deliveryHours, completed: false },
         { status: 'delivered', title: 'Livraison & Paiement espèces au livreur', date: `Prévue sous ${cityData.deliveryHours}`, completed: false }
       ]
@@ -298,10 +305,17 @@ export default function ProductDetailView() {
                 </span>
               </div>
 
-              <span className="badge-stock">
-                <Flame size={13} color="#D97706" />
-                <span>Plus que {product.stock} pièces disponibles en stock</span>
-              </span>
+              {(product.stock !== undefined && product.stock <= 0) ? (
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#FEE2E2', color: '#991B1B', border: '1px solid #FCA5A5', padding: '4px 12px', borderRadius: '20px', fontSize: '0.8rem', fontWeight: '700' }}>
+                  <AlertCircle size={13} color="#DC2626" />
+                  <span>Victime de son succès — Rupture de stock</span>
+                </span>
+              ) : (
+                <span className="badge-stock">
+                  <Flame size={13} color="#D97706" />
+                  <span>Plus que {product.stock} pièces disponibles en stock</span>
+                </span>
+              )}
             </div>
 
             {/* Price Box */}
@@ -402,205 +416,240 @@ export default function ProductDetailView() {
               </div>
             )}
 
-            {/* Standard Cart Buttons */}
-            <div style={{ display: 'flex', gap: '12px', marginBottom: '28px', flexWrap: 'wrap' }}>
-              <div style={{ display: 'flex', alignItems: 'center', border: '1.5px solid #D1D5DB', borderRadius: '6px', background: '#FFFFFF' }}>
-                <button 
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  style={{ padding: '12px 14px', color: '#4B5563', fontWeight: 'bold' }}
-                >
-                  -
-                </button>
-                <span style={{ padding: '0 14px', fontWeight: '700', fontSize: '1rem' }}>
-                  {quantity}
-                </span>
-                <button 
-                  onClick={() => setQuantity(quantity + 1)}
-                  style={{ padding: '12px 14px', color: '#4B5563', fontWeight: 'bold' }}
-                >
-                  +
-                </button>
-              </div>
-
-              <button
-                className="btn-dark"
-                style={{ flex: '1 1 180px', padding: '14px' }}
-                onClick={handleStandardAddToCart}
-              >
-                <ShoppingBag size={18} />
-                <span>{t('addToCart')}</span>
-              </button>
-
-              <button
-                className="btn-gold"
-                style={{ flex: '1 1 200px', padding: '14px' }}
-                onClick={handleStandardBuyNow}
-              >
-                <span>Acheter Maintenant</span>
-                <ArrowRight size={18} />
-              </button>
-            </div>
-
-            {/* 🌟 MOROCCAN 1-CLICK EXPRESS COD ORDER BOX (Critical conversion driver!) 🌟 */}
-            <div 
-              id="express-order-box"
-              style={{ 
-                background: '#FFFFFF', 
-                border: '2px solid var(--gold-500)', 
-                borderRadius: '16px', 
-                padding: '24px', 
-                boxShadow: 'var(--shadow-gold)',
-                marginBottom: '32px',
-                position: 'relative'
-              }}
-            >
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'var(--grad-gold)', color: 'var(--obsidian-950)', padding: '5px 14px', borderRadius: '20px', fontSize: '0.78rem', fontWeight: '700', textTransform: 'uppercase', marginBottom: '12px' }}>
-                <Sparkles size={14} />
-                <span>Formulaire Express Maroc • Paiement à la Livraison</span>
-              </div>
-
-              <h3 style={{ fontSize: '1.28rem', color: 'var(--obsidian-900)', marginBottom: '6px', fontFamily: 'var(--font-serif)' }}>
-                {t('expressOrderTitle')}
-              </h3>
-              <p style={{ fontSize: '0.84rem', color: '#6B7280', marginBottom: '18px' }}>
-                Remplissez vos coordonnées ci-dessous : livraison express à domicile partout au Maroc. Vous ne payez qu'après avoir inspecté votre bijou.
-              </p>
-
-              {/* Dynamic City Delivery Notice */}
-              {(() => {
-                const currentCity = MOROCCAN_CITIES.find(c => c.name === expressCity) || MOROCCAN_CITIES[0];
-                return (
-                  <div style={{ background: '#F0FDF4', border: '1px solid #BBF7D0', padding: '10px 14px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: '#166534', fontWeight: '600', marginBottom: '16px' }}>
-                    <Truck size={17} color="#16A34A" />
-                    <span>⚡ Délai estimé vers <strong>{expressCity}</strong> : {currentCity.deliveryHours} • Remise en main propre</span>
-                  </div>
-                );
-              })()}
-
-              <form onSubmit={handleExpressOrder} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-                <div>
-                  <label style={{ fontSize: '0.82rem', fontWeight: '700', color: 'var(--obsidian-800)', display: 'block', marginBottom: '4px' }}>
-                    {t('fullName')} *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={expressName}
-                    onChange={(e) => setExpressName(e.target.value)}
-                    placeholder="ex: Youssef Bennani"
-                    style={{ width: '100%', padding: '12px 14px', borderRadius: '8px', border: '1px solid #D1D5DB', fontSize: '0.92rem', outline: 'none' }}
-                  />
+            {/* Standard Cart Buttons & 1-Click Form OR Out of Stock Card */}
+            {(product.stock !== undefined && product.stock <= 0) ? (
+              <div style={{ background: '#FFF7ED', border: '1.5px solid #FDBA74', borderRadius: '14px', padding: '24px', marginBottom: '32px', textAlign: 'center' }}>
+                <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '50%', background: '#FFEDD5', color: '#C2410C', marginBottom: '12px' }}>
+                  <AlertCircle size={26} />
                 </div>
-
-                <div>
-                  <label style={{ fontSize: '0.82rem', fontWeight: '700', color: 'var(--obsidian-800)', display: 'block', marginBottom: '4px' }}>
-                    {language === 'ar' ? 'رقم الهاتف (الواتساب)' : 'Numéro de Téléphone / WhatsApp'} *
-                  </label>
-                  <input
-                    type="tel"
-                    required
-                    value={expressPhone}
-                    onChange={(e) => setExpressPhone(e.target.value)}
-                    placeholder="06 XX XX XX XX ou 07 XX XX XX XX"
-                    style={{ width: '100%', padding: '12px 14px', borderRadius: '8px', border: '1px solid #D1D5DB', fontSize: '0.92rem', outline: 'none' }}
-                  />
+                <h3 style={{ fontSize: '1.25rem', fontWeight: '800', color: '#9A3412', margin: '0 0 6px 0', fontFamily: 'var(--font-serif)' }}>
+                  Modèle en Rupture Temporaire de Stock
+                </h3>
+                <p style={{ color: '#7C2D12', fontSize: '0.88rem', margin: '0 auto 18px auto', maxWidth: '440px', lineHeight: '1.5' }}>
+                  En raison d'une forte demande, toutes les pièces préparées pour ce modèle ont été réservées. Notre atelier prépare le prochain réassort.
+                </p>
+                <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                  <button
+                    onClick={handleWhatsAppInquiry}
+                    className="btn-gold"
+                    style={{ padding: '12px 22px', fontSize: '0.9rem' }}
+                  >
+                    <Phone size={16} />
+                    <span>M'alerter lors du retour en stock</span>
+                  </button>
+                  <button
+                    onClick={() => navigateTo('catalog')}
+                    className="btn-dark"
+                    style={{ padding: '12px 20px', fontSize: '0.9rem' }}
+                  >
+                    <ShoppingBag size={16} />
+                    <span>Voir les modèles disponibles</span>
+                  </button>
                 </div>
-
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                  <div>
-                    <label style={{ fontSize: '0.82rem', fontWeight: '700', color: 'var(--obsidian-800)', display: 'block', marginBottom: '4px' }}>
-                      {t('city')} *
-                    </label>
-                    <select
-                      value={expressCity}
-                      onChange={(e) => setExpressCity(e.target.value)}
-                      style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #D1D5DB', fontSize: '0.88rem', background: '#FFF', outline: 'none' }}
+              </div>
+            ) : (
+              <>
+                {/* Standard Cart Buttons */}
+                <div style={{ display: 'flex', gap: '12px', marginBottom: '28px', flexWrap: 'wrap' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', border: '1.5px solid #D1D5DB', borderRadius: '6px', background: '#FFFFFF' }}>
+                    <button 
+                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                      style={{ padding: '12px 14px', color: '#4B5563', fontWeight: 'bold' }}
                     >
-                      {MOROCCAN_CITIES.map((c) => (
-                        <option key={c.name} value={c.name}>
-                          {c.name} ({c.deliveryHours})
-                        </option>
-                      ))}
-                    </select>
+                      -
+                    </button>
+                    <span style={{ padding: '0 14px', fontWeight: '700', fontSize: '1rem' }}>
+                      {quantity}
+                    </span>
+                    <button 
+                      onClick={() => setQuantity(quantity + 1)}
+                      style={{ padding: '12px 14px', color: '#4B5563', fontWeight: 'bold' }}
+                    >
+                      +
+                    </button>
                   </div>
 
-                  <div>
-                    <label style={{ fontSize: '0.82rem', fontWeight: '700', color: 'var(--obsidian-800)', display: 'block', marginBottom: '4px' }}>
-                      Frais de port
-                    </label>
-                    <div style={{ padding: '12px', background: '#ECFDF5', border: '1px solid #A7F3D0', borderRadius: '8px', fontSize: '0.88rem', fontWeight: '800', color: '#059669', textAlign: 'center' }}>
-                      GRATUIT (0 DH)
+                  <button
+                    className="btn-dark"
+                    style={{ flex: '1 1 180px', padding: '14px' }}
+                    onClick={handleStandardAddToCart}
+                  >
+                    <ShoppingBag size={18} />
+                    <span>{t('addToCart')}</span>
+                  </button>
+
+                  <button
+                    className="btn-gold"
+                    style={{ flex: '1 1 200px', padding: '14px' }}
+                    onClick={handleStandardBuyNow}
+                  >
+                    <span>Acheter Maintenant</span>
+                    <ArrowRight size={18} />
+                  </button>
+                </div>
+
+                {/* 🌟 MOROCCAN 1-CLICK EXPRESS COD ORDER BOX (Critical conversion driver!) 🌟 */}
+                <div 
+                  id="express-order-box"
+                  style={{ 
+                    background: '#FFFFFF', 
+                    border: '2px solid var(--gold-500)', 
+                    borderRadius: '16px', 
+                    padding: '24px', 
+                    boxShadow: 'var(--shadow-gold)',
+                    marginBottom: '32px',
+                    position: 'relative'
+                  }}
+                >
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'var(--grad-gold)', color: 'var(--obsidian-950)', padding: '5px 14px', borderRadius: '20px', fontSize: '0.78rem', fontWeight: '700', textTransform: 'uppercase', marginBottom: '12px' }}>
+                    <Sparkles size={14} />
+                    <span>Formulaire Express Maroc • Paiement à la Livraison</span>
+                  </div>
+
+                  <h3 style={{ fontSize: '1.28rem', color: 'var(--obsidian-900)', marginBottom: '6px', fontFamily: 'var(--font-serif)' }}>
+                    {t('expressOrderTitle')}
+                  </h3>
+                  <p style={{ fontSize: '0.84rem', color: '#6B7280', marginBottom: '18px' }}>
+                    Remplissez vos coordonnées ci-dessous : livraison express à domicile partout au Maroc. Vous ne payez qu'après avoir inspecté votre bijou.
+                  </p>
+
+                  {/* Dynamic City Delivery Notice */}
+                  {(() => {
+                    const currentCity = MOROCCAN_CITIES.find(c => c.name === expressCity) || MOROCCAN_CITIES[0];
+                    return (
+                      <div style={{ background: '#F0FDF4', border: '1px solid #BBF7D0', padding: '10px 14px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: '#166534', fontWeight: '600', marginBottom: '16px' }}>
+                        <Truck size={17} color="#16A34A" />
+                        <span>⚡ Délai estimé vers <strong>{expressCity}</strong> : {currentCity.deliveryHours} • Remise en main propre</span>
+                      </div>
+                    );
+                  })()}
+
+                  <form onSubmit={handleExpressOrder} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                    <div>
+                      <label style={{ fontSize: '0.82rem', fontWeight: '700', color: 'var(--obsidian-800)', display: 'block', marginBottom: '4px' }}>
+                        {t('fullName')} *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={expressName}
+                        onChange={(e) => setExpressName(e.target.value)}
+                        placeholder="ex: Youssef Bennani"
+                        style={{ width: '100%', padding: '12px 14px', borderRadius: '8px', border: '1px solid #D1D5DB', fontSize: '0.92rem', outline: 'none' }}
+                      />
                     </div>
+
+                    <div>
+                      <label style={{ fontSize: '0.82rem', fontWeight: '700', color: 'var(--obsidian-800)', display: 'block', marginBottom: '4px' }}>
+                        {language === 'ar' ? 'رقم الهاتف (الواتساب)' : 'Numéro de Téléphone / WhatsApp'} *
+                      </label>
+                      <input
+                        type="tel"
+                        required
+                        value={expressPhone}
+                        onChange={(e) => setExpressPhone(e.target.value)}
+                        placeholder="06 XX XX XX XX ou 07 XX XX XX XX"
+                        style={{ width: '100%', padding: '12px 14px', borderRadius: '8px', border: '1px solid #D1D5DB', fontSize: '0.92rem', outline: 'none' }}
+                      />
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                      <div>
+                        <label style={{ fontSize: '0.82rem', fontWeight: '700', color: 'var(--obsidian-800)', display: 'block', marginBottom: '4px' }}>
+                          {t('city')} *
+                        </label>
+                        <select
+                          value={expressCity}
+                          onChange={(e) => setExpressCity(e.target.value)}
+                          style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #D1D5DB', fontSize: '0.88rem', background: '#FFF', outline: 'none' }}
+                        >
+                          {MOROCCAN_CITIES.map((c) => (
+                            <option key={c.name} value={c.name}>
+                              {c.name} ({c.deliveryHours})
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <div>
+                        <label style={{ fontSize: '0.82rem', fontWeight: '700', color: 'var(--obsidian-800)', display: 'block', marginBottom: '4px' }}>
+                          Frais de port
+                        </label>
+                        <div style={{ padding: '12px', background: '#ECFDF5', border: '1px solid #A7F3D0', borderRadius: '8px', fontSize: '0.88rem', fontWeight: '800', color: '#059669', textAlign: 'center' }}>
+                          GRATUIT (0 DH)
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label style={{ fontSize: '0.82rem', fontWeight: '700', color: 'var(--obsidian-800)', display: 'block', marginBottom: '4px' }}>
+                        {t('address')} *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={expressAddress}
+                        onChange={(e) => setExpressAddress(e.target.value)}
+                        placeholder="ex: Quartier, Boulevard, N° Immeuble / Villa"
+                        style={{ width: '100%', padding: '12px 14px', borderRadius: '8px', border: '1px solid #D1D5DB', fontSize: '0.92rem', outline: 'none' }}
+                      />
+                    </div>
+
+                    {/* Total Preview */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px dashed #E5E7EB', paddingTop: '12px', marginTop: '6px' }}>
+                      <span style={{ fontSize: '0.92rem', color: '#4B5563', fontWeight: '600' }}>Total à payer à la livraison :</span>
+                      <span style={{ fontSize: '1.45rem', fontWeight: '800', color: 'var(--obsidian-950)' }}>
+                        {product.price * quantity} DH
+                      </span>
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={expressSubmitting}
+                      className="btn-gold"
+                      style={{ width: '100%', padding: '16px', fontSize: '1.02rem', fontWeight: '800', letterSpacing: '0.04em', marginTop: '6px', boxShadow: '0 8px 24px rgba(212,175,55,0.35)' }}
+                    >
+                      <Check size={20} />
+                      <span>{expressSubmitting ? 'Validation en cours...' : 'CONFIRMER MA COMMANDE (PAIEMENT À LA LIVRAISON)'}</span>
+                    </button>
+
+                    {/* Direct WhatsApp Alternative Order Button */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const msg = `Salam TWISHIYAT ! Je souhaite commander en 1 Clic : "${product.name}" au prix de ${product.price * quantity} DH pour livraison à ${expressCity}. Pouvez-vous confirmer ma commande ?`;
+                        window.open(`https://wa.me/212708759510?text=${encodeURIComponent(msg)}`, '_blank');
+                      }}
+                      style={{
+                        width: '100%',
+                        background: '#25D366',
+                        color: '#FFFFFF',
+                        padding: '13px',
+                        borderRadius: '8px',
+                        fontWeight: '700',
+                        fontSize: '0.92rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '8px',
+                        border: 'none',
+                        cursor: 'pointer',
+                        boxShadow: '0 4px 12px rgba(37,211,102,0.25)',
+                        transition: 'all 0.2s'
+                      }}
+                    >
+                      <Phone size={17} />
+                      <span>OU COMMANDER DIRECTEMENT PAR WHATSAPP</span>
+                    </button>
+                  </form>
+
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginTop: '14px', fontSize: '0.8rem', color: '#065F46', fontWeight: '600' }}>
+                    <ShieldCheck size={17} color="#059669" />
+                    <span>Rappel : Vous inspectez votre bijou avant de payer le moindre dirham au livreur.</span>
                   </div>
                 </div>
-
-                <div>
-                  <label style={{ fontSize: '0.82rem', fontWeight: '700', color: 'var(--obsidian-800)', display: 'block', marginBottom: '4px' }}>
-                    {t('address')} *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={expressAddress}
-                    onChange={(e) => setExpressAddress(e.target.value)}
-                    placeholder="ex: Quartier, Boulevard, N° Immeuble / Villa"
-                    style={{ width: '100%', padding: '12px 14px', borderRadius: '8px', border: '1px solid #D1D5DB', fontSize: '0.92rem', outline: 'none' }}
-                  />
-                </div>
-
-                {/* Total Preview */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px dashed #E5E7EB', paddingTop: '12px', marginTop: '6px' }}>
-                  <span style={{ fontSize: '0.92rem', color: '#4B5563', fontWeight: '600' }}>Total à payer à la livraison :</span>
-                  <span style={{ fontSize: '1.45rem', fontWeight: '800', color: 'var(--obsidian-950)' }}>
-                    {product.price * quantity} DH
-                  </span>
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={expressSubmitting}
-                  className="btn-gold"
-                  style={{ width: '100%', padding: '16px', fontSize: '1.02rem', fontWeight: '800', letterSpacing: '0.04em', marginTop: '6px', boxShadow: '0 8px 24px rgba(212,175,55,0.35)' }}
-                >
-                  <Check size={20} />
-                  <span>{expressSubmitting ? 'Validation en cours...' : 'CONFIRMER MA COMMANDE (PAIEMENT À LA LIVRAISON)'}</span>
-                </button>
-
-                {/* Direct WhatsApp Alternative Order Button */}
-                <button
-                  type="button"
-                  onClick={() => {
-                    const msg = `Salam TWISHIYAT ! Je souhaite commander en 1 Clic : "${product.name}" au prix de ${product.price * quantity} DH pour livraison à ${expressCity}. Pouvez-vous confirmer ma commande ?`;
-                    window.open(`https://wa.me/212708759510?text=${encodeURIComponent(msg)}`, '_blank');
-                  }}
-                  style={{
-                    width: '100%',
-                    background: '#25D366',
-                    color: '#FFFFFF',
-                    padding: '13px',
-                    borderRadius: '8px',
-                    fontWeight: '700',
-                    fontSize: '0.92rem',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '8px',
-                    border: 'none',
-                    cursor: 'pointer',
-                    boxShadow: '0 4px 12px rgba(37,211,102,0.25)',
-                    transition: 'all 0.2s'
-                  }}
-                >
-                  <Phone size={17} />
-                  <span>OU COMMANDER DIRECTEMENT PAR WHATSAPP</span>
-                </button>
-              </form>
-
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginTop: '14px', fontSize: '0.8rem', color: '#065F46', fontWeight: '600' }}>
-                <ShieldCheck size={17} color="#059669" />
-                <span>Rappel : Vous inspectez votre bijou avant de payer le moindre dirham au livreur.</span>
-              </div>
-            </div>
+              </>
+            )}
 
             {/* Accordion Information Tabs */}
             <div style={{ borderTop: '1px solid #E5E7EB' }}>

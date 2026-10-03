@@ -154,12 +154,74 @@ export function AdminProvider({ children }) {
     } catch (e) {}
   }, [coupons]);
 
-  // Insert Order to Supabase and Local state
+  // Coupon Management Helpers
+  const addCoupon = (newCoupon) => {
+    setCoupons((prev) => {
+      const codeClean = newCoupon.code.trim().toUpperCase();
+      const existing = prev.filter((c) => c.code.toUpperCase() !== codeClean);
+      const updated = [
+        {
+          code: codeClean,
+          type: newCoupon.type || 'percentage',
+          value: Number(newCoupon.value) || 10,
+          uses: 0,
+          active: true
+        },
+        ...existing
+      ];
+      try {
+        localStorage.setItem('twishiyat_coupons', JSON.stringify(updated));
+      } catch (e) {}
+      return updated;
+    });
+  };
+
+  const toggleCoupon = (code) => {
+    setCoupons((prev) => {
+      const updated = prev.map((c) =>
+        c.code.toUpperCase() === code.toUpperCase() ? { ...c, active: !c.active } : c
+      );
+      try {
+        localStorage.setItem('twishiyat_coupons', JSON.stringify(updated));
+      } catch (e) {}
+      return updated;
+    });
+  };
+
+  const deleteCoupon = (code) => {
+    setCoupons((prev) => {
+      const updated = prev.filter((c) => c.code.toUpperCase() !== code.toUpperCase());
+      try {
+        localStorage.setItem('twishiyat_coupons', JSON.stringify(updated));
+      } catch (e) {}
+      return updated;
+    });
+  };
+
+  // Insert Order to Supabase and Local state + Auto Decrement Stock
   const addOrder = async (newOrder) => {
     // 1. Update local state immediately for instant feedback
     setOrders((prev) => [newOrder, ...prev]);
 
-    // 2. Sync to Supabase Cloud
+    // 2. Automatically decrement stock of ordered items in storefront
+    try {
+      if (Array.isArray(newOrder.items)) {
+        newOrder.items.forEach((item) => {
+          const pId = item.productId || item.id;
+          if (pId) {
+            const currentProd = products.find((p) => p.id === pId);
+            if (currentProd && typeof currentProd.stock === 'number') {
+              const newStock = Math.max(0, currentProd.stock - (item.quantity || 1));
+              updateProduct(pId, { stock: newStock });
+            }
+          }
+        });
+      }
+    } catch (err) {
+      console.warn('Auto stock reduction notice:', err);
+    }
+
+    // 3. Sync to Supabase Cloud
     try {
       await supabase.from('orders').insert([
         {
@@ -189,7 +251,7 @@ export function AdminProvider({ children }) {
     }
   };
 
-  // Update order status in Supabase and Local state
+  // Update order status in Supabase, Local state, and Client Space
   const updateOrderStatus = async (orderId, newStatus) => {
     const nowStr = new Date().toLocaleString('fr-FR', {
       day: '2-digit',
@@ -200,22 +262,47 @@ export function AdminProvider({ children }) {
 
     let statusLabel = '';
     if (newStatus === 'confirmed') statusLabel = 'Confirmée par WhatsApp / Appel';
-    else if (newStatus === 'processing') statusLabel = 'En préparation en atelier';
+    else if (newStatus === 'processing') statusLabel = 'En préparation soignée en atelier';
     else if (newStatus === 'shipped') statusLabel = 'Expédiée avec Transporteur Express';
-    else if (newStatus === 'out_for_delivery') statusLabel = 'En cours de livraison';
+    else if (newStatus === 'out_for_delivery') statusLabel = 'En cours de livraison avec coursier';
     else if (newStatus === 'delivered') statusLabel = 'Livrée & Encaissée';
     else if (newStatus === 'cancelled') statusLabel = 'Annulée / Refusée';
+    else statusLabel = 'En attente de confirmation';
+
+    const stageHierarchy = ['pending_confirmation', 'confirmed', 'processing', 'shipped', 'out_for_delivery', 'delivered'];
+    const currentLevel = stageHierarchy.indexOf(newStatus);
 
     let updatedTimeline = [];
 
     setOrders((prev) =>
       prev.map((ord) => {
         if (ord.id === orderId) {
-          updatedTimeline = (ord.timeline || []).map((step) => {
-            if (step.status === newStatus) {
-              return { ...step, completed: true, current: true, date: nowStr };
+          const rawTimeline = (ord.timeline && ord.timeline.length > 0) ? ord.timeline : [
+            { status: 'received', title: 'Commande Enregistrée', date: 'Enregistrée', completed: true, current: false },
+            { status: 'confirmed', title: 'Confirmation WhatsApp / Appel', date: 'Sous 15 min', completed: false, current: false },
+            { status: 'processing', title: 'Préparation soignée en atelier TWISHIYAT', date: 'Même jour', completed: false, current: false },
+            { status: 'shipped', title: `Expédition Express (${ord.customer?.city || 'Maroc'})`, date: '24h-48h', completed: false, current: false },
+            { status: 'out_for_delivery', title: 'Remise au coursier pour livraison', date: 'Jour J', completed: false, current: false },
+            { status: 'delivered', title: 'Livraison & Paiement espèces au livreur', date: 'Finalisée', completed: false, current: false }
+          ];
+
+          updatedTimeline = rawTimeline.map((step) => {
+            const stepKey = step.status === 'received' ? 'pending_confirmation' : step.status;
+            const stepLevel = stageHierarchy.indexOf(stepKey);
+
+            if (newStatus === 'cancelled') {
+              return { ...step, current: false };
             }
-            return step;
+
+            const isDone = newStatus === 'delivered' ? true : (stepLevel <= currentLevel);
+            const isCurr = (stepKey === newStatus) || (newStatus === 'pending_confirmation' && step.status === 'received');
+
+            return {
+              ...step,
+              completed: isDone,
+              current: isCurr,
+              date: isCurr ? nowStr : (isDone ? step.date : step.date)
+            };
           });
 
           return {
@@ -229,7 +316,38 @@ export function AdminProvider({ children }) {
       })
     );
 
-    // Sync to Supabase Cloud
+    // 1. Sync to Client Local Storage (twishiyat_my_orders) for instant Mon Compte reflection
+    try {
+      const myOrdersRaw = localStorage.getItem('twishiyat_my_orders');
+      if (myOrdersRaw) {
+        const myOrders = JSON.parse(myOrdersRaw);
+        const updatedMyOrders = myOrders.map((ord) => {
+          if (ord.id === orderId) {
+            return {
+              ...ord,
+              status: newStatus,
+              statusLabel,
+              timeline: updatedTimeline.length > 0 ? updatedTimeline : ord.timeline
+            };
+          }
+          return ord;
+        });
+        localStorage.setItem('twishiyat_my_orders', JSON.stringify(updatedMyOrders));
+      }
+    } catch (e) {
+      console.warn('Sync to twishiyat_my_orders error:', e);
+    }
+
+    // 2. Dispatch cross-component event for instant UI update in open views (AccountView, TrackingView)
+    try {
+      window.dispatchEvent(
+        new CustomEvent('twishiyat_order_updated', {
+          detail: { orderId, newStatus, statusLabel, timeline: updatedTimeline }
+        })
+      );
+    } catch (e) {}
+
+    // 3. Sync to Supabase Cloud
     try {
       await supabase
         .from('orders')
@@ -243,8 +361,6 @@ export function AdminProvider({ children }) {
       console.warn('Supabase status update notice:', err);
     }
   };
-
-
 
   // KPIs Calculations
   const totalSales = orders
@@ -275,6 +391,9 @@ export function AdminProvider({ children }) {
         updateProduct,
         addNewProduct,
         deleteProduct,
+        addCoupon,
+        toggleCoupon,
+        deleteCoupon,
         supabaseConnected,
         kpis: {
           totalSales,

@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useStore } from '../../context/StoreContext';
+import { useAdmin } from '../../context/AdminContext';
 import brandLogo from '../../assets/images/logo.png';
 import { MOROCCAN_CITIES } from '../../data/moroccanCities';
 import { 
@@ -15,7 +16,10 @@ import {
   Edit2,
   Save,
   ShieldCheck,
-  Check
+  Check,
+  Clock,
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react';
 
 export default function AccountView() {
@@ -31,8 +35,11 @@ export default function AccountView() {
     addToast
   } = useStore();
 
+  const { orders: adminOrders } = useAdmin();
+
   const [activeTab, setActiveTab] = useState('orders'); // 'orders', 'wishlist', 'addresses', 'profile'
   const [trackingNumberInput, setTrackingNumberInput] = useState('');
+  const [expandedOrderId, setExpandedOrderId] = useState(null);
 
   // Editable Profile / Address State
   const [formData, setFormData] = useState({
@@ -44,6 +51,56 @@ export default function AccountView() {
   });
   const [isEditingAddress, setIsEditingAddress] = useState(false);
   const [isEditingProfile, setIsEditingProfile] = useState(false);
+
+  // Synchronize customer orders with authoritative admin & Supabase orders in real-time
+  const liveCustomerOrders = useMemo(() => {
+    const list = [...customerOrders];
+
+    // If customer has a phone number, match any previous orders with that phone
+    const cleanPhone = (customerProfile?.phone || formData?.phone || '').trim().replace(/[\s\-\.]/g, '');
+    if (cleanPhone.length >= 8 && Array.isArray(adminOrders)) {
+      adminOrders.forEach((ao) => {
+        const aoPhone = (ao.customer?.phone || '').trim().replace(/[\s\-\.]/g, '');
+        if (aoPhone && (aoPhone === cleanPhone || aoPhone.endsWith(cleanPhone.slice(-8))) && !list.some((o) => o.id === ao.id)) {
+          list.push(ao);
+        }
+      });
+    }
+
+    // Merge each order with the authoritative status and timeline from adminOrders
+    return list.map((cOrd) => {
+      const live = adminOrders?.find((ao) => ao.id === cOrd.id);
+      if (live) {
+        return {
+          ...cOrd,
+          status: live.status,
+          statusLabel: live.statusLabel,
+          carrier: live.carrier || cOrd.carrier,
+          timeline: live.timeline || cOrd.timeline
+        };
+      }
+      return cOrd;
+    });
+  }, [customerOrders, adminOrders, customerProfile?.phone, formData?.phone]);
+
+  const getOrderStatusConfig = (status) => {
+    switch (status) {
+      case 'delivered':
+        return { bg: '#D1FAE5', color: '#065F46', border: '1px solid #A7F3D0', label: '✅ Livrée & Encaissée' };
+      case 'out_for_delivery':
+        return { bg: '#FEF3C7', color: '#92400E', border: '1px solid #FDE68A', label: '🛵 En cours de livraison avec coursier' };
+      case 'shipped':
+        return { bg: '#EFF6FF', color: '#1D4ED8', border: '1px solid #BFDBFE', label: '🚚 Expédiée / En transit' };
+      case 'processing':
+        return { bg: '#F3E8FF', color: '#6B21A8', border: '1px solid #E9D5FF', label: '📦 En préparation en atelier' };
+      case 'confirmed':
+        return { bg: '#E0F2FE', color: '#0369A1', border: '1px solid #BAE6FD', label: '📞 Confirmée par nos équipes' };
+      case 'cancelled':
+        return { bg: '#FEE2E2', color: '#991B1B', border: '1px solid #FCA5A5', label: '❌ Commande Annulée' };
+      default:
+        return { bg: '#FEF3C7', color: '#92400E', border: '1px solid #FDE68A', label: '⏳ En attente de confirmation' };
+    }
+  };
 
   const wishlistProducts = products.filter((p) => wishlist.includes(p.id));
 
@@ -129,7 +186,7 @@ export default function AccountView() {
         {/* Tab Navigation */}
         <div style={{ display: 'flex', gap: '8px', borderBottom: '1px solid #E5E7EB', marginBottom: '32px', overflowX: 'auto', paddingBottom: '4px' }}>
           {[
-            { id: 'orders', label: `Mes Commandes (${customerOrders.length})`, icon: Package },
+            { id: 'orders', label: `Mes Commandes (${liveCustomerOrders.length})`, icon: Package },
             { id: 'wishlist', label: `Favoris (${wishlistProducts.length})`, icon: Heart },
             { id: 'addresses', label: 'Adresse de Livraison', icon: MapPin },
             { id: 'profile', label: 'Mes Coordonnées', icon: User }
@@ -165,7 +222,7 @@ export default function AccountView() {
         {/* Tab 1: Orders History */}
         {activeTab === 'orders' && (
           <div>
-            {customerOrders.length === 0 ? (
+            {liveCustomerOrders.length === 0 ? (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                 <div style={{ textAlign: 'center', padding: '50px 24px', background: '#FFFFFF', borderRadius: '16px', border: '1px solid #EFEAE2', boxShadow: 'var(--shadow-sm)' }}>
                   <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'rgba(212, 175, 55, 0.12)', border: '1px solid var(--border-gold)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--gold-700)', margin: '0 auto 16px auto' }}>
@@ -211,76 +268,147 @@ export default function AccountView() {
               </div>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                {customerOrders.map((ord) => (
-                  <div
-                    key={ord.id}
-                    style={{
-                      background: '#FFFFFF',
-                      borderRadius: '12px',
-                      border: '1px solid #EFEAE2',
-                      padding: '24px',
-                      boxShadow: 'var(--shadow-sm)'
-                    }}
-                  >
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', borderBottom: '1px solid #F3F4F6', paddingBottom: '14px', marginBottom: '16px' }}>
-                      <div>
-                        <span style={{ fontSize: '0.8rem', color: '#9CA3AF' }}>Commande N°</span>
-                        <h3 style={{ fontSize: '1.2rem', color: 'var(--obsidian-900)', margin: '2px 0' }}>
-                          {ord.id}
-                        </h3>
-                        <span style={{ fontSize: '0.75rem', color: '#9CA3AF' }}>
-                          {ord.date ? new Date(ord.date).toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' }) : 'Récemment'}
-                        </span>
-                      </div>
+                {liveCustomerOrders.map((ord) => {
+                  const statusConfig = getOrderStatusConfig(ord.status);
+                  const isExpanded = expandedOrderId === ord.id;
 
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                        <span
-                          style={{
-                            background: ord.status === 'delivered' ? '#D1FAE5' : '#FEF3C7',
-                            color: ord.status === 'delivered' ? '#065F46' : '#92400E',
-                            padding: '5px 12px',
-                            borderRadius: '20px',
-                            fontSize: '0.78rem',
-                            fontWeight: '700'
-                          }}
-                        >
-                          {ord.statusLabel || 'En cours de traitement'}
-                        </span>
-
-                        <button
-                          className="btn-dark"
-                          style={{ padding: '8px 14px', fontSize: '0.8rem' }}
-                          onClick={() => navigateTo('tracking', ord.id)}
-                        >
-                          <Truck size={14} />
-                          <span>Suivre le colis</span>
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Items in order */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '16px' }}>
-                      {ord.items?.map((it, i) => (
-                        <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.88rem' }}>
-                          <span>
-                            <strong>{it.quantity}x</strong> {it.name} {it.variant ? `(${it.variant})` : ''}
-                          </span>
-                          <span style={{ fontWeight: '700', color: 'var(--obsidian-900)' }}>
-                            {it.price * it.quantity} DH
+                  return (
+                    <div
+                      key={ord.id}
+                      style={{
+                        background: '#FFFFFF',
+                        borderRadius: '12px',
+                        border: '1px solid #EFEAE2',
+                        padding: '24px',
+                        boxShadow: 'var(--shadow-sm)',
+                        transition: 'box-shadow 0.2s'
+                      }}
+                    >
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', borderBottom: '1px solid #F3F4F6', paddingBottom: '14px', marginBottom: '16px' }}>
+                        <div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            <span style={{ fontSize: '0.8rem', color: '#9CA3AF' }}>Commande N°</span>
+                            <h3 style={{ fontSize: '1.25rem', color: 'var(--obsidian-900)', margin: 0, fontWeight: '800' }}>
+                              {ord.id}
+                            </h3>
+                          </div>
+                          <span style={{ fontSize: '0.78rem', color: '#9CA3AF', display: 'block', marginTop: '2px' }}>
+                            {ord.date ? new Date(ord.date).toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'Récemment'}
                           </span>
                         </div>
-                      ))}
-                    </div>
 
-                    {/* Footer details */}
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid #F3F4F6', paddingTop: '12px', fontSize: '0.82rem', color: '#6B7280' }}>
-                      <span>📍 {ord.customer?.city} ({ord.customer?.address})</span>
-                      <span style={{ fontSize: '1rem', fontWeight: '800', color: 'var(--obsidian-950)' }}>
-                        Total : {ord.total} DH (Paiement COD à la livraison)
-                      </span>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+                          <span
+                            style={{
+                              background: statusConfig.bg,
+                              color: statusConfig.color,
+                              border: statusConfig.border,
+                              padding: '6px 14px',
+                              borderRadius: '20px',
+                              fontSize: '0.8rem',
+                              fontWeight: '700'
+                            }}
+                          >
+                            {statusConfig.label}
+                          </span>
+
+                          <button
+                            className="btn-dark"
+                            style={{ padding: '8px 14px', fontSize: '0.8rem' }}
+                            onClick={() => navigateTo('tracking', ord.id)}
+                            title="Suivre le colis avec toutes les étapes"
+                          >
+                            <Truck size={14} />
+                            <span>Suivre le colis</span>
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Items in order */}
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '16px' }}>
+                        {ord.items?.map((it, i) => (
+                          <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.88rem' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                              {it.image && (
+                                <img
+                                  src={it.image}
+                                  alt={it.name}
+                                  style={{ width: '42px', height: '42px', objectFit: 'cover', borderRadius: '6px', border: '1px solid #E5E7EB' }}
+                                />
+                              )}
+                              <span>
+                                <strong>{it.quantity}x</strong> {it.name} {it.variant ? `(${it.variant})` : ''} {it.size ? `• ${it.size}` : ''}
+                              </span>
+                            </div>
+                            <span style={{ fontWeight: '700', color: 'var(--obsidian-900)' }}>
+                              {it.price * it.quantity} DH
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Step Timeline Accordion Toggle */}
+                      {ord.timeline && ord.timeline.length > 0 && (
+                        <div style={{ marginBottom: '14px', borderTop: '1px dashed #E5E7EB', paddingTop: '10px' }}>
+                          <button
+                            onClick={() => setExpandedOrderId(isExpanded ? null : ord.id)}
+                            style={{ background: 'none', border: 'none', color: 'var(--gold-800)', fontSize: '0.82rem', fontWeight: '700', display: 'inline-flex', alignItems: 'center', gap: '5px', cursor: 'pointer', padding: '4px 0' }}
+                          >
+                            <Clock size={14} />
+                            <span>{isExpanded ? 'Masquer le parcours logistique' : 'Afficher les étapes de livraison'}</span>
+                            {isExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                          </button>
+
+                          {isExpanded && (
+                            <div style={{ marginTop: '12px', background: '#FAF8F5', borderRadius: '10px', padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                              {ord.timeline.map((step, sIdx) => (
+                                <div key={sIdx} style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                                  <div
+                                    style={{
+                                      width: '24px',
+                                      height: '24px',
+                                      borderRadius: '50%',
+                                      background: step.completed ? 'var(--gold-500)' : '#E5E7EB',
+                                      color: step.completed ? '#000' : '#9CA3AF',
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      justifyContent: 'center',
+                                      flexShrink: 0,
+                                      marginTop: '2px'
+                                    }}
+                                  >
+                                    {step.completed ? <Check size={14} /> : <Clock size={12} />}
+                                  </div>
+                                  <div style={{ flexGrow: 1 }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                                      <span style={{ fontSize: '0.85rem', fontWeight: step.current ? '700' : '500', color: step.current ? 'var(--gold-900)' : '#374151' }}>
+                                        {step.title}
+                                      </span>
+                                      <span style={{ fontSize: '0.75rem', color: '#9CA3AF' }}>{step.date}</span>
+                                    </div>
+                                    {step.current && (
+                                      <span style={{ fontSize: '0.72rem', color: '#059669', background: '#D1FAE5', padding: '1px 6px', borderRadius: '4px', fontWeight: '600', display: 'inline-block', marginTop: '2px' }}>
+                                        Étape actuelle
+                                      </span>
+                                    )}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      )}
+
+                      {/* Footer details */}
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid #F3F4F6', paddingTop: '12px', fontSize: '0.82rem', color: '#6B7280', flexWrap: 'wrap', gap: '8px' }}>
+                        <span>📍 Livraison à {ord.customer?.city} ({ord.customer?.address})</span>
+                        <span style={{ fontSize: '1rem', fontWeight: '800', color: 'var(--obsidian-950)' }}>
+                          Total : {ord.total} DH (Paiement COD à la réception)
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>

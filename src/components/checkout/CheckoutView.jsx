@@ -83,6 +83,11 @@ export default function CheckoutView() {
       return;
     }
 
+    if (cart.some((item) => item.product.stock !== undefined && item.product.stock <= 0)) {
+      addToast('Un article dans votre panier est en rupture de stock. Veuillez le retirer pour finaliser.', 'error');
+      return;
+    }
+
     setIsSubmitting(true);
     trackPixel('InitiateCheckout', { value: finalTotal, num_items: cart.length });
 
