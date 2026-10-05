@@ -52,7 +52,7 @@ export const PRODUCTS = [
     gallery: [watchGold, watchLeather, giftBox],
     shortDescription: 'Chronographe d’exception avec cadran vert émeraude soleillé et finitions dorées haute précision.',
     shortDescriptionAr: 'كرونوغراف استثنائي بمينا أخضر زمردي ولمسات ذهبية راقية مقاومة للماء.',
-    description: 'Chef-d’œuvre de l’horlogerie moderne inspiré du raffinement marocain. Dotée d’un boîtier haute résistance avec dorure protectrice inaltérable, d’un cadran vert émeraude soleillé emblématique et d’un verre saphir inrayable. Livrée dans son écrin de luxe TWISHIYAT avec certificat d’authenticité et garantie 1 an.',
+    description: 'Chef-d’œuvre de l’horlogerie moderne inspiré du raffinement marocain. Dotée d’un boîtier haute résistance avec dorure protectrice inaltérable, d’un cadran vert émeraude soleillé emblématique et d’un verre saphir inrayable. Livrée dans son écrin de luxe TWISHIYAT avec certificat d’authenticité.',
     descriptionAr: 'تحفة فنية في صناعة الساعات الراقية مستوحاة من الأناقة المغربية العصرية. هيكل متين فائق الجودة مطلي بطبقة ذهبية متألقة مقاومة لتغير اللون مع زجاج الياقوت المضاد للخدش.',
     specs: {
       'Couleur': 'Finition Dorée & Vert Émeraude',
@@ -61,8 +61,7 @@ export const PRODUCTS = [
       'Mouvement': 'Quartz Haute Précision Chronographe',
       'Verre': 'Saphir Inrayable traité antireflet',
       'Étanchéité': '5 ATM / 50 Mètres (Résiste à l’eau)',
-      'Diamètre': '41 mm',
-      'Garantie': 'Garantie 1 An incluse'
+      'Diamètre': '41 mm'
     },
     variants: [
       { id: 'gold-green', name: 'Finition Dorée & Vert Émeraude', nameAr: 'ذهب أصفر ومينا أخضر', colorHex: '#D4AF37' },
@@ -100,8 +99,7 @@ export const PRODUCTS = [
       'Bracelet': 'Cuir Véritable surpiqué marron havane',
       'Épaisseur': '7 mm (Profil ultra-plat)',
       'Mouvement': 'Miyota Quartz Japonais Calibre Slim',
-      'Verre': 'Minéral trempé résistant aux chocs',
-      'Garantie': '1 An'
+      'Verre': 'Minéral trempé résistant aux chocs'
     },
     variants: [
       { id: 'brown-gold', name: 'Cuir Marron & Or', nameAr: 'جلد بني وذهب', colorHex: '#6E3C1B' },
@@ -131,8 +129,8 @@ export const PRODUCTS = [
     gallery: [watchPrxGreen, watchGold, giftBox],
     shortDescription: 'Design : Cadran soleillé argenté ultra-lumineux. Confort : Bracelet en silicone résistant à l’eau et à la transpiration, parfait au quotidien comme en soirée.',
     shortDescriptionAr: 'تصميم راقي بمينا أخضر زمردي جذاب وسوار سيليكون مريح ومقاوم للماء.',
-    description: "Design : Cadran soleillé argenté ultra-lumineux. Confort : Bracelet en silicone, résistant à l'eau et à la transpiration, parfait au quotidien comme en soirée. Fonctions : Guichet dateur intégré à 3h, aiguilles luminescentes et finition soignée. Contenu du pack : Montre + Coffret rigide cadeau Twishiyat.ma + Carte de remerciement. Livraison : Rapide partout au Maroc (24h/48h) - Paiement à la livraison après vérification du produit.",
-    descriptionAr: 'ساعة عصرية تجمع بين الفخامة والعملية اليومية. مينا أخضر زمردي مميز، سوار سيليكون عالي الجودة مضاد للماء والتعرق، ونافذة لعرض التاريخ. تأتي في علبة هدايا فاخرة من توشيات مع بطاقة شكر وضمان لمدة سنة كاملة.',
+    description: "Design : Cadran soleillé argenté ultra-lumineux. Confort : Bracelet en silicone, résistant à l'eau et à la transpiration, parfait au quotidien comme en soirée. Fonctions : Guichet dateur intégré à 3h, aiguilles luminescentes et finition soignée. Contenu du pack : Montre + Coffret rigide cadeau Twishiyat.ma + Carte de remerciement. Livraison : Rapide partout au Maroc - Paiement à la livraison après vérification du produit.",
+    descriptionAr: 'ساعة عصرية تجمع بين الفخامة والعملية اليومية. مينا أخضر زمردي مميز، سوار سيليكون عالي الجودة مضاد للماء والتعرق، ونافذة لعرض التاريخ. تأتي في علبة هدايا فاخرة من توشيات مع بطاقة شكر.',
     specs: {
       'Couleur': 'Argent Brossé & Vert Émeraude',
       'Matériau': 'Alliage Haute Résistance & Finition Argentée Brossée',
@@ -140,8 +138,7 @@ export const PRODUCTS = [
       'Mouvement': 'Quartz Haute Précision Chronographe',
       'Verre': 'Saphir Inrayable traité antireflet',
       'Étanchéité': '5 ATM / 50 Mètres (Résiste aux ablutions et éclaboussures)',
-      'Bracelet': 'Silicone Haute Densité Confort',
-      'Garantie': 'Garantie Prestige 1 An incluse avec carte TWISHIYAT'
+      'Bracelet': 'Silicone Haute Densité Confort'
     },
     variants: [
       { id: 'prx-green', name: 'Vert Émeraude & Argent Brossé', nameAr: 'أخضر زمردي وفضي', colorHex: '#1B4D3E' }
@@ -361,7 +358,7 @@ export const PRODUCTS = [
       'Couleur': 'Coffret Velours Noir & Or',
       'Contenu': '1x Montre Royale + 1x Jonc Ciselé Doré + Outil de réglage',
       'Packaging': 'Écrin rigide velours noir doublé satin or avec sceau armoiries',
-      'Accessoires': 'Certificat de garantie 1 an + Sac cadeau TWISHIYAT',
+      'Accessoires': 'Certificat d’authenticité + Sac cadeau TWISHIYAT',
       'Idéal': 'Cadeau de mariage, Fêtes, Anniversaires'
     },
     variants: [

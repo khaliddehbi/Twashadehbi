@@ -218,7 +218,7 @@ export default function HomeView() {
                 <Truck size={26} />
               </div>
               <div>
-                <h4 className="trust-title">Livraison Gratuite 24h-48h</h4>
+                <h4 className="trust-title">Livraison Gratuite Partout au Maroc</h4>
                 <p className="trust-desc">Expédition rapide et soignée directement à domicile dans toutes les villes du Royaume.</p>
               </div>
             </div>
@@ -228,7 +228,7 @@ export default function HomeView() {
                 <Sparkles size={26} />
               </div>
               <div>
-                <h4 className="trust-title">Garantie & Éclat Durable</h4>
+                <h4 className="trust-title">Éclat & Finition Durable</h4>
                 <p className="trust-desc">Finitions haute précision avec traitement protecteur résistant à l’eau et au temps.</p>
               </div>
             </div>

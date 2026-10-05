@@ -126,8 +126,8 @@ export default function CheckoutView() {
         { status: 'received', title: 'Commande Enregistrée', date: 'À l’instant', completed: true, current: true },
         { status: 'confirmed', title: 'Confirmation téléphonique en cours', date: 'Sous 15 min', completed: false },
         { status: 'processing', title: 'Préparation et emballage soigné', date: 'Aujourd’hui', completed: false },
-        { status: 'shipped', title: `Expédition vers ${city}`, date: cityData.deliveryHours, completed: false },
-        { status: 'delivered', title: 'Livraison & Paiement espèces au livreur', date: `Prévue sous ${cityData.deliveryHours}`, completed: false }
+        { status: 'shipped', title: `Expédition vers ${city}`, date: 'En cours', completed: false },
+        { status: 'delivered', title: 'Livraison & Paiement espèces au livreur', date: 'Remise en main propre', completed: false }
       ]
     };
 
@@ -226,7 +226,7 @@ export default function CheckoutView() {
                       >
                         {MOROCCAN_CITIES.map((c) => (
                           <option key={c.name} value={c.name}>
-                            {c.name} ({c.deliveryHours})
+                            {c.name}
                           </option>
                         ))}
                       </select>
@@ -405,7 +405,7 @@ export default function CheckoutView() {
 
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginTop: '16px', fontSize: '0.8rem', color: '#4B5563' }}>
                 <ShieldCheck size={16} color="#059669" />
-                <span>Garantie 1 An • Inspection du colis avant tout paiement en espèces.</span>
+                <span>Inspection du colis avant tout paiement en espèces au livreur.</span>
               </div>
             </form>
           </div>

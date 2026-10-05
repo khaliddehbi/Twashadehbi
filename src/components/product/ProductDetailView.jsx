@@ -38,7 +38,8 @@ export default function ProductDetailView() {
     trackPixel,
     setLastPlacedOrder,
     products,
-    recordCustomerOrder
+    recordCustomerOrder,
+    recordProductView
   } = useStore();
 
   const { addOrder } = useAdmin();
@@ -51,6 +52,12 @@ export default function ProductDetailView() {
   const [quantity, setQuantity] = useState(1);
   const [openTab, setOpenTab] = useState('specs'); // 'specs', 'delivery', 'care'
   const [showStickyBar, setShowStickyBar] = useState(false);
+
+  useEffect(() => {
+    if (product && product.id && recordProductView) {
+      recordProductView(product.id);
+    }
+  }, [product?.id]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -349,14 +356,30 @@ export default function ProductDetailView() {
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem', color: 'var(--gold-900)', fontWeight: '600' }}>
                 <Sparkles size={15} color="var(--gold-600)" />
-                <span>Écrin cadeau velours noir TWISHIYAT & carte de garantie 1 an offerts</span>
+                <span>Écrin cadeau velours noir TWISHIYAT & certificat d'authenticité offerts</span>
               </div>
             </div>
 
             {/* Short Description */}
-            <p style={{ fontSize: '0.95rem', color: '#4B5563', lineHeight: '1.6', marginBottom: '24px' }}>
+            <p style={{ fontSize: '0.95rem', color: '#4B5563', lineHeight: '1.6', marginBottom: '20px' }}>
               {language === 'ar' ? product.descriptionAr : product.description}
             </p>
+
+            {/* Explanatory Product Description Images */}
+            {product.descriptionImages && product.descriptionImages.length > 0 && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', margin: '0 0 24px 0' }}>
+                <span style={{ fontSize: '0.82rem', fontWeight: '800', color: 'var(--obsidian-800)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                  📸 Détails & Photos Explicatives :
+                </span>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '10px' }}>
+                  {product.descriptionImages.map((imgUrl, idx) => (
+                    <div key={idx} style={{ borderRadius: '10px', overflow: 'hidden', border: '1px solid #E2E8F0', background: '#F8FAFC', boxShadow: '0 2px 6px rgba(0,0,0,0.04)' }}>
+                      <img src={imgUrl} alt={`Détail explicatif ${idx + 1}`} style={{ width: '100%', height: '160px', objectFit: 'cover', display: 'block' }} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Variants Picker */}
             {product.variants && product.variants.length > 0 && (
@@ -501,9 +524,18 @@ export default function ProductDetailView() {
                     position: 'relative'
                   }}
                 >
-                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'var(--grad-gold)', color: 'var(--obsidian-950)', padding: '5px 14px', borderRadius: '20px', fontSize: '0.78rem', fontWeight: '700', textTransform: 'uppercase', marginBottom: '12px' }}>
-                    <Sparkles size={14} />
-                    <span>Formulaire Express Maroc • Paiement à la Livraison</span>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px', marginBottom: '14px' }}>
+                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'var(--grad-gold)', color: 'var(--obsidian-950)', padding: '5px 14px', borderRadius: '20px', fontSize: '0.78rem', fontWeight: '700', textTransform: 'uppercase' }}>
+                      <Sparkles size={14} />
+                      <span>Formulaire Express Maroc • Paiement à la Livraison</span>
+                    </div>
+                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '7px', fontSize: '0.8rem', color: '#15803D', fontWeight: '700', background: '#F0FDF4', padding: '4px 12px', borderRadius: '14px', border: '1px solid #BBF7D0' }}>
+                      <span style={{ position: 'relative', display: 'flex', width: '7px', height: '7px' }}>
+                        <span style={{ animation: 'ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite', position: 'absolute', display: 'inline-flex', height: '100%', width: '100%', borderRadius: '50%', background: '#22C55E', opacity: 0.75 }} />
+                        <span style={{ position: 'relative', display: 'inline-flex', borderRadius: '50%', height: '7px', width: '7px', background: '#16A34A' }} />
+                      </span>
+                      <span>16 visiteurs en ce moment</span>
+                    </div>
                   </div>
 
                   <h3 style={{ fontSize: '1.28rem', color: 'var(--obsidian-900)', marginBottom: '6px', fontFamily: 'var(--font-serif)' }}>
@@ -512,17 +544,6 @@ export default function ProductDetailView() {
                   <p style={{ fontSize: '0.84rem', color: '#6B7280', marginBottom: '18px' }}>
                     Remplissez vos coordonnées ci-dessous : livraison express à domicile partout au Maroc. Vous ne payez qu'après avoir inspecté votre bijou.
                   </p>
-
-                  {/* Dynamic City Delivery Notice */}
-                  {(() => {
-                    const currentCity = MOROCCAN_CITIES.find(c => c.name === expressCity) || MOROCCAN_CITIES[0];
-                    return (
-                      <div style={{ background: '#F0FDF4', border: '1px solid #BBF7D0', padding: '10px 14px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: '#166534', fontWeight: '600', marginBottom: '16px' }}>
-                        <Truck size={17} color="#16A34A" />
-                        <span>⚡ Délai estimé vers <strong>{expressCity}</strong> : {currentCity.deliveryHours} • Remise en main propre</span>
-                      </div>
-                    );
-                  })()}
 
                   <form onSubmit={handleExpressOrder} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                     <div>
@@ -553,32 +574,21 @@ export default function ProductDetailView() {
                       />
                     </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                      <div>
-                        <label style={{ fontSize: '0.82rem', fontWeight: '700', color: 'var(--obsidian-800)', display: 'block', marginBottom: '4px' }}>
-                          {t('city')} *
-                        </label>
-                        <select
-                          value={expressCity}
-                          onChange={(e) => setExpressCity(e.target.value)}
-                          style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #D1D5DB', fontSize: '0.88rem', background: '#FFF', outline: 'none' }}
-                        >
-                          {MOROCCAN_CITIES.map((c) => (
-                            <option key={c.name} value={c.name}>
-                              {c.name} ({c.deliveryHours})
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-
-                      <div>
-                        <label style={{ fontSize: '0.82rem', fontWeight: '700', color: 'var(--obsidian-800)', display: 'block', marginBottom: '4px' }}>
-                          Frais de port
-                        </label>
-                        <div style={{ padding: '12px', background: '#ECFDF5', border: '1px solid #A7F3D0', borderRadius: '8px', fontSize: '0.88rem', fontWeight: '800', color: '#059669', textAlign: 'center' }}>
-                          GRATUIT (0 DH)
-                        </div>
-                      </div>
+                    <div>
+                      <label style={{ fontSize: '0.82rem', fontWeight: '700', color: 'var(--obsidian-800)', display: 'block', marginBottom: '4px' }}>
+                        {t('city')} *
+                      </label>
+                      <select
+                        value={expressCity}
+                        onChange={(e) => setExpressCity(e.target.value)}
+                        style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #D1D5DB', fontSize: '0.88rem', background: '#FFF', outline: 'none' }}
+                      >
+                        {MOROCCAN_CITIES.map((c) => (
+                          <option key={c.name} value={c.name}>
+                            {c.name}
+                          </option>
+                        ))}
+                      </select>
                     </div>
 
                     <div>
@@ -664,7 +674,7 @@ export default function ProductDetailView() {
                 </button>
                 {openTab === 'specs' && product.specs && (
                   <div style={{ paddingBottom: '16px', display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.85rem' }}>
-                    {Object.entries(product.specs).map(([key, val]) => (
+                    {Object.entries(product.specs).filter(([key]) => !key.toLowerCase().includes('garantie')).map(([key, val]) => (
                       <div key={key} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '6px 0', borderBottom: '1px solid #F3F4F6' }}>
                         <span style={{ color: '#6B7280' }}>{key}</span>
                         {key.toLowerCase().includes('couleur') ? (
@@ -697,22 +707,16 @@ export default function ProductDetailView() {
                   onClick={() => setOpenTab(openTab === 'delivery' ? null : 'delivery')}
                   style={{ width: '100%', padding: '16px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontWeight: '700', fontSize: '0.95rem', color: 'var(--obsidian-900)' }}
                 >
-                  <span>Livraison & Délais par Ville au Maroc</span>
+                  <span>Livraison & Modalités par Ville au Maroc</span>
                   {openTab === 'delivery' ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
                 </button>
                 {openTab === 'delivery' && (
                   <div style={{ paddingBottom: '16px', fontSize: '0.85rem', color: '#4B5563', lineHeight: '1.6' }}>
                     <p style={{ marginBottom: '8px' }}>
-                      <strong>Casablanca & Mohammedia :</strong> Livraison sous 24h par nos livreurs dédiés.
-                    </p>
-                    <p style={{ marginBottom: '8px' }}>
-                      <strong>Rabat, Marrakech, Tanger, Fès, Meknès :</strong> Livraison sous 24h à 48h via Cathedis / Amana.
-                    </p>
-                    <p style={{ marginBottom: '8px' }}>
-                      <strong>Agadir, Oujda, Régions du Sud :</strong> Livraison sous 48h à 72h.
+                      <strong>Partout au Maroc :</strong> Expédition rapide à domicile avec remise en main propre par nos livreurs partenaires.
                     </p>
                     <div style={{ background: '#FAF8F5', padding: '10px 14px', borderRadius: '6px', marginTop: '10px', border: '1px solid #EAE5DC' }}>
-                      <span style={{ color: 'var(--gold-800)', fontWeight: '600' }}>Inspection garantie :</span> Vous avez le droit d'ouvrir le paquet pour vérifier votre bijou avant de régler en espèces au livreur.
+                      <span style={{ color: 'var(--gold-800)', fontWeight: '600' }}>Inspection du colis :</span> Vous avez le droit d'ouvrir le paquet pour vérifier votre bijou avant de régler en espèces au livreur.
                     </div>
                   </div>
                 )}
@@ -724,7 +728,7 @@ export default function ProductDetailView() {
                   onClick={() => setOpenTab(openTab === 'care' ? null : 'care')}
                   style={{ width: '100%', padding: '16px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontWeight: '700', fontSize: '0.95rem', color: 'var(--obsidian-900)' }}
                 >
-                  <span>Conseils d'Entretien & Garantie 1 An</span>
+                  <span>Conseils d'Entretien & Précautions</span>
                   {openTab === 'care' ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
                 </button>
                 {openTab === 'care' && (

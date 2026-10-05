@@ -49,7 +49,8 @@ import {
   ArrowUpRight,
   Layers,
   HelpCircle,
-  Globe
+  Globe,
+  Palette
 } from 'lucide-react';
 
 export default function AdminView() {
@@ -68,7 +69,7 @@ export default function AdminView() {
     kpis 
   } = useAdmin();
 
-  const { addToast, navigateTo, language, setLanguage } = useStore();
+  const { addToast, navigateTo, language, setLanguage, totalVisitors, updateTotalVisitors, productViews } = useStore();
 
   // Authentication State
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
@@ -109,18 +110,22 @@ export default function AdminView() {
     badge: 'Best-Seller',
     image: (IMAGE_PRESETS && IMAGE_PRESETS[0] ? IMAGE_PRESETS[0].image : ''),
     gallery: [],
+    descriptionImages: [],
     shortDescription: '',
     shortDescriptionAr: '',
     description: '',
     descriptionAr: '',
     color: 'Doré Prestige',
     colorHex: '#D4AF37',
+    colorVariants: [
+      { id: 'c1', name: 'Doré Prestige', colorHex: '#D4AF37', stock: 12 }
+    ],
+    visitorsCount: 142,
     material: 'Alliage Haute Résistance & Finition Dorée Haute Précision',
     waterResistance: '5 ATM / 50 Mètres (Résiste aux ablutions et éclaboussures)',
     glass: 'Saphir Inrayable traité antireflet',
     movement: 'Quartz Haute Précision Chronographe',
     dimensions: '41 mm (Épaisseur 11 mm)',
-    warranty: 'Garantie Prestige 1 An incluse avec carte TWISHIYAT',
     sizeGuide: 'Taille Unique Ajustable (Outil de réglage offert dans le coffret)'
   };
 
@@ -179,6 +184,18 @@ export default function AdminView() {
   const handleOpenEditProduct = (prod) => {
     setIsEditingMode(true);
     setEditingProductId(prod.id);
+    const existingColor = prod.specs?.['Couleur'] || prod.specs?.['Couleur & Finition'] || prod.variants?.[0]?.name || 'Doré Prestige';
+    const existingHex = prod.colorHex || prod.variants?.[0]?.colorHex || '#D4AF37';
+
+    const parsedColorVariants = (prod.variants && prod.variants.length > 0)
+      ? prod.variants.map((v, i) => ({
+          id: v.id || `c${i + 1}`,
+          name: v.name || existingColor,
+          colorHex: v.colorHex || existingHex,
+          stock: v.stock !== undefined ? Number(v.stock) : Math.max(1, Math.round((prod.stock || 10) / prod.variants.length))
+        }))
+      : [{ id: 'c1', name: existingColor, colorHex: existingHex, stock: prod.stock !== undefined ? Number(prod.stock) : 10 }];
+
     setProductFormData({
       name: prod.name || '',
       nameAr: prod.nameAr || '',
@@ -190,18 +207,20 @@ export default function AdminView() {
       badge: prod.badge || (prod.isBestSeller ? 'Best-Seller' : (prod.isNewArrival ? 'Nouveauté' : (prod.isFlashSale ? 'Vente Flash' : ''))),
       image: prod.image || (IMAGE_PRESETS[0] ? IMAGE_PRESETS[0].image : ''),
       gallery: prod.gallery || [],
+      descriptionImages: prod.descriptionImages || [],
       shortDescription: prod.shortDescription || '',
       shortDescriptionAr: prod.shortDescriptionAr || '',
       description: prod.description || '',
       descriptionAr: prod.descriptionAr || '',
-      color: prod.specs?.['Couleur'] || prod.specs?.['Couleur & Finition'] || prod.variants?.[0]?.name || 'Doré Prestige',
-      colorHex: prod.colorHex || prod.variants?.[0]?.colorHex || '#D4AF37',
+      color: existingColor,
+      colorHex: existingHex,
+      colorVariants: parsedColorVariants,
+      visitorsCount: prod.visitorsCount !== undefined ? prod.visitorsCount : 142,
       material: prod.specs?.['Matériau'] || 'Alliage Haute Résistance & Finition Dorée Haute Précision',
       waterResistance: prod.specs?.['Étanchéité'] || '5 ATM / 50 Mètres (Résiste aux ablutions et éclaboussures)',
       glass: prod.specs?.['Verre'] || 'Saphir Inrayable traité antireflet',
       movement: prod.specs?.['Mouvement'] || 'Quartz Haute Précision Chronographe',
       dimensions: prod.specs?.['Diamètre'] || '41 mm (Épaisseur 11 mm)',
-      warranty: prod.specs?.['Garantie'] || 'Garantie Prestige 1 An incluse avec carte TWISHIYAT',
       sizeGuide: prod.sizes?.[0] || 'Taille Unique Ajustable (Outil offert)'
     });
     setModalTab('general');
@@ -223,6 +242,8 @@ export default function AdminView() {
       badge: prod.badge || '',
       image: prod.image,
       gallery: prod.gallery ? [...prod.gallery] : [prod.image],
+      descriptionImages: prod.descriptionImages ? [...prod.descriptionImages] : [],
+      visitorsCount: Number(prod.visitorsCount) || 142,
       shortDescription: prod.shortDescription || '',
       shortDescriptionAr: prod.shortDescriptionAr || '',
       description: prod.description || '',
@@ -233,11 +254,10 @@ export default function AdminView() {
         ...(prod.specs || {
           'Matériau': 'Alliage Haute Résistance & Finition Dorée Haute Précision',
           'Étanchéité': '5 ATM / 50 Mètres (Résiste aux ablutions)',
-          'Verre': 'Saphir Inrayable traité antireflet',
-          'Garantie': 'Garantie Prestige 1 An'
+          'Verre': 'Saphir Inrayable traité antireflet'
         })
       },
-      variants: prod.variants ? [...prod.variants] : [{ id: 'v1', name: clonedColor, colorHex: clonedColorHex }],
+      variants: prod.variants ? [...prod.variants] : [{ id: 'v1', name: clonedColor, colorHex: clonedColorHex, stock: Number(prod.stock) || 10 }],
       sizes: prod.sizes || ['Taille Unique Ajustable']
     };
 
@@ -315,6 +335,22 @@ export default function AdminView() {
     }
   };
 
+  const handleDescriptionImagesUpload = async (e) => {
+    const files = Array.from(e.target.files || []).slice(0, 4);
+    if (!files.length) return;
+    try {
+      const compressedList = await Promise.all(files.map(f => compressImage(f, 800, 0.82)));
+      const valid = compressedList.filter(Boolean);
+      setProductFormData(prev => ({
+        ...prev,
+        descriptionImages: [...(prev.descriptionImages || []), ...valid].slice(0, 6)
+      }));
+      addToast('Photo(s) explicative(s) ajoutée(s) à la description !');
+    } catch (err) {
+      addToast('Erreur lors de l’ajout des photos explicatives.', 'error');
+    }
+  };
+
   const handleSaveProduct = (e) => {
     e.preventDefault();
     if (!productFormData.name.trim()) {
@@ -331,14 +367,14 @@ export default function AdminView() {
       ? productFormData.gallery
       : [finalImage];
 
-    const currentColor = productFormData.color?.trim() || 'Doré Prestige';
-    const currentColorHex = productFormData.colorHex || '#D4AF37';
+    const colorVariants = (productFormData.colorVariants && productFormData.colorVariants.length > 0)
+      ? productFormData.colorVariants
+      : [{ id: 'c1', name: productFormData.color || 'Doré Prestige', colorHex: productFormData.colorHex || '#D4AF37', stock: Number(productFormData.stock) || 10 }];
 
-    const existingProd = isEditingMode ? products.find(p => p.id === editingProductId) : null;
-    let finalVariants = [{ id: 'v1', name: currentColor, colorHex: currentColorHex }];
-    if (existingProd && existingProd.variants && existingProd.variants.length > 1) {
-      finalVariants = existingProd.variants.map((v, i) => i === 0 ? { ...v, name: currentColor, colorHex: currentColorHex } : v);
-    }
+    const primaryColor = colorVariants[0]?.name || productFormData.color?.trim() || 'Doré Prestige';
+    const primaryColorHex = colorVariants[0]?.colorHex || productFormData.colorHex || '#D4AF37';
+    const totalVariantStock = colorVariants.reduce((sum, v) => sum + (Number(v.stock) || 0), 0);
+    const finalStock = totalVariantStock > 0 ? totalVariantStock : (Number(productFormData.stock) >= 0 ? Number(productFormData.stock) : 10);
 
     const payload = {
       name: productFormData.name.trim(),
@@ -347,25 +383,27 @@ export default function AdminView() {
       gender: productFormData.gender,
       price: Number(productFormData.price),
       originalPrice: Number(productFormData.originalPrice) || Math.round(Number(productFormData.price) * 1.35),
-      stock: Number(productFormData.stock) >= 0 ? Number(productFormData.stock) : 10,
+      stock: finalStock,
       badge: productFormData.badge,
       image: finalImage,
       gallery: finalGallery,
+      descriptionImages: productFormData.descriptionImages || [],
+      visitorsCount: Number(productFormData.visitorsCount) >= 0 ? Number(productFormData.visitorsCount) : 142,
       shortDescription: productFormData.shortDescription || `${productFormData.name} - Sélection prestige TWISHIYAT.`,
       shortDescriptionAr: productFormData.shortDescriptionAr || '',
-      description: productFormData.description || `Chef-d’œuvre d’accessoire inspiré du raffinement marocain. Livré dans son écrin de luxe TWISHIYAT avec certificat d’authenticité et garantie 1 an.`,
+      description: productFormData.description || `Chef-d’œuvre d’accessoire inspiré du raffinement marocain. Livré dans son écrin de luxe TWISHIYAT avec certificat d’authenticité.`,
       descriptionAr: productFormData.descriptionAr || '',
-      colorHex: currentColorHex,
+      colorHex: primaryColorHex,
       specs: {
-        'Couleur': currentColor,
+        'Couleur': primaryColor,
+        'Couleurs disponibles': colorVariants.map(v => v.name).join(', '),
         'Matériau': productFormData.material || 'Alliage Haute Résistance & Finition Dorée Haute Précision',
         'Étanchéité': productFormData.waterResistance || '5 ATM / 50 Mètres (Résiste aux ablutions et éclaboussures)',
         'Verre': productFormData.glass || 'Verre Saphir Inrayable traité antireflet',
         'Mouvement': productFormData.movement || 'Quartz Haute Précision Chronographe',
-        'Diamètre': productFormData.dimensions || '41 mm (Épaisseur 11 mm)',
-        'Garantie': productFormData.warranty || 'Garantie Prestige 1 An incluse avec carte TWISHIYAT'
+        'Diamètre': productFormData.dimensions || '41 mm (Épaisseur 11 mm)'
       },
-      variants: finalVariants,
+      variants: colorVariants,
       sizes: [productFormData.sizeGuide || 'Taille Unique Ajustable (Outil offert)']
     };
 
@@ -963,16 +1001,35 @@ export default function AdminView() {
 
                 {/* Visits Card */}
                 <div style={{ background: '#FFFFFF', borderRadius: '16px', border: '1px solid #E2E8F0', padding: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#BE185D', marginBottom: '12px' }}>
-                    <Eye size={20} />
-                    <span style={{ fontSize: '0.92rem', fontWeight: '600', color: '#64748B' }}>Visits</span>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#BE185D' }}>
+                      <Eye size={20} />
+                      <span style={{ fontSize: '0.92rem', fontWeight: '600', color: '#64748B' }}>Nombre de Visiteurs</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const val = prompt('Entrez le nombre total de visiteurs du site :', totalVisitors || 1420);
+                        if (val !== null && !isNaN(val)) {
+                          updateTotalVisitors(val);
+                          addToast(`Compteur de visiteurs mis à jour : ${Number(val).toLocaleString()} visites`);
+                        }
+                      }}
+                      style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '6px', padding: '3px 8px', fontSize: '0.72rem', color: '#475569', cursor: 'pointer', fontWeight: '700' }}
+                      title="Calibrer le compteur de visiteurs"
+                    >
+                      Ajuster
+                    </button>
                   </div>
                   <div style={{ fontSize: '2.2rem', fontWeight: '800', color: '#0F172A', lineHeight: '1' }}>
-                    {dashboardPeriod === 'today' ? 142 : 1420}
+                    {(totalVisitors || 1420).toLocaleString()}
                   </div>
-                  <span style={{ fontSize: '0.78rem', color: '#10B981', display: 'block', marginTop: '8px', fontWeight: '600' }}>
-                    ↑ Visiteurs actifs via Instagram & Facebook Ads
-                  </span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '8px' }}>
+                    <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10B981', display: 'inline-block' }} />
+                    <span style={{ fontSize: '0.78rem', color: '#10B981', fontWeight: '600' }}>
+                      Trafic direct & campagnes en cours
+                    </span>
+                  </div>
                 </div>
               </div>
 
@@ -1276,20 +1333,26 @@ export default function AdminView() {
                                         {p.nameAr}
                                       </span>
                                     )}
-                                    {(p.specs?.['Couleur'] || p.colorHex || p.variants?.[0]?.colorHex) && (
-                                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', fontSize: '0.72rem', color: '#475569', background: '#F8FAFC', border: '1px solid #E2E8F0', padding: '1px 7px', borderRadius: '12px', marginTop: '4px' }}>
-                                        <span
-                                          style={{
-                                            width: '8px',
-                                            height: '8px',
-                                            borderRadius: '50%',
-                                            background: p.colorHex || p.variants?.[0]?.colorHex || '#D4AF37',
-                                            border: '1px solid rgba(0,0,0,0.2)'
-                                          }}
-                                        />
-                                        <span>{p.specs?.['Couleur'] || p.variants?.[0]?.name || 'Doré'}</span>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap', marginTop: '4px' }}>
+                                      {(p.specs?.['Couleur'] || p.colorHex || p.variants?.[0]?.colorHex) && (
+                                        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', fontSize: '0.72rem', color: '#475569', background: '#F8FAFC', border: '1px solid #E2E8F0', padding: '1px 7px', borderRadius: '12px' }}>
+                                          <span
+                                            style={{
+                                              width: '8px',
+                                              height: '8px',
+                                              borderRadius: '50%',
+                                              background: p.colorHex || p.variants?.[0]?.colorHex || '#D4AF37',
+                                              border: '1px solid rgba(0,0,0,0.2)'
+                                            }}
+                                          />
+                                          <span>{p.specs?.['Couleur'] || p.variants?.[0]?.name || 'Doré'}</span>
+                                        </div>
+                                      )}
+                                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.72rem', color: '#0369A1', background: '#E0F2FE', padding: '1px 7px', borderRadius: '12px', fontWeight: '600' }}>
+                                        <Eye size={11} />
+                                        <span>{p.visitorsCount || (productViews?.[p.id] || 142)} visites</span>
                                       </div>
-                                    )}
+                                    </div>
                                   </div>
                                 </div>
                               </td>
@@ -2094,7 +2157,7 @@ export default function AdminView() {
                 { id: 'general', label: '1. Détails & Tarifs', icon: Tag },
                 { id: 'media', label: '2. Photos & Médias', icon: ImageIcon },
                 { id: 'specs', label: '3. Fiche Horlogère & Matière', icon: ShieldCheck },
-                { id: 'descriptions', label: '4. Textes & Version Arabe', icon: FileText }
+                { id: 'descriptions', label: '4. Textes, Images & Arabe', icon: FileText }
               ].map((tab) => {
                 const IconComp = tab.icon;
                 const isActive = modalTab === tab.id;
@@ -2216,13 +2279,26 @@ export default function AdminView() {
 
                         <div>
                           <label style={{ fontSize: '0.78rem', fontWeight: '600', color: '#475569', display: 'block', marginBottom: '4px' }}>
-                            Quantité en Stock Disponible
+                            Quantité en Stock Total
                           </label>
                           <input
                             type="number"
                             min="0"
                             value={productFormData.stock}
                             onChange={(e) => setProductFormData({ ...productFormData, stock: e.target.value })}
+                            style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '1rem', background: '#FFFFFF' }}
+                          />
+                        </div>
+
+                        <div>
+                          <label style={{ fontSize: '0.78rem', fontWeight: '600', color: '#475569', display: 'block', marginBottom: '4px' }}>
+                            Vues / Visiteurs du Produit
+                          </label>
+                          <input
+                            type="number"
+                            min="0"
+                            value={productFormData.visitorsCount}
+                            onChange={(e) => setProductFormData({ ...productFormData, visitorsCount: e.target.value })}
                             style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '1rem', background: '#FFFFFF' }}
                           />
                         </div>
@@ -2236,6 +2312,200 @@ export default function AdminView() {
                           </span>
                         </div>
                       )}
+                    </div>
+
+                    {/* Dedicated Section: Couleurs Disponibles en Stock */}
+                    <div style={{ background: '#F8FAFC', border: '1.5px solid #E2E8F0', borderRadius: '12px', padding: '18px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', flexWrap: 'wrap', gap: '8px' }}>
+                        <div>
+                          <label style={{ fontSize: '0.9rem', fontWeight: '800', color: '#0F172A', display: 'flex', alignItems: 'center', gap: '8px', margin: 0 }}>
+                            <Palette size={18} color="#4F46E5" />
+                            <span>Couleurs Disponibles en Stock</span>
+                            <span style={{ fontSize: '0.72rem', fontWeight: '700', color: '#4F46E5', background: '#EEF2FF', padding: '2px 8px', borderRadius: '10px' }}>
+                              {(productFormData.colorVariants || []).length} couleur(s)
+                            </span>
+                          </label>
+                          <span style={{ fontSize: '0.75rem', color: '#64748B', display: 'block', marginTop: '2px' }}>
+                            Renseignez les couleurs proposées aux clients et la quantité disponible pour chaque couleur :
+                          </span>
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const nextId = `c${Date.now().toString().slice(-4)}`;
+                            setProductFormData(prev => ({
+                              ...prev,
+                              colorVariants: [
+                                ...(prev.colorVariants || []),
+                                { id: nextId, name: 'Nouvelle Finition', colorHex: '#C0C0C0', stock: 5 }
+                              ]
+                            }));
+                          }}
+                          className="btn-outline"
+                          style={{ padding: '6px 12px', fontSize: '0.78rem', display: 'inline-flex', alignItems: 'center', gap: '5px', cursor: 'pointer', background: '#FFFFFF' }}
+                        >
+                          <Plus size={14} />
+                          <span>Ajouter une couleur</span>
+                        </button>
+                      </div>
+
+                      {/* Color Rows List */}
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                        {(productFormData.colorVariants || []).map((variant, idx) => (
+                          <div
+                            key={variant.id || idx}
+                            style={{
+                              display: 'grid',
+                              gridTemplateColumns: 'auto 1fr 140px auto',
+                              gap: '10px',
+                              alignItems: 'center',
+                              background: '#FFFFFF',
+                              padding: '10px 14px',
+                              borderRadius: '8px',
+                              border: '1px solid #CBD5E1'
+                            }}
+                          >
+                            {/* Color Picker Swatch */}
+                            <div style={{ position: 'relative', width: '38px', height: '38px', borderRadius: '8px', overflow: 'hidden', border: '2px solid #CBD5E1', cursor: 'pointer', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+                              <input
+                                type="color"
+                                value={variant.colorHex || '#D4AF37'}
+                                onChange={(e) => {
+                                  const updated = [...(productFormData.colorVariants || [])];
+                                  updated[idx] = { ...updated[idx], colorHex: e.target.value };
+                                  setProductFormData(prev => ({
+                                    ...prev,
+                                    colorVariants: updated,
+                                    colorHex: idx === 0 ? e.target.value : prev.colorHex
+                                  }));
+                                }}
+                                style={{ position: 'absolute', top: '-10px', left: '-10px', width: '58px', height: '58px', border: 'none', cursor: 'pointer' }}
+                                title="Choisir la couleur"
+                              />
+                            </div>
+
+                            {/* Color Name */}
+                            <div>
+                              <input
+                                type="text"
+                                value={variant.name}
+                                onChange={(e) => {
+                                  const updated = [...(productFormData.colorVariants || [])];
+                                  updated[idx] = { ...updated[idx], name: e.target.value };
+                                  setProductFormData(prev => ({
+                                    ...prev,
+                                    colorVariants: updated,
+                                    color: idx === 0 ? e.target.value : prev.color
+                                  }));
+                                }}
+                                placeholder="Nom de la couleur (ex: Doré Prestige, Argent Brossé...)"
+                                style={{ width: '100%', padding: '9px 12px', borderRadius: '6px', border: '1px solid #CBD5E1', fontSize: '0.88rem', fontWeight: '600', color: '#0F172A' }}
+                              />
+                            </div>
+
+                            {/* Stock for this color */}
+                            <div>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                <input
+                                  type="number"
+                                  min="0"
+                                  value={variant.stock}
+                                  onChange={(e) => {
+                                    const updated = [...(productFormData.colorVariants || [])];
+                                    updated[idx] = { ...updated[idx], stock: Math.max(0, Number(e.target.value) || 0) };
+                                    const totalStock = updated.reduce((s, v) => s + (Number(v.stock) || 0), 0);
+                                    setProductFormData(prev => ({
+                                      ...prev,
+                                      colorVariants: updated,
+                                      stock: totalStock
+                                    }));
+                                  }}
+                                  placeholder="Stock"
+                                  style={{ width: '100%', padding: '9px 10px', borderRadius: '6px', border: '1px solid #CBD5E1', fontSize: '0.88rem', fontWeight: '600' }}
+                                />
+                                <span style={{ fontSize: '0.75rem', color: '#64748B', fontWeight: '600' }}>unités</span>
+                              </div>
+                            </div>
+
+                            {/* Delete button (if more than 1) */}
+                            <div>
+                              {(productFormData.colorVariants || []).length > 1 ? (
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    const updated = productFormData.colorVariants.filter((_, i) => i !== idx);
+                                    const totalStock = updated.reduce((s, v) => s + (Number(v.stock) || 0), 0);
+                                    setProductFormData(prev => ({
+                                      ...prev,
+                                      colorVariants: updated,
+                                      color: updated[0]?.name || '',
+                                      colorHex: updated[0]?.colorHex || '#D4AF37',
+                                      stock: totalStock
+                                    }));
+                                  }}
+                                  style={{ background: '#FEE2E2', color: '#DC2626', border: 'none', borderRadius: '6px', width: '34px', height: '34px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+                                  title="Supprimer cette couleur"
+                                >
+                                  <Trash2 size={16} />
+                                </button>
+                              ) : (
+                                <div style={{ width: '34px' }} />
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Quick Presets to add */}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap', marginTop: '14px', paddingTop: '10px', borderTop: '1px dashed #E2E8F0' }}>
+                        <span style={{ fontSize: '0.74rem', fontWeight: '700', color: '#475569' }}>
+                          + Ajouter rapidement une couleur :
+                        </span>
+                        {[
+                          { name: 'Doré Prestige', hex: '#D4AF37' },
+                          { name: 'Argent Brossé', hex: '#C0C0C0' },
+                          { name: 'Or Rose Impérial', hex: '#B76E79' },
+                          { name: 'Noir Intense', hex: '#1A1A1A' },
+                          { name: 'Vert Émeraude', hex: '#064E3B' },
+                          { name: 'Bleu Nuit', hex: '#1E3A8A' },
+                          { name: 'Cuir Havane', hex: '#6E3C1B' }
+                        ].map((preset) => (
+                          <button
+                            key={preset.hex}
+                            type="button"
+                            onClick={() => {
+                              const nextId = `c${Date.now().toString().slice(-4)}`;
+                              setProductFormData(prev => {
+                                const currentList = prev.colorVariants || [];
+                                if (currentList.some(v => v.name.toLowerCase() === preset.name.toLowerCase())) return prev;
+                                const updated = [...currentList, { id: nextId, name: preset.name, colorHex: preset.hex, stock: 8 }];
+                                return {
+                                  ...prev,
+                                  colorVariants: updated,
+                                  stock: updated.reduce((s, v) => s + (Number(v.stock) || 0), 0)
+                                };
+                              });
+                            }}
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '6px',
+                              padding: '4px 10px',
+                              borderRadius: '16px',
+                              border: '1px solid #CBD5E1',
+                              background: '#FFFFFF',
+                              fontSize: '0.74rem',
+                              fontWeight: '600',
+                              color: '#1E293B',
+                              cursor: 'pointer'
+                            }}
+                          >
+                            <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: preset.hex, border: '1px solid rgba(0,0,0,0.2)' }} />
+                            <span>{preset.name}</span>
+                          </button>
+                        ))}
+                      </div>
                     </div>
 
                     {/* Badge & Sizing */}
@@ -2682,13 +2952,13 @@ export default function AdminView() {
 
                       <div>
                         <label style={{ fontSize: '0.8rem', fontWeight: '700', color: '#1E293B', display: 'block', marginBottom: '4px' }}>
-                          Garantie Incluse
+                          Écrin & Présentation Cadeau
                         </label>
                         <input
                           type="text"
-                          value={productFormData.warranty}
-                          onChange={(e) => setProductFormData({ ...productFormData, warranty: e.target.value })}
-                          placeholder="Garantie Prestige 1 An incluse avec carte TWISHIYAT"
+                          value={productFormData.presentation || ''}
+                          onChange={(e) => setProductFormData({ ...productFormData, presentation: e.target.value })}
+                          placeholder="Écrin velours noir prestige TWISHIYAT avec certificat d’authenticité"
                           style={{ width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '0.85rem' }}
                         />
                       </div>
@@ -2723,6 +2993,71 @@ export default function AdminView() {
                         placeholder="Détaillez les inspirations, le confort au poignet, les finitions et le contenu du coffret cadeau..."
                         style={{ width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '0.88rem', fontFamily: 'inherit', resize: 'vertical' }}
                       />
+                    </div>
+
+                    {/* Section Images Explicatives de la Description */}
+                    <div style={{ background: '#F8FAFC', border: '1.5px solid #E2E8F0', borderRadius: '12px', padding: '16px', marginTop: '4px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', flexWrap: 'wrap', gap: '8px' }}>
+                        <div>
+                          <label style={{ fontSize: '0.86rem', fontWeight: '800', color: '#0F172A', display: 'flex', alignItems: 'center', gap: '8px', margin: 0 }}>
+                            <ImageIcon size={16} color="var(--gold-600)" />
+                            <span>Images Explicatives du Produit (Fiche Description)</span>
+                          </label>
+                          <span style={{ fontSize: '0.75rem', color: '#64748B', display: 'block', marginTop: '2px' }}>
+                            Photos de détails, zoom sur les finitions, infographies ou mise en situation pour enrichir la description du produit.
+                          </span>
+                        </div>
+                        <label className="btn-dark" style={{ padding: '7px 14px', fontSize: '0.8rem', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                          <Plus size={14} />
+                          <span>Ajouter photos explicatives</span>
+                          <input type="file" multiple accept="image/*" onChange={handleDescriptionImagesUpload} style={{ display: 'none' }} />
+                        </label>
+                      </div>
+
+                      {productFormData.descriptionImages && productFormData.descriptionImages.length > 0 ? (
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(110px, 1fr))', gap: '12px', marginTop: '12px' }}>
+                          {productFormData.descriptionImages.map((imgUrl, idx) => (
+                            <div key={idx} style={{ position: 'relative', height: '110px', borderRadius: '10px', overflow: 'hidden', border: '1.5px solid #CBD5E1', boxShadow: '0 2px 6px rgba(0,0,0,0.06)' }}>
+                              <img src={imgUrl} alt={`Détail explicatif ${idx + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                              <button
+                                type="button"
+                                onClick={() => setProductFormData({
+                                  ...productFormData,
+                                  descriptionImages: productFormData.descriptionImages.filter((_, i) => i !== idx)
+                                })}
+                                style={{
+                                  position: 'absolute',
+                                  top: '4px',
+                                  right: '4px',
+                                  background: 'rgba(239, 68, 68, 0.9)',
+                                  color: '#FFFFFF',
+                                  border: 'none',
+                                  borderRadius: '50%',
+                                  width: '22px',
+                                  height: '22px',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  cursor: 'pointer',
+                                  boxShadow: '0 1px 3px rgba(0,0,0,0.3)'
+                                }}
+                                title="Supprimer cette image"
+                              >
+                                <X size={12} />
+                              </button>
+                              <div style={{ position: 'absolute', bottom: '0', left: '0', right: '0', background: 'rgba(15, 23, 42, 0.75)', color: '#FFFFFF', fontSize: '0.68rem', fontWeight: '700', textAlign: 'center', padding: '2px 0' }}>
+                                Image #{idx + 1}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div style={{ border: '1.5px dashed #CBD5E1', borderRadius: '8px', padding: '14px', textAlign: 'center', marginTop: '8px', background: '#FFFFFF' }}>
+                          <span style={{ fontSize: '0.78rem', color: '#64748B' }}>
+                            Aucune image explicative. Cliquez sur <strong>"Ajouter photos explicatives"</strong> pour enrichir visuellement la description.
+                          </span>
+                        </div>
+                      )}
                     </div>
 
                     {/* Arabic Fields */}

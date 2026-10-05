@@ -40,7 +40,7 @@ export default function Footer() {
                 <Truck size={24} />
               </div>
               <h4 style={{ color: '#FFFFFF', fontSize: '1rem', fontWeight: '600' }}>Livraison Rapide Maroc</h4>
-              <p style={{ fontSize: '0.82rem', color: '#9CA3AF' }}>24h Casablanca / 48h Amana & Cathedis dans toutes les villes</p>
+              <p style={{ fontSize: '0.82rem', color: '#9CA3AF' }}>Expédition soignée & remise en main propre dans toutes les villes du Maroc</p>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
@@ -55,7 +55,7 @@ export default function Footer() {
               <div style={{ width: '50px', height: '50px', borderRadius: '50%', background: 'rgba(212, 175, 55, 0.12)', border: '1px solid var(--border-gold)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--gold-400)' }}>
                 <RotateCcw size={24} />
               </div>
-              <h4 style={{ color: '#FFFFFF', fontSize: '1rem', fontWeight: '600' }}>Garantie & Échange 7 Jours</h4>
+              <h4 style={{ color: '#FFFFFF', fontSize: '1rem', fontWeight: '600' }}>Échange & Retours 7 Jours</h4>
               <p style={{ fontSize: '0.82rem', color: '#9CA3AF' }}>Échange facile ou remboursement sans tracas</p>
             </div>
 

@@ -86,6 +86,56 @@ export function StoreProvider({ children }) {
     saveProductsSafely(products);
   }, [products]);
 
+  const [totalVisitors, setTotalVisitors] = useState(() => {
+    try {
+      const saved = localStorage.getItem('twishiyat_site_visits');
+      return saved ? Number(saved) : 1420;
+    } catch {
+      return 1420;
+    }
+  });
+
+  const [productViews, setProductViews] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('twishiyat_product_views') || '{}');
+    } catch {
+      return {};
+    }
+  });
+
+  useEffect(() => {
+    const hasVisitedThisSession = sessionStorage.getItem('twishiyat_session_visited');
+    if (!hasVisitedThisSession) {
+      sessionStorage.setItem('twishiyat_session_visited', 'true');
+      setTotalVisitors((prev) => {
+        const next = (prev || 1420) + 1;
+        try {
+          localStorage.setItem('twishiyat_site_visits', next.toString());
+        } catch (e) {}
+        return next;
+      });
+    }
+  }, []);
+
+  const updateTotalVisitors = (newCount) => {
+    const parsed = Math.max(0, Number(newCount) || 0);
+    setTotalVisitors(parsed);
+    try {
+      localStorage.setItem('twishiyat_site_visits', parsed.toString());
+    } catch (e) {}
+  };
+
+  const recordProductView = (productId) => {
+    if (!productId) return;
+    setProductViews((prev) => {
+      const next = { ...prev, [productId]: (prev[productId] || 0) + 1 };
+      try {
+        localStorage.setItem('twishiyat_product_views', JSON.stringify(next));
+      } catch (e) {}
+      return next;
+    });
+  };
+
   const addNewProduct = (productData) => {
     const idPrefix = productData.category === 'watches' ? 'TW-W' : (productData.category === 'bracelets' ? 'TW-B' : (productData.category === 'rings' ? 'TW-R' : 'TW-S'));
     const newId = `${idPrefix}${Date.now().toString().slice(-4)}`;
@@ -111,6 +161,7 @@ export function StoreProvider({ children }) {
       isFlashSale: productData.badge === 'Vente Flash',
       image: productData.image || (products[0] ? products[0].image : PRODUCTS[0].image),
       gallery: (productData.gallery && productData.gallery.length > 0) ? productData.gallery : [productData.image || (products[0] ? products[0].image : PRODUCTS[0].image)],
+      descriptionImages: (productData.descriptionImages && productData.descriptionImages.length > 0) ? productData.descriptionImages : [],
       videoUrl: productData.videoUrl || '',
       shortDescription: productData.shortDescription || `${productData.name} - Sélection prestige TWISHIYAT.`,
       shortDescriptionAr: productData.shortDescriptionAr || '',
@@ -120,13 +171,13 @@ export function StoreProvider({ children }) {
       specs: productData.specs || {
         'Couleur': productData.color || 'Doré Prestige',
         'Matériau': 'Alliage Haute Résistance & Finition Dorée Haute Précision',
-        'Étanchéité': '5 ATM / 50 Mètres (Résiste aux ablutions et éclaboussures)',
-        'Garantie': 'Garantie Prestige 1 An incluse'
+        'Étanchéité': '5 ATM / 50 Mètres (Résiste aux ablutions et éclaboussures)'
       },
       variants: (productData.variants && productData.variants.length > 0) ? productData.variants : [
-        { id: 'v1', name: 'Finition Prestige', colorHex: '#D4AF37' }
+        { id: 'v1', name: 'Finition Prestige', colorHex: '#D4AF37', stock: Number(productData.stock) || 10 }
       ],
       sizes: (productData.sizes && productData.sizes.length > 0) ? productData.sizes : ['Taille Unique Ajustable'],
+      visitorsCount: Number(productData.visitorsCount) >= 0 ? Number(productData.visitorsCount) : 142,
       rating: 5.0,
       reviewsCount: 1
     };
@@ -687,7 +738,11 @@ export function StoreProvider({ children }) {
         customerProfile,
         updateCustomerProfile,
         customerOrders,
-        recordCustomerOrder
+        recordCustomerOrder,
+        totalVisitors,
+        updateTotalVisitors,
+        productViews,
+        recordProductView
       }}
     >
       {children}

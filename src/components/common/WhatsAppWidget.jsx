@@ -126,7 +126,7 @@ export default function WhatsAppWidget() {
               </button>
 
               <button
-                onClick={() => openChat('Salam ! J’ai une question sur les modèles, tailles et la garantie TWISHIYAT.')}
+                onClick={() => openChat('Salam ! J’ai une question sur les modèles, finitions et tailles TWISHIYAT.')}
                 style={{
                   background: '#FFFFFF',
                   padding: '10px 14px',
@@ -142,7 +142,7 @@ export default function WhatsAppWidget() {
                   cursor: 'pointer'
                 }}
               >
-                <span>✨ Question sur les finitions & garantie</span>
+                <span>✨ Question sur les finitions & authenticité</span>
                 <Send size={14} color="#075E54" />
               </button>
             </div>
