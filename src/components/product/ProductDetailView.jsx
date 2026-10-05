@@ -74,7 +74,7 @@ export default function ProductDetailView() {
   // Moroccan Express COD 1-Click Form State
   const [expressName, setExpressName] = useState('');
   const [expressPhone, setExpressPhone] = useState('');
-  const [expressCity, setExpressCity] = useState('Casablanca');
+  const [expressCity, setExpressCity] = useState('');
   const [expressAddress, setExpressAddress] = useState('');
   const [expressSubmitting, setExpressSubmitting] = useState(false);
 
@@ -100,6 +100,10 @@ export default function ProductDetailView() {
       addToast('Veuillez entrer un numéro marocain valide (ex: 06 61 00 00 00).', 'error');
       return;
     }
+    if (!expressCity.trim()) {
+      addToast('Veuillez renseigner votre ville de livraison.', 'error');
+      return;
+    }
     if (!expressAddress.trim()) {
       addToast('Veuillez préciser votre adresse de livraison.', 'error');
       return;
@@ -107,7 +111,6 @@ export default function ProductDetailView() {
 
     setExpressSubmitting(true);
 
-    const cityData = MOROCCAN_CITIES.find(c => c.name === expressCity) || MOROCCAN_CITIES[0];
     const totalOrderAmount = product.price * quantity;
     const isFree = true;
     const shippingFee = 0;
@@ -152,8 +155,8 @@ export default function ProductDetailView() {
         { status: 'received', title: 'Commande Reçue sur le site', date: 'À l’instant', completed: true, current: true },
         { status: 'confirmed', title: 'Confirmation téléphonique en cours', date: 'Sous 15 min', completed: false },
         { status: 'processing', title: 'Préparation soignée en atelier TWISHIYAT', date: 'Aujourd’hui', completed: false },
-        { status: 'shipped', title: `Expédition vers ${expressCity}`, date: cityData.deliveryHours, completed: false },
-        { status: 'delivered', title: 'Livraison & Paiement espèces au livreur', date: `Prévue sous ${cityData.deliveryHours}`, completed: false }
+        { status: 'shipped', title: `Expédition vers ${expressCity.trim()}`, date: 'En cours', completed: false },
+        { status: 'delivered', title: 'Livraison & Paiement espèces au livreur', date: 'Remise en main propre', completed: false }
       ]
     };
 
@@ -578,17 +581,14 @@ export default function ProductDetailView() {
                       <label style={{ fontSize: '0.82rem', fontWeight: '700', color: 'var(--obsidian-800)', display: 'block', marginBottom: '4px' }}>
                         {t('city')} *
                       </label>
-                      <select
+                      <input
+                        type="text"
+                        required
                         value={expressCity}
                         onChange={(e) => setExpressCity(e.target.value)}
-                        style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #D1D5DB', fontSize: '0.88rem', background: '#FFF', outline: 'none' }}
-                      >
-                        {MOROCCAN_CITIES.map((c) => (
-                          <option key={c.name} value={c.name}>
-                            {c.name}
-                          </option>
-                        ))}
-                      </select>
+                        placeholder={language === 'ar' ? 'أدخل مدينتك (مثال: الدار البيضاء، الرباط...)' : 'Votre ville (ex: Casablanca, Rabat, Marrakech...)'}
+                        style={{ width: '100%', padding: '12px 14px', borderRadius: '8px', border: '1px solid #D1D5DB', fontSize: '0.92rem', outline: 'none' }}
+                      />
                     </div>
 
                     <div>
@@ -627,7 +627,8 @@ export default function ProductDetailView() {
                     <button
                       type="button"
                       onClick={() => {
-                        const msg = `Salam TWISHIYAT ! Je souhaite commander en 1 Clic : "${product.name}" au prix de ${product.price * quantity} DH pour livraison à ${expressCity}. Pouvez-vous confirmer ma commande ?`;
+                        const cityPart = expressCity.trim() ? ` pour livraison à ${expressCity.trim()}` : '';
+                        const msg = `Salam TWISHIYAT ! Je souhaite commander en 1 Clic : "${product.name}" au prix de ${product.price * quantity} DH${cityPart}. Pouvez-vous confirmer ma commande ?`;
                         window.open(`https://wa.me/212708759510?text=${encodeURIComponent(msg)}`, '_blank');
                       }}
                       style={{

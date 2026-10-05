@@ -38,7 +38,7 @@ export default function CheckoutView() {
   // Form Fields (Pre-populated from customerProfile if saved)
   const [fullName, setFullName] = useState(() => customerProfile?.fullName || '');
   const [phone, setPhone] = useState(() => customerProfile?.phone || '');
-  const [city, setCity] = useState(() => customerProfile?.city || 'Casablanca');
+  const [city, setCity] = useState(() => customerProfile?.city || '');
   const [address, setAddress] = useState(() => customerProfile?.address || '');
   const [neighborhood, setNeighborhood] = useState('');
   const [orderNotes, setOrderNotes] = useState('');
@@ -75,6 +75,11 @@ export default function CheckoutView() {
 
     if (!validateMoroccanPhone(phone)) {
       addToast('Numéro de téléphone marocain invalide. Exemple : 07 08 75 95 10', 'error');
+      return;
+    }
+
+    if (!city.trim()) {
+      addToast('Veuillez renseigner votre ville de livraison.', 'error');
       return;
     }
 
@@ -219,17 +224,14 @@ export default function CheckoutView() {
                       <label style={{ fontSize: '0.82rem', fontWeight: '600', color: 'var(--obsidian-800)', display: 'block', marginBottom: '6px' }}>
                         Ville au Maroc *
                       </label>
-                      <select
+                      <input
+                        type="text"
+                        required
                         value={city}
                         onChange={(e) => setCity(e.target.value)}
-                        style={{ width: '100%', padding: '12px 14px', borderRadius: '8px', border: '1px solid #D1D5DB', fontSize: '0.95rem', background: '#FFF', outline: 'none' }}
-                      >
-                        {MOROCCAN_CITIES.map((c) => (
-                          <option key={c.name} value={c.name}>
-                            {c.name}
-                          </option>
-                        ))}
-                      </select>
+                        placeholder="Votre ville (ex: Casablanca, Rabat, Marrakech...)"
+                        style={{ width: '100%', padding: '12px 14px', borderRadius: '8px', border: '1px solid #D1D5DB', fontSize: '0.95rem', outline: 'none' }}
+                      />
                     </div>
 
                     <div>
