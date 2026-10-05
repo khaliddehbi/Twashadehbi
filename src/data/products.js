@@ -55,6 +55,7 @@ export const PRODUCTS = [
     description: 'Chef-d’œuvre de l’horlogerie moderne inspiré du raffinement marocain. Dotée d’un boîtier haute résistance avec dorure protectrice inaltérable, d’un cadran vert émeraude soleillé emblématique et d’un verre saphir inrayable. Livrée dans son écrin de luxe TWISHIYAT avec certificat d’authenticité et garantie 1 an.',
     descriptionAr: 'تحفة فنية في صناعة الساعات الراقية مستوحاة من الأناقة المغربية العصرية. هيكل متين فائق الجودة مطلي بطبقة ذهبية متألقة مقاومة لتغير اللون مع زجاج الياقوت المضاد للخدش.',
     specs: {
+      'Couleur': 'Finition Dorée & Vert Émeraude',
       'Matériau': 'Alliage Haute Résistance & Finition Dorée Haute Précision',
       'Cadran': 'Vert Émeraude Soleillé avec guichet date',
       'Mouvement': 'Quartz Haute Précision Chronographe',
@@ -94,6 +95,7 @@ export const PRODUCTS = [
     description: 'La sobriété à son apogée. Boîtier ultra-plat de 7 mm en or poli, cadran blanc ivoire épuré et bracelet en cuir marocain véritable travaillé selon les traditions d’excellence.',
     descriptionAr: 'الأناقة الكلاسيكية الخالصة. إطار فائق النحافة بسماكة 7 مم مطلي ببريق الذهب مع حزام جلدي فاخر.',
     specs: {
+      'Couleur': 'Cuir Marron & Or',
       'Matériau': 'Boîtier Haute Résistance Finition Dorée Prestige',
       'Bracelet': 'Cuir Véritable surpiqué marron havane',
       'Épaisseur': '7 mm (Profil ultra-plat)',
@@ -132,6 +134,7 @@ export const PRODUCTS = [
     description: "Design : Cadran soleillé argenté ultra-lumineux. Confort : Bracelet en silicone, résistant à l'eau et à la transpiration, parfait au quotidien comme en soirée. Fonctions : Guichet dateur intégré à 3h, aiguilles luminescentes et finition soignée. Contenu du pack : Montre + Coffret rigide cadeau Twishiyat.ma + Carte de remerciement. Livraison : Rapide partout au Maroc (24h/48h) - Paiement à la livraison après vérification du produit.",
     descriptionAr: 'ساعة عصرية تجمع بين الفخامة والعملية اليومية. مينا أخضر زمردي مميز، سوار سيليكون عالي الجودة مضاد للماء والتعرق، ونافذة لعرض التاريخ. تأتي في علبة هدايا فاخرة من توشيات مع بطاقة شكر وضمان لمدة سنة كاملة.',
     specs: {
+      'Couleur': 'Argent Brossé & Vert Émeraude',
       'Matériau': 'Alliage Haute Résistance & Finition Argentée Brossée',
       'Cadran': 'Vert Émeraude Guilloché avec guichet date',
       'Mouvement': 'Quartz Haute Précision Chronographe',
@@ -170,6 +173,7 @@ export const PRODUCTS = [
     description: 'Une pièce maîtresse signée TWISHIYAT. Le jonc Zahra fusionne les lignes de l’architecture arabo-andalouse avec la pureté du bijou moderne. Résistant à l’eau, aux parfums et à la transpiration.',
     descriptionAr: 'قطعة فنية تجسد الزخرفة المعمارية المغربية بروح معاصرة. مقاومة للماء والعطور ولا يتغير لونها أبدًا.',
     specs: {
+      'Couleur': 'Doré Brillant Ciselé',
       'Matériau': 'Alliage Haute Densité + Triple dorure protectrice',
       'Finition': 'Ciselure Haute Précision laser',
       'Fermoir': 'Ouverture facile à ressort invisible',
@@ -208,6 +212,7 @@ export const PRODUCTS = [
     description: 'Un classique masculin audacieux. Finition miroir étincelante, fermoir luxe à double loquet de sécurité et présence royale au poignet.',
     descriptionAr: 'كلاسيكية رجالية متميزة بحلقات مصقولة بلمعان المرايا وقفل مزدوج الأمان.',
     specs: {
+      'Couleur': 'Doré Brillant Haute Résistance',
       'Largeur': '12 mm',
       'Longueur': '20 cm / 22 cm',
       'Matériau': 'Alliage Haute Résistance hypoallergénique',
@@ -244,6 +249,7 @@ export const PRODUCTS = [
     description: 'Icône de la haute joaillerie. Les motifs quadrilobés en nacre naturelle scintillent délicatement à la lumière. Chaîne ajustable avec fermoir mousqueton gravé.',
     descriptionAr: 'رمز الحظ والأناقة الرفيعة. قطع عرق اللؤلؤ الطبيعي ذات الانعكاسات الحريرية على سلسلة ذهبية ناعمة.',
     specs: {
+      'Couleur': 'Nacre Blanche & Doré',
       'Pierres': 'Nacre Blanche Naturelle irisée',
       'Monture': 'Finition Dorée Haute Précision 3 microns',
       'Longueur': '18 cm ajustable (chaînette + 3 cm)',
@@ -280,6 +286,7 @@ export const PRODUCTS = [
     description: 'Inspirée de la force et de la majesté des montagnes de l’Atlas marocain. Le contraste saisissant entre la dorure brossée et la profondeur de l’onyx noir confère un charisme incomparable.',
     descriptionAr: 'مستوحى من شموخ جبال الأطلس المغربية. التباين الساحر بين البريق الذهبي المطفي وعمق العقيق الأسود يمنحك هيبة لا تضاهى.',
     specs: {
+      'Couleur': 'Or Brossé & Onyx Noir',
       'Matériau': 'Alliage brossé + Dorure protectrice 5 couches',
       'Pierre': 'Véritable Onyx Noir naturel poli',
       'Bordure': 'Gravure tressée arabo-berbère',
@@ -315,6 +322,7 @@ export const PRODUCTS = [
     description: 'Une splendeur digne des plus grands palais. La nuance vert émeraude intense rappelle les célèbres jardins Majorelle de Marrakech. Monture ouvragée dorée avec micropavage éclatant.',
     descriptionAr: 'بريق ملكي يستحضر سحر حدائق ماجوريل بمراكش. حجر زمردي مشع محاط بصفوة من الأحجار اللامعة.',
     specs: {
+      'Couleur': 'Émeraude & Or Jaune',
       'Pierre Centrale': 'Cristal Saphir Vert Émeraude taille émeraude (8x10 mm)',
       'Pierres Latérales': 'Zircons cubiques AAA taille baguette et brillants',
       'Métal': 'Argent 925 doré à l’Or fin (Vermeil de prestige)',
@@ -350,6 +358,7 @@ export const PRODUCTS = [
     description: 'Le cadeau par excellence pour célébrer un anniversaire, une réussite ou un mariage marocain. Comprend la Montre Royale Saphir ainsi que le Jonc Zahra assorti, protégés dans un coffret rigide en velours noir stamped or avec ruban satiné.',
     descriptionAr: 'الهدية المثالية لأغلى المناسبات والأعياد. يجمع بين الساعة الياقوتية الفخمة والسوار الذهبي المحفور داخل علبة مخملية ملكية.',
     specs: {
+      'Couleur': 'Coffret Velours Noir & Or',
       'Contenu': '1x Montre Royale + 1x Jonc Ciselé Doré + Outil de réglage',
       'Packaging': 'Écrin rigide velours noir doublé satin or avec sceau armoiries',
       'Accessoires': 'Certificat de garantie 1 an + Sac cadeau TWISHIYAT',

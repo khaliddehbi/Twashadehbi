@@ -665,9 +665,26 @@ export default function ProductDetailView() {
                 {openTab === 'specs' && product.specs && (
                   <div style={{ paddingBottom: '16px', display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.85rem' }}>
                     {Object.entries(product.specs).map(([key, val]) => (
-                      <div key={key} style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderBottom: '1px solid #F3F4F6' }}>
+                      <div key={key} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '6px 0', borderBottom: '1px solid #F3F4F6' }}>
                         <span style={{ color: '#6B7280' }}>{key}</span>
-                        <span style={{ fontWeight: '600', color: 'var(--obsidian-900)' }}>{val}</span>
+                        {key.toLowerCase().includes('couleur') ? (
+                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontWeight: '600', color: 'var(--obsidian-900)' }}>
+                            <span
+                              style={{
+                                display: 'inline-block',
+                                width: '13px',
+                                height: '13px',
+                                borderRadius: '50%',
+                                backgroundColor: product.colorHex || product.variants?.[0]?.colorHex || '#D4AF37',
+                                border: '1px solid rgba(0,0,0,0.18)',
+                                boxShadow: '0 1px 3px rgba(0,0,0,0.15)'
+                              }}
+                            />
+                            <span>{val}</span>
+                          </span>
+                        ) : (
+                          <span style={{ fontWeight: '600', color: 'var(--obsidian-900)', textAlign: 'right' }}>{val}</span>
+                        )}
                       </div>
                     ))}
                   </div>

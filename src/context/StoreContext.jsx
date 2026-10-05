@@ -116,7 +116,9 @@ export function StoreProvider({ children }) {
       shortDescriptionAr: productData.shortDescriptionAr || '',
       description: productData.description || 'Accessoire d’exception issu de la collection TWISHIYAT. Conçu avec des matériaux nobles sélectionnés pour une durabilité maximale au quotidien. Livré dans son écrin de protection.',
       descriptionAr: productData.descriptionAr || '',
+      colorHex: productData.colorHex || productData.variants?.[0]?.colorHex || '#D4AF37',
       specs: productData.specs || {
+        'Couleur': productData.color || 'Doré Prestige',
         'Matériau': 'Alliage Haute Résistance & Finition Dorée Haute Précision',
         'Étanchéité': '5 ATM / 50 Mètres (Résiste aux ablutions et éclaboussures)',
         'Garantie': 'Garantie Prestige 1 An incluse'

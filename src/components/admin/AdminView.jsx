@@ -113,6 +113,8 @@ export default function AdminView() {
     shortDescriptionAr: '',
     description: '',
     descriptionAr: '',
+    color: 'Doré Prestige',
+    colorHex: '#D4AF37',
     material: 'Alliage Haute Résistance & Finition Dorée Haute Précision',
     waterResistance: '5 ATM / 50 Mètres (Résiste aux ablutions et éclaboussures)',
     glass: 'Saphir Inrayable traité antireflet',
@@ -192,6 +194,8 @@ export default function AdminView() {
       shortDescriptionAr: prod.shortDescriptionAr || '',
       description: prod.description || '',
       descriptionAr: prod.descriptionAr || '',
+      color: prod.specs?.['Couleur'] || prod.specs?.['Couleur & Finition'] || prod.variants?.[0]?.name || 'Doré Prestige',
+      colorHex: prod.colorHex || prod.variants?.[0]?.colorHex || '#D4AF37',
       material: prod.specs?.['Matériau'] || 'Alliage Haute Résistance & Finition Dorée Haute Précision',
       waterResistance: prod.specs?.['Étanchéité'] || '5 ATM / 50 Mètres (Résiste aux ablutions et éclaboussures)',
       glass: prod.specs?.['Verre'] || 'Saphir Inrayable traité antireflet',
@@ -206,6 +210,8 @@ export default function AdminView() {
   };
 
   const handleDuplicateProduct = (prod) => {
+    const clonedColor = prod.specs?.['Couleur'] || prod.specs?.['Couleur & Finition'] || prod.variants?.[0]?.name || 'Doré Prestige';
+    const clonedColorHex = prod.colorHex || prod.variants?.[0]?.colorHex || '#D4AF37';
     const clonedPayload = {
       name: `${prod.name} (Copie)`,
       nameAr: prod.nameAr ? `${prod.nameAr} (نسخة)` : `${prod.name} (نسخة)`,
@@ -221,12 +227,17 @@ export default function AdminView() {
       shortDescriptionAr: prod.shortDescriptionAr || '',
       description: prod.description || '',
       descriptionAr: prod.descriptionAr || '',
-      specs: prod.specs || {
-        'Matériau': 'Alliage Haute Résistance & Finition Dorée Haute Précision',
-        'Étanchéité': '5 ATM / 50 Mètres (Résiste aux ablutions)',
-        'Verre': 'Saphir Inrayable traité antireflet',
-        'Garantie': 'Garantie Prestige 1 An'
+      colorHex: clonedColorHex,
+      specs: {
+        'Couleur': clonedColor,
+        ...(prod.specs || {
+          'Matériau': 'Alliage Haute Résistance & Finition Dorée Haute Précision',
+          'Étanchéité': '5 ATM / 50 Mètres (Résiste aux ablutions)',
+          'Verre': 'Saphir Inrayable traité antireflet',
+          'Garantie': 'Garantie Prestige 1 An'
+        })
       },
+      variants: prod.variants ? [...prod.variants] : [{ id: 'v1', name: clonedColor, colorHex: clonedColorHex }],
       sizes: prod.sizes || ['Taille Unique Ajustable']
     };
 
@@ -320,6 +331,15 @@ export default function AdminView() {
       ? productFormData.gallery
       : [finalImage];
 
+    const currentColor = productFormData.color?.trim() || 'Doré Prestige';
+    const currentColorHex = productFormData.colorHex || '#D4AF37';
+
+    const existingProd = isEditingMode ? products.find(p => p.id === editingProductId) : null;
+    let finalVariants = [{ id: 'v1', name: currentColor, colorHex: currentColorHex }];
+    if (existingProd && existingProd.variants && existingProd.variants.length > 1) {
+      finalVariants = existingProd.variants.map((v, i) => i === 0 ? { ...v, name: currentColor, colorHex: currentColorHex } : v);
+    }
+
     const payload = {
       name: productFormData.name.trim(),
       nameAr: productFormData.nameAr.trim() || productFormData.name.trim(),
@@ -335,7 +355,9 @@ export default function AdminView() {
       shortDescriptionAr: productFormData.shortDescriptionAr || '',
       description: productFormData.description || `Chef-d’œuvre d’accessoire inspiré du raffinement marocain. Livré dans son écrin de luxe TWISHIYAT avec certificat d’authenticité et garantie 1 an.`,
       descriptionAr: productFormData.descriptionAr || '',
+      colorHex: currentColorHex,
       specs: {
+        'Couleur': currentColor,
         'Matériau': productFormData.material || 'Alliage Haute Résistance & Finition Dorée Haute Précision',
         'Étanchéité': productFormData.waterResistance || '5 ATM / 50 Mètres (Résiste aux ablutions et éclaboussures)',
         'Verre': productFormData.glass || 'Verre Saphir Inrayable traité antireflet',
@@ -343,6 +365,7 @@ export default function AdminView() {
         'Diamètre': productFormData.dimensions || '41 mm (Épaisseur 11 mm)',
         'Garantie': productFormData.warranty || 'Garantie Prestige 1 An incluse avec carte TWISHIYAT'
       },
+      variants: finalVariants,
       sizes: [productFormData.sizeGuide || 'Taille Unique Ajustable (Outil offert)']
     };
 
@@ -1252,6 +1275,20 @@ export default function AdminView() {
                                       <span style={{ fontSize: '0.78rem', color: '#94A3B8', display: 'block', direction: 'rtl', textAlign: 'left', marginTop: '2px' }}>
                                         {p.nameAr}
                                       </span>
+                                    )}
+                                    {(p.specs?.['Couleur'] || p.colorHex || p.variants?.[0]?.colorHex) && (
+                                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', fontSize: '0.72rem', color: '#475569', background: '#F8FAFC', border: '1px solid #E2E8F0', padding: '1px 7px', borderRadius: '12px', marginTop: '4px' }}>
+                                        <span
+                                          style={{
+                                            width: '8px',
+                                            height: '8px',
+                                            borderRadius: '50%',
+                                            background: p.colorHex || p.variants?.[0]?.colorHex || '#D4AF37',
+                                            border: '1px solid rgba(0,0,0,0.2)'
+                                          }}
+                                        />
+                                        <span>{p.specs?.['Couleur'] || p.variants?.[0]?.name || 'Doré'}</span>
+                                      </div>
                                     )}
                                   </div>
                                 </div>
@@ -2443,6 +2480,139 @@ export default function AdminView() {
                     <p style={{ fontSize: '0.82rem', color: '#64748B', margin: 0 }}>
                       Caractéristiques techniques affichées sur la fiche produit pour rassurer les clients :
                     </p>
+
+                    {/* DEDICATED COLOR SPECIFICATION BOX */}
+                    <div style={{ background: '#F8FAFC', border: '1.5px solid #E2E8F0', borderRadius: '12px', padding: '16px', boxShadow: '0 1px 3px rgba(0,0,0,0.03)' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', flexWrap: 'wrap', gap: '8px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <span
+                            style={{
+                              width: '16px',
+                              height: '16px',
+                              borderRadius: '50%',
+                              background: productFormData.colorHex || '#D4AF37',
+                              border: '1.5px solid #94A3B8',
+                              display: 'inline-block',
+                              boxShadow: '0 1px 4px rgba(0,0,0,0.15)'
+                            }}
+                          />
+                          <label style={{ fontSize: '0.86rem', fontWeight: '800', color: '#0F172A', margin: 0 }}>
+                            Couleur & Teinte du Produit (Spécification)
+                          </label>
+                          <span style={{ fontSize: '0.7rem', fontWeight: '700', color: '#047857', background: '#D1FAE5', padding: '2px 8px', borderRadius: '10px' }}>
+                            Visible fiche client
+                          </span>
+                        </div>
+                        <span style={{ fontSize: '0.75rem', color: '#64748B' }}>
+                          Teinte visuelle + intitulé affichés dans les caractéristiques
+                        </span>
+                      </div>
+
+                      <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '12px', alignItems: 'center', marginBottom: '12px' }}>
+                        {/* Interactive Color Picker */}
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
+                          <div
+                            style={{
+                              position: 'relative',
+                              width: '44px',
+                              height: '44px',
+                              borderRadius: '10px',
+                              overflow: 'hidden',
+                              border: '2px solid #CBD5E1',
+                              cursor: 'pointer',
+                              boxShadow: '0 2px 6px rgba(0,0,0,0.1)'
+                            }}
+                            title="Cliquer pour choisir la teinte dans le nuancier"
+                          >
+                            <input
+                              type="color"
+                              value={productFormData.colorHex || '#D4AF37'}
+                              onChange={(e) => setProductFormData({ ...productFormData, colorHex: e.target.value })}
+                              style={{
+                                position: 'absolute',
+                                top: '-10px',
+                                left: '-10px',
+                                width: '64px',
+                                height: '64px',
+                                border: 'none',
+                                cursor: 'pointer',
+                                background: 'transparent'
+                              }}
+                            />
+                          </div>
+                          <span style={{ fontSize: '0.68rem', fontWeight: '600', color: '#64748B', fontFamily: 'monospace' }}>
+                            {productFormData.colorHex || '#D4AF37'}
+                          </span>
+                        </div>
+
+                        {/* Descriptive Color Name */}
+                        <div>
+                          <input
+                            type="text"
+                            value={productFormData.color}
+                            onChange={(e) => setProductFormData({ ...productFormData, color: e.target.value })}
+                            placeholder="ex: Doré Prestige & Cadran Vert Émeraude, Argent Brossé, Or Rose..."
+                            style={{
+                              width: '100%',
+                              padding: '11px 14px',
+                              borderRadius: '8px',
+                              border: '1.5px solid #CBD5E1',
+                              fontSize: '0.9rem',
+                              fontWeight: '600',
+                              color: '#0F172A',
+                              background: '#FFFFFF'
+                            }}
+                          />
+                          <span style={{ fontSize: '0.72rem', color: '#64748B', display: 'block', marginTop: '4px' }}>
+                            Nom de la couleur tel qu'il apparaîtra sur la fiche technique client.
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Quick Luxury Presets */}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap', paddingTop: '8px', borderTop: '1px dashed #E2E8F0' }}>
+                        <span style={{ fontSize: '0.74rem', fontWeight: '700', color: '#475569', marginRight: '4px' }}>
+                          Nuances rapides :
+                        </span>
+                        {[
+                          { name: 'Doré Prestige', hex: '#D4AF37' },
+                          { name: 'Argent Brossé', hex: '#C0C0C0' },
+                          { name: 'Or Rose Impérial', hex: '#B76E79' },
+                          { name: 'Noir Intense', hex: '#1A1A1A' },
+                          { name: 'Vert Émeraude', hex: '#064E3B' },
+                          { name: 'Bleu Nuit', hex: '#1E3A8A' },
+                          { name: 'Cuir Havane', hex: '#6E3C1B' }
+                        ].map((preset) => (
+                          <button
+                            key={preset.hex}
+                            type="button"
+                            onClick={() => setProductFormData({
+                              ...productFormData,
+                              color: preset.name,
+                              colorHex: preset.hex
+                            })}
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '6px',
+                              padding: '5px 11px',
+                              borderRadius: '20px',
+                              border: (productFormData.colorHex || '').toLowerCase() === preset.hex.toLowerCase() ? '1.5px solid #0F172A' : '1px solid #CBD5E1',
+                              background: (productFormData.colorHex || '').toLowerCase() === preset.hex.toLowerCase() ? '#FFFFFF' : '#F1F5F9',
+                              cursor: 'pointer',
+                              fontSize: '0.74rem',
+                              fontWeight: '600',
+                              color: '#1E293B',
+                              boxShadow: (productFormData.colorHex || '').toLowerCase() === preset.hex.toLowerCase() ? '0 1px 4px rgba(0,0,0,0.1)' : 'none',
+                              transition: 'all 0.15s'
+                            }}
+                          >
+                            <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: preset.hex, border: '1px solid rgba(0,0,0,0.2)' }} />
+                            <span>{preset.name}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
                       <div>
