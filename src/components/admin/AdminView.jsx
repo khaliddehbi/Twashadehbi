@@ -2016,10 +2016,8 @@ export default function AdminView() {
             padding: '20px', 
             zIndex: 999 
           }}
-          onClick={() => setProductModalOpen(false)}
         >
           <div 
-            onClick={(e) => e.stopPropagation()} 
             style={{ 
               maxWidth: '820px', 
               width: '100%', 
