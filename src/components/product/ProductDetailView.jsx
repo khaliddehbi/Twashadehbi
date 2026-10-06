@@ -211,7 +211,7 @@ export default function ProductDetailView() {
         </div>
 
         {/* Main PDP Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: '48px', alignItems: 'flex-start' }}>
+        <div className="pdp-grid">
           {/* Left Column: Image Gallery */}
           <div>
             <div 
@@ -517,6 +517,7 @@ export default function ProductDetailView() {
                 {/* 🌟 MOROCCAN 1-CLICK EXPRESS COD ORDER BOX (Critical conversion driver!) 🌟 */}
                 <div 
                   id="express-order-box"
+                  className="express-order-card"
                   style={{ 
                     background: '#FFFFFF', 
                     border: '2px solid var(--gold-500)', 
@@ -779,7 +780,7 @@ export default function ProductDetailView() {
           </div>
 
           {/* Reviews List */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px', marginBottom: '48px' }}>
+          <div className="reviews-grid">
             {productReviews.length > 0 ? (
               productReviews.map((rev) => (
                 <div key={rev.id} style={{ background: '#FFFFFF', padding: '22px', borderRadius: '12px', border: '1px solid #EFEAE2' }}>
@@ -815,7 +816,7 @@ export default function ProductDetailView() {
               </div>
             ) : (
               <form onSubmit={handleReviewSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                <div className="form-grid-2">
                   <input
                     type="text"
                     required

@@ -111,8 +111,7 @@ export default function CatalogView() {
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <button
-              className="btn-dark"
-              style={{ display: 'none', padding: '8px 16px', fontSize: '0.82rem' }}
+              className="btn-dark mobile-filter-btn"
               id="mobile-filter-trigger"
               onClick={() => setMobileFiltersOpen(true)}
             >
@@ -152,7 +151,7 @@ export default function CatalogView() {
         </div>
 
         {/* Main Grid Layout: Sidebar + Product Grid */}
-        <div style={{ display: 'flex', gap: '32px', alignItems: 'flex-start' }}>
+        <div className="catalog-layout" style={{ display: 'flex', gap: '32px', alignItems: 'flex-start' }}>
           {/* Desktop Filter Sidebar */}
           <aside
             style={{

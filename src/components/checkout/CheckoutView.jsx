@@ -166,9 +166,9 @@ export default function CheckoutView() {
           Remplissez vos informations de livraison au Maroc. Aucun paiement en ligne n'est exigé : vous payez à la réception.
         </p>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '36px', alignItems: 'flex-start' }}>
+        <div className="checkout-main-grid">
           {/* Left Column: Moroccan Checkout Form */}
-          <div style={{ background: '#FFFFFF', padding: '32px', borderRadius: '16px', border: '1px solid #EFEAE2', boxShadow: 'var(--shadow-sm)' }}>
+          <div className="checkout-form-card">
             <form onSubmit={handleSubmitOrder}>
               {/* Section 1: Customer Contact */}
               <div style={{ marginBottom: '28px' }}>
@@ -219,7 +219,7 @@ export default function CheckoutView() {
                 </h3>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                  <div className="form-grid-2">
                     <div>
                       <label style={{ fontSize: '0.82rem', fontWeight: '600', color: 'var(--obsidian-800)', display: 'block', marginBottom: '6px' }}>
                         Ville au Maroc *

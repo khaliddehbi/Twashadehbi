@@ -30,6 +30,7 @@ export default function WhatsAppWidget() {
       {/* Concierge Dialog Card */}
       {isOpen && (
         <div 
+          className="whatsapp-dialog-card"
           style={{
             position: 'fixed',
             bottom: '95px',

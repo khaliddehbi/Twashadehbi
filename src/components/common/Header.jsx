@@ -144,9 +144,9 @@ export default function Header() {
           <button
             className="icon-btn mobile-menu-btn"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            style={{ display: 'none' }}
+            aria-label="Menu de navigation"
           >
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
 
           {/* Brand Logo & Monogram */}
@@ -183,39 +183,39 @@ export default function Header() {
               aria-label="Rechercher un bijou"
               title="Rechercher"
             >
-              <Search size={20} />
+              <Search size={19} />
             </button>
 
             {/* Customer Account */}
             <button
-              className="icon-btn"
+              className="icon-btn header-account-btn"
               onClick={() => navigateTo('account')}
               aria-label="Mon Compte"
               title="Mon Compte"
             >
-              <User size={20} />
+              <User size={19} />
             </button>
 
             {/* Wishlist */}
             <button
-              className="icon-btn"
+              className="icon-btn header-wishlist-btn"
               onClick={() => navigateTo('account')}
               aria-label="Liste d'envies"
               title="Coups de Cœur"
             >
-              <Heart size={20} />
+              <Heart size={19} />
               {wishlist.length > 0 && <span className="icon-badge">{wishlist.length}</span>}
             </button>
 
             {/* Cart Drawer Trigger */}
             <button
-              className="icon-btn"
+              className="icon-btn header-cart-btn"
               onClick={() => setIsCartOpen(true)}
-              style={{ background: 'var(--obsidian-900)', color: 'var(--gold-400)', width: 'auto', padding: '8px 14px', borderRadius: '30px' }}
+              style={{ background: 'var(--obsidian-900)', color: 'var(--gold-400)', width: 'auto', padding: '8px 12px', borderRadius: '30px' }}
               aria-label="Panier d'achats"
             >
-              <ShoppingBag size={19} />
-              <span style={{ fontSize: '0.85rem', fontWeight: '700', marginLeft: '6px' }}>
+              <ShoppingBag size={18} />
+              <span className="header-cart-total" style={{ fontSize: '0.84rem', fontWeight: '700', marginLeft: '6px' }}>
                 {cartSubtotal} DH
               </span>
               {cartItemCount > 0 && (

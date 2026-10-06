@@ -108,7 +108,7 @@ export default function HomeView() {
               </div>
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(6px)', border: '1px solid rgba(255,255,255,0.18)', padding: '6px 12px', borderRadius: '20px', fontSize: '0.8rem', color: '#F3F4F6' }}>
                 <Truck size={15} color="var(--gold-400)" />
-                <span><strong>Livraison Gratuite 24h-48h</strong></span>
+                <span><strong>Livraison Gratuite Partout au Maroc</strong></span>
               </div>
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(6px)', border: '1px solid rgba(255,255,255,0.18)', padding: '6px 12px', borderRadius: '20px', fontSize: '0.8rem', color: '#F3F4F6' }}>
                 <Gift size={15} color="var(--gold-400)" />
@@ -478,7 +478,7 @@ export default function HomeView() {
             </div>
 
             {/* Featured Flash Item Card */}
-            <div style={{ flex: '1 1 360px', maxWidth: '420px', background: '#141618', border: '1px solid var(--border-gold)', borderRadius: '16px', padding: '20px', boxShadow: '0 12px 36px rgba(0,0,0,0.5)' }}>
+            <div className="flash-sale-card" style={{ background: '#141618', border: '1px solid var(--border-gold)', borderRadius: '16px', padding: '20px', boxShadow: '0 12px 36px rgba(0,0,0,0.5)' }}>
               <div style={{ position: 'relative', borderRadius: '12px', overflow: 'hidden', marginBottom: '16px' }}>
                 <img src={flashSaleItems[0]?.image} alt={flashSaleItems[0]?.name} style={{ width: '100%', height: '260px', objectFit: 'cover' }} />
                 <span className="badge-sale" style={{ position: 'absolute', top: '12px', left: '12px' }}>
