@@ -66,6 +66,14 @@ export default function SEOHead() {
       title = 'Mon Espace Client | TWISHIYAT Maroc';
       description = 'Consultez l’historique de vos commandes, vos favoris et vos informations de livraison sécurisées chez TWISHIYAT.';
       url = 'https://www.twishiyat.ma/#/mon-compte';
+    } else if (currentView === 'checkout') {
+      title = 'Finaliser ma Commande (Paiement à la Livraison) | TWISHIYAT Maroc';
+      description = 'Commandez en 1 clic sans paiement en ligne. Livraison express gratuite partout au Maroc. Payez en espèces au livreur après vérification du colis.';
+      url = 'https://www.twishiyat.ma/#/commander';
+    } else if (currentView === 'confirmation') {
+      title = 'Commande Confirmée avec Succès | TWISHIYAT Maroc';
+      description = 'Votre commande TWISHIYAT est enregistrée. Notre service client à Casablanca vous contacte pour confirmer l’expédition.';
+      url = 'https://www.twishiyat.ma/#/confirmation';
     }
 
     // Update Document Title

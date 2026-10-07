@@ -247,15 +247,54 @@ export function StoreProvider({ children }) {
     { id: 1, type: 'PageView', name: 'Meta Pixel / TikTok', data: { page: 'Homepage' }, time: new Date().toLocaleTimeString() }
   ]);
   const [showPixelHUD, setShowPixelHUD] = useState(false);
-  const [lastPlacedOrder, setLastPlacedOrder] = useState(null);
+  const [lastPlacedOrder, setLastPlacedOrderState] = useState(() => {
+    try {
+      const saved = sessionStorage.getItem('twishiyat_last_order');
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  });
+
+  const setLastPlacedOrder = (order) => {
+    setLastPlacedOrderState(order);
+    try {
+      if (order) {
+        sessionStorage.setItem('twishiyat_last_order', JSON.stringify(order));
+      }
+    } catch {}
+  };
+
+  // UTM Parameters Capture (Meta Ads, Instagram, Google Ads)
+  const [utmParams] = useState(() => {
+    try {
+      const saved = sessionStorage.getItem('twishiyat_utm_params');
+      if (saved) return JSON.parse(saved);
+      if (typeof window !== 'undefined') {
+        const urlParams = new URLSearchParams(window.location.search || (window.location.hash.includes('?') ? window.location.hash.split('?')[1] : ''));
+        const captured = {};
+        ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'fbclid', 'gclid'].forEach((key) => {
+          const val = urlParams.get(key);
+          if (val) captured[key] = val;
+        });
+        if (Object.keys(captured).length > 0) {
+          sessionStorage.setItem('twishiyat_utm_params', JSON.stringify(captured));
+          return captured;
+        }
+      }
+      return {};
+    } catch {
+      return {};
+    }
+  });
 
   // Real Customer Profile (Local to this specific visitor's browser)
   const [customerProfile, setCustomerProfile] = useState(() => {
     try {
       const saved = localStorage.getItem('twishiyat_customer_profile');
-      return saved ? JSON.parse(saved) : { fullName: '', phone: '', email: '', city: 'Casablanca', address: '' };
+      return saved ? JSON.parse(saved) : { fullName: '', phone: '', email: '', city: '', address: '' };
     } catch (e) {
-      return { fullName: '', phone: '', email: '', city: 'Casablanca', address: '' };
+      return { fullName: '', phone: '', email: '', city: '', address: '' };
     }
   });
 
@@ -323,8 +362,14 @@ export function StoreProvider({ children }) {
   }, []);
 
   const recordCustomerOrder = (newOrder) => {
+    const orderWithAttribution = {
+      ...newOrder,
+      utmSource: utmParams?.utm_source,
+      utmCampaign: utmParams?.utm_campaign,
+      utmParams: utmParams && Object.keys(utmParams).length > 0 ? utmParams : undefined
+    };
     setCustomerOrders((prev) => {
-      const updated = [newOrder, ...prev.filter(o => o.id !== newOrder.id)];
+      const updated = [orderWithAttribution, ...prev.filter(o => o.id !== newOrder.id)];
       try {
         localStorage.setItem('twishiyat_my_orders', JSON.stringify(updated));
       } catch (e) {}
@@ -454,7 +499,23 @@ export function StoreProvider({ children }) {
     }, 4000);
   };
 
+  // Event deduplication cache
+  const trackedEventKeys = React.useRef(new Set());
+
   const trackPixel = (type, data = {}) => {
+    // Generate deduplication key for critical financial events (Purchase, InitiateCheckout)
+    const dedupKey = type === 'Purchase' 
+      ? `Purchase_${data.id || data.orderId || data.value}` 
+      : (type === 'InitiateCheckout' ? `InitiateCheckout_${data.value}_${data.num_items}` : null);
+
+    if (dedupKey && trackedEventKeys.current.has(dedupKey)) {
+      console.log(`[Pixel] Deduplicated redundant event: ${dedupKey}`);
+      return;
+    }
+    if (dedupKey) {
+      trackedEventKeys.current.add(dedupKey);
+    }
+
     const newEntry = {
       id: Date.now(),
       type,
@@ -463,6 +524,89 @@ export function StoreProvider({ children }) {
       time: new Date().toLocaleTimeString()
     };
     setPixelsLog((prev) => [newEntry, ...prev.slice(0, 19)]);
+
+    // 1. Meta Pixel Bridge (window.fbq)
+    try {
+      if (typeof window !== 'undefined' && typeof window.fbq === 'function') {
+        if (type === 'PageView') {
+          window.fbq('track', 'PageView');
+        } else if (type === 'ViewContent') {
+          window.fbq('track', 'ViewContent', {
+            content_name: data.name,
+            content_ids: data.id ? [String(data.id)] : undefined,
+            content_type: 'product',
+            value: Number(data.price) || 0,
+            currency: 'MAD'
+          });
+        } else if (type === 'AddToCart') {
+          window.fbq('track', 'AddToCart', {
+            content_name: data.name,
+            content_ids: data.id ? [String(data.id)] : undefined,
+            content_type: 'product',
+            value: Number(data.price) * (Number(data.quantity) || 1),
+            currency: 'MAD'
+          });
+        } else if (type === 'InitiateCheckout') {
+          window.fbq('track', 'InitiateCheckout', {
+            value: Number(data.value) || 0,
+            currency: 'MAD',
+            num_items: Number(data.num_items) || 1
+          });
+        } else if (type === 'Purchase') {
+          window.fbq('track', 'Purchase', {
+            value: Number(data.value) || 0,
+            currency: 'MAD',
+            content_type: 'product',
+            transaction_id: String(data.id || data.orderId || '')
+          });
+        } else {
+          window.fbq('trackCustom', type, data);
+        }
+      }
+    } catch (e) {
+      console.warn('[Pixel] Meta Pixel dispatch note:', e);
+    }
+
+    // 2. Google Analytics 4 Bridge (window.gtag)
+    try {
+      if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+        if (type === 'PageView') {
+          window.gtag('event', 'page_view');
+        } else if (type === 'ViewContent') {
+          window.gtag('event', 'view_item', {
+            currency: 'MAD',
+            value: Number(data.price) || 0,
+            items: [{ item_id: String(data.id), item_name: data.name, price: data.price }]
+          });
+        } else if (type === 'AddToCart') {
+          window.gtag('event', 'add_to_cart', {
+            currency: 'MAD',
+            value: Number(data.price) * (Number(data.quantity) || 1),
+            items: [{ item_id: String(data.id), item_name: data.name, quantity: data.quantity || 1 }]
+          });
+        } else if (type === 'InitiateCheckout') {
+          window.gtag('event', 'begin_checkout', {
+            currency: 'MAD',
+            value: Number(data.value) || 0
+          });
+        } else if (type === 'Purchase') {
+          window.gtag('event', 'purchase', {
+            transaction_id: String(data.id || data.orderId || ''),
+            value: Number(data.value) || 0,
+            currency: 'MAD'
+          });
+        }
+      }
+    } catch (e) {
+      console.warn('[Pixel] GA4 dispatch note:', e);
+    }
+
+    // 3. Browser Custom Event for external hooks & testing
+    try {
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('twishiyat_pixel_event', { detail: newEntry }));
+      }
+    } catch (e) {}
   };
 
   const navigateTo = (view, payload = null) => {
@@ -735,6 +879,7 @@ export function StoreProvider({ children }) {
         setShowPixelHUD,
         lastPlacedOrder,
         setLastPlacedOrder,
+        utmParams,
         customerProfile,
         updateCustomerProfile,
         customerOrders,

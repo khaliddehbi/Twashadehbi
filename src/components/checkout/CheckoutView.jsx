@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useStore } from '../../context/StoreContext';
 import { useAdmin } from '../../context/AdminContext';
 import { MOROCCAN_CITIES, validateMoroccanPhone } from '../../data/moroccanCities';
@@ -46,6 +46,7 @@ export default function CheckoutView() {
   const [includeGiftBox, setIncludeGiftBox] = useState(false);
   const [couponCodeInput, setCouponCodeInput] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const isSubmittingRef = useRef(false);
 
   // Delivery calculation
   const standardDeliveryFee = 0; // 100% Free Shipping site-wide
@@ -61,6 +62,11 @@ export default function CheckoutView() {
 
   const handleSubmitOrder = (e) => {
     e.preventDefault();
+
+    if (isSubmittingRef.current || isSubmitting) {
+      console.warn('[Checkout] Submission already in progress, ignoring double click.');
+      return;
+    }
 
     if (cart.length === 0) {
       addToast('Votre panier est vide.', 'error');
@@ -93,6 +99,7 @@ export default function CheckoutView() {
       return;
     }
 
+    isSubmittingRef.current = true;
     setIsSubmitting(true);
     trackPixel('InitiateCheckout', { value: finalTotal, num_items: cart.length });
 
@@ -143,6 +150,7 @@ export default function CheckoutView() {
       trackPixel('Purchase', { id: orderId, value: finalTotal, currency: 'MAD' });
       setCart([]); // Empty cart
       setIsSubmitting(false);
+      isSubmittingRef.current = false;
       navigateTo('confirmation', orderId);
     }, 700);
   };

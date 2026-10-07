@@ -26,8 +26,8 @@ export const FREE_SHIPPING_THRESHOLD = 0; // 100% Free Shipping site-wide across
 export function validateMoroccanPhone(phone) {
   if (!phone) return false;
   const clean = phone.replace(/[\s\-\(\)\.]/g, '');
-  // Accepts 06XXXXXXXX, 07XXXXXXXX, 05XXXXXXXX, +2126XXXXXXXX, +2127XXXXXXXX
-  const regex = /^(?:(?:\+|00)212|0)([5-7])\d{8}$/;
+  // Accepts 06XXXXXXXX, 07XXXXXXXX, 05XXXXXXXX, +2126XXXXXXXX, 2126XXXXXXXX, 002126XXXXXXXX
+  const regex = /^(?:(?:\+|00)?212|0)([5-7])\d{8}$/;
   return regex.test(clean);
 }
 

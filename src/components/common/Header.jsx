@@ -59,30 +59,30 @@ export default function Header() {
     <>
       {/* Top Announcement Bar */}
       <aside aria-label="Annonces promotionnelles" className="announcement-bar">
-        <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+        <div className="container announcement-inner">
+          <div className="announcement-left">
             <div className="announcement-center">
               <span>{t('announcement')}</span>
             </div>
 
-            <div className="announcement-socials" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div className="announcement-socials">
               <a
                 href="https://www.instagram.com/twishiyat_/"
                 target="_blank"
                 rel="me noopener noreferrer"
                 title="Page Instagram @twishiyat_"
-                style={{ color: 'var(--gold-400)', display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.74rem', textDecoration: 'none' }}
+                className="announcement-social-link"
               >
                 <InstagramIcon size={12} />
                 <span>@twishiyat_</span>
               </a>
-              <span style={{ color: '#555' }}>•</span>
+              <span className="announcement-divider">•</span>
               <a
                 href="https://www.facebook.com/profile.php?id=61594978681127"
                 target="_blank"
                 rel="me noopener noreferrer"
                 title="Page Facebook TWISHIYAT"
-                style={{ color: 'var(--gold-400)', display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.74rem', textDecoration: 'none' }}
+                className="announcement-social-link"
               >
                 <FacebookIcon size={12} />
                 <span>Facebook</span>
@@ -315,12 +315,67 @@ export default function Header() {
                   <span>Facebook</span>
                 </a>
               </div>
+
+              {/* Mobile Drawer Language & Currency Switcher */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 14px', background: '#F9FAFB', borderRadius: '10px', marginTop: '6px', border: '1px solid #E5E7EB' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Globe size={15} color="var(--gold-600)" />
+                  <button onClick={() => setLanguage('fr')} style={{ fontWeight: language === 'fr' ? '800' : '400', color: language === 'fr' ? 'var(--gold-700)' : '#4B5563', fontSize: '0.82rem' }}>FR</button>
+                  <span style={{ color: '#D1D5DB' }}>|</span>
+                  <button onClick={() => setLanguage('ar')} style={{ fontWeight: language === 'ar' ? '800' : '400', color: language === 'ar' ? 'var(--gold-700)' : '#4B5563', fontSize: '0.82rem', fontFamily: 'var(--font-arabic)' }}>العربية</button>
+                  <span style={{ color: '#D1D5DB' }}>|</span>
+                  <button onClick={() => setLanguage('en')} style={{ fontWeight: language === 'en' ? '800' : '400', color: language === 'en' ? 'var(--gold-700)' : '#4B5563', fontSize: '0.82rem' }}>EN</button>
+                </div>
+                <span style={{ fontSize: '0.78rem', fontWeight: '700', color: 'var(--gold-800)' }}>🇲🇦 MAD (DH)</span>
+              </div>
             </div>
           </div>
         )}
       </header>
 
       <style>{`
+        .announcement-bar {
+          width: 100%;
+          max-width: 100vw;
+          overflow: hidden;
+          background: var(--obsidian-950);
+        }
+        .announcement-inner {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          width: 100%;
+          padding: 6px 14px;
+        }
+        .announcement-left {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          min-width: 0;
+        }
+        .announcement-center {
+          font-size: 0.76rem;
+          color: var(--gold-400);
+          letter-spacing: 0.02em;
+          font-weight: 600;
+        }
+        .announcement-socials {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+        .announcement-social-link {
+          color: var(--gold-400);
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          font-size: 0.74rem;
+          text-decoration: none;
+        }
+        .announcement-divider {
+          color: #555;
+        }
+
         @media (max-width: 860px) {
           .announcement-socials {
             display: none !important;
@@ -332,11 +387,34 @@ export default function Header() {
           }
         }
         @media (max-width: 768px) {
+          .announcement-bar {
+            padding: 6px 8px !important;
+          }
+          .announcement-inner {
+            justify-content: center !important;
+            padding: 0 !important;
+            width: 100% !important;
+            max-width: 100% !important;
+          }
+          .announcement-left {
+            justify-content: center !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            gap: 0 !important;
+            min-width: 0 !important;
+          }
           .announcement-center {
-            font-size: 0.72rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            width: 100% !important;
+            max-width: 100% !important;
+            text-align: center !important;
+            font-size: 0.69rem !important;
+            white-space: normal !important;
+            line-height: 1.25 !important;
+            padding: 0 4px !important;
+            overflow: visible !important;
+          }
+          .announcement-actions {
+            display: none !important;
           }
         }
       `}</style>

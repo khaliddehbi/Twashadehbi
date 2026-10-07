@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useStore } from '../../context/StoreContext';
 import brandLogo from '../../assets/images/logo.png';
 import { 
@@ -9,7 +9,8 @@ import {
   Phone, 
   Mail, 
   MapPin, 
-  ExternalLink
+  ExternalLink,
+  X
 } from 'lucide-react';
 
 const InstagramIcon = ({ size = 18 }) => (
@@ -28,6 +29,41 @@ const FacebookIcon = ({ size = 18 }) => (
 
 export default function Footer() {
   const { t, navigateTo } = useStore();
+  const [policyModal, setPolicyModal] = useState(null);
+
+  const policies = {
+    terms: {
+      title: 'Conditions Générales de Vente (CGV)',
+      content: (
+        <>
+          <p><strong>1. Commandes & Paiement à la livraison (COD) :</strong> Chez TWISHIYAT Maroc, toutes les commandes sont passées sans paiement préalable par carte bancaire. Vous réglez exclusivement en espèces au livreur après réception de votre colis.</p>
+          <p style={{ marginTop: '12px' }}><strong>2. Droit d\'inspection préalable :</strong> Conformément à notre engagement de transparence, chaque client a le droit absolu d\'ouvrir le colis et de vérifier l\'article devant le livreur avant de payer.</p>
+          <p style={{ marginTop: '12px' }}><strong>3. Livraison gratuite au Maroc :</strong> La livraison est 100% offerte partout au Maroc sous 24h à 48h (Amana Express, Cathedis, Ghazala).</p>
+          <p style={{ marginTop: '12px' }}><strong>4. Validation par téléphone / WhatsApp :</strong> Chaque commande fait l\'objet d\'une confirmation téléphonique rapide par notre service client à Casablanca avant expédition.</p>
+        </>
+      )
+    },
+    privacy: {
+      title: 'Politique de Confidentialité',
+      content: (
+        <>
+          <p><strong>1. Collecte des données :</strong> TWISHIYAT collecte uniquement les données nécessaires à la bonne livraison de votre commande (nom complet, numéro de téléphone, ville et adresse de livraison).</p>
+          <p style={{ marginTop: '12px' }}><strong>2. Confidentialité stricte :</strong> Vos coordonnées ne sont jamais vendues, cédées ou divulguées à des tiers. Elles sont uniquement transmises à nos livreurs partenaires pour acheminer votre colis.</p>
+          <p style={{ marginTop: '12px' }}><strong>3. Sécurité :</strong> Notre site applique les protocoles de sécurité HTTPS/SSL les plus rigoureux pour protéger votre navigation.</p>
+        </>
+      )
+    },
+    returns: {
+      title: 'Retours & Échanges sous 7 Jours',
+      content: (
+        <>
+          <p><strong>1. Délai d\'échange :</strong> Vous disposez de 7 jours calendaires après la réception pour demander un échange ou un retour de votre bijou ou montre.</p>
+          <p style={{ marginTop: '12px' }}><strong>2. Conditions :</strong> Le produit doit être retourné dans son écrin d\'origine TWISHIYAT, neuf et non porté.</p>
+          <p style={{ marginTop: '12px' }}><strong>3. Assistance WhatsApp dédiée :</strong> Pour toute demande de retour ou d\'ajustement de taille, contactez notre équipe WhatsApp au <strong>+212 7 08 75 95 10</strong>. Un livreur passera récupérer l\'article.</p>
+        </>
+      )
+    }
+  };
 
   return (
     <footer style={{ background: 'var(--obsidian-950)', color: '#D1D5DB', borderTop: '1px solid rgba(212, 175, 55, 0.25)', marginTop: '60px' }}>
@@ -146,27 +182,27 @@ export default function Footer() {
             </h4>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.88rem' }}>
               <li>
-                <a href="#" onClick={(e) => { e.preventDefault(); navigateTo('catalog', 'watches'); }} style={{ color: '#9CA3AF' }} onMouseOver={(e) => e.target.style.color = '#FFFFFF'} onMouseOut={(e) => e.target.style.color = '#9CA3AF'}>
+                <a href="#/collection/watches" onClick={(e) => { e.preventDefault(); navigateTo('catalog', 'watches'); }} style={{ color: '#9CA3AF', textDecoration: 'none' }} onMouseOver={(e) => e.target.style.color = '#FFFFFF'} onMouseOut={(e) => e.target.style.color = '#9CA3AF'}>
                   Montres de Précision
                 </a>
               </li>
               <li>
-                <a href="#" onClick={(e) => { e.preventDefault(); navigateTo('catalog', 'bracelets'); }} style={{ color: '#9CA3AF' }} onMouseOver={(e) => e.target.style.color = '#FFFFFF'} onMouseOut={(e) => e.target.style.color = '#9CA3AF'}>
+                <a href="#/collection/bracelets" onClick={(e) => { e.preventDefault(); navigateTo('catalog', 'bracelets'); }} style={{ color: '#9CA3AF', textDecoration: 'none' }} onMouseOver={(e) => e.target.style.color = '#FFFFFF'} onMouseOut={(e) => e.target.style.color = '#9CA3AF'}>
                   Bracelets & Joncs Ciselés
                 </a>
               </li>
               <li>
-                <a href="#" onClick={(e) => { e.preventDefault(); navigateTo('catalog', 'rings'); }} style={{ color: '#9CA3AF' }} onMouseOver={(e) => e.target.style.color = '#FFFFFF'} onMouseOut={(e) => e.target.style.color = '#9CA3AF'}>
+                <a href="#/collection/rings" onClick={(e) => { e.preventDefault(); navigateTo('catalog', 'rings'); }} style={{ color: '#9CA3AF', textDecoration: 'none' }} onMouseOver={(e) => e.target.style.color = '#FFFFFF'} onMouseOut={(e) => e.target.style.color = '#9CA3AF'}>
                   Bagues & Chevalières
                 </a>
               </li>
               <li>
-                <a href="#" onClick={(e) => { e.preventDefault(); navigateTo('catalog', 'sets'); }} style={{ color: '#9CA3AF' }} onMouseOver={(e) => e.target.style.color = '#FFFFFF'} onMouseOut={(e) => e.target.style.color = '#9CA3AF'}>
+                <a href="#/collection/sets" onClick={(e) => { e.preventDefault(); navigateTo('catalog', 'sets'); }} style={{ color: '#9CA3AF', textDecoration: 'none' }} onMouseOver={(e) => e.target.style.color = '#FFFFFF'} onMouseOut={(e) => e.target.style.color = '#9CA3AF'}>
                   Coffrets Cadeaux Prestiges
                 </a>
               </li>
               <li>
-                <a href="#" onClick={(e) => { e.preventDefault(); navigateTo('tracking'); }} style={{ color: 'var(--gold-400)' }}>
+                <a href="#/suivi" onClick={(e) => { e.preventDefault(); navigateTo('tracking'); }} style={{ color: 'var(--gold-400)', textDecoration: 'none' }}>
                   Suivi de Commande en Direct
                 </a>
               </li>
@@ -243,14 +279,92 @@ export default function Footer() {
             © {new Date().getFullYear()} TWISHIYAT. {t('allRightsReserved')}
           </div>
           <div style={{ display: 'flex', gap: '18px', flexWrap: 'wrap' }}>
-            <a href="#" style={{ color: '#9CA3AF' }}>{t('terms')}</a>
+            <button 
+              onClick={() => setPolicyModal('terms')} 
+              style={{ background: 'none', border: 'none', color: '#9CA3AF', cursor: 'pointer', fontSize: '0.8rem', padding: 0 }}
+              onMouseOver={(e) => e.target.style.color = '#FFFFFF'} 
+              onMouseOut={(e) => e.target.style.color = '#9CA3AF'}
+            >
+              {t('terms')}
+            </button>
             <span>•</span>
-            <a href="#" style={{ color: '#9CA3AF' }}>{t('privacy')}</a>
+            <button 
+              onClick={() => setPolicyModal('privacy')} 
+              style={{ background: 'none', border: 'none', color: '#9CA3AF', cursor: 'pointer', fontSize: '0.8rem', padding: 0 }}
+              onMouseOver={(e) => e.target.style.color = '#FFFFFF'} 
+              onMouseOut={(e) => e.target.style.color = '#9CA3AF'}
+            >
+              {t('privacy')}
+            </button>
             <span>•</span>
-            <a href="#" style={{ color: '#9CA3AF' }}>{t('returns')}</a>
+            <button 
+              onClick={() => setPolicyModal('returns')} 
+              style={{ background: 'none', border: 'none', color: '#9CA3AF', cursor: 'pointer', fontSize: '0.8rem', padding: 0 }}
+              onMouseOver={(e) => e.target.style.color = '#FFFFFF'} 
+              onMouseOut={(e) => e.target.style.color = '#9CA3AF'}
+            >
+              {t('returns')}
+            </button>
           </div>
         </div>
       </div>
+
+      {/* Interactive Policy Modal */}
+      {policyModal && policies[policyModal] && (
+        <div 
+          className="drawer-overlay"
+          onClick={() => setPolicyModal(null)}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(0,0,0,0.65)',
+            backdropFilter: 'blur(5px)',
+            zIndex: 9999,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '20px'
+          }}
+        >
+          <div 
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              background: '#FFFFFF',
+              color: 'var(--obsidian-900)',
+              borderRadius: '16px',
+              maxWidth: '620px',
+              width: '100%',
+              padding: '28px',
+              boxShadow: '0 20px 40px rgba(0,0,0,0.3)',
+              position: 'relative'
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #E5E7EB', paddingBottom: '14px', marginBottom: '18px' }}>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: '700', color: 'var(--obsidian-950)' }}>
+                {policies[policyModal].title}
+              </h3>
+              <button 
+                onClick={() => setPolicyModal(null)}
+                style={{ background: '#F3F4F6', border: 'none', borderRadius: '50%', width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+              >
+                <X size={18} color="#374151" />
+              </button>
+            </div>
+            <div style={{ fontSize: '0.9rem', lineHeight: '1.65', color: '#4B5563', maxHeight: '60vh', overflowY: 'auto' }}>
+              {policies[policyModal].content}
+            </div>
+            <div style={{ marginTop: '24px', textAlign: 'right' }}>
+              <button 
+                className="btn-gold" 
+                style={{ padding: '10px 22px', fontSize: '0.85rem' }}
+                onClick={() => setPolicyModal(null)}
+              >
+                Fermer
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </footer>
   );
 }

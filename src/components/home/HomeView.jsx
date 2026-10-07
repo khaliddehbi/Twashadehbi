@@ -377,7 +377,7 @@ export default function HomeView() {
             <p className="section-desc">Des accessoires pensés pour chaque moment d'élégance</p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' }}>
+          <div className="home-categories-grid">
             {CATEGORIES.filter(c => c.id !== 'all').map((cat) => (
               <div
                 key={cat.id}
@@ -571,7 +571,7 @@ export default function HomeView() {
             <p className="section-desc">{t('reviewsSub')}</p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px' }}>
+          <div className="reviews-grid">
             {CUSTOMER_REVIEWS.map((rev) => (
               <div
                 key={rev.id}
@@ -688,7 +688,7 @@ export default function HomeView() {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
+          <div className="insta-feed-grid">
             {products.slice(0, 5).map((prod, idx) => (
               <div
                 key={prod.id}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useStore } from '../../context/StoreContext';
 import { useAdmin } from '../../context/AdminContext';
 import { PRODUCTS } from '../../data/products';
@@ -77,6 +77,7 @@ export default function ProductDetailView() {
   const [expressCity, setExpressCity] = useState('');
   const [expressAddress, setExpressAddress] = useState('');
   const [expressSubmitting, setExpressSubmitting] = useState(false);
+  const isExpressSubmittingRef = useRef(false);
 
   // New review form
   const [reviewName, setReviewName] = useState('');
@@ -92,6 +93,12 @@ export default function ProductDetailView() {
   // Moroccan 1-Click Express COD Order Handler
   const handleExpressOrder = (e) => {
     e.preventDefault();
+
+    if (isExpressSubmittingRef.current || expressSubmitting) {
+      console.warn('[Express] Order submission in progress, ignoring double click.');
+      return;
+    }
+
     if (!expressName.trim()) {
       addToast('Veuillez renseigner votre nom complet.', 'error');
       return;
@@ -109,16 +116,17 @@ export default function ProductDetailView() {
       return;
     }
 
+    if (product.stock !== undefined && product.stock <= 0) {
+      addToast('Ce produit est actuellement en rupture temporaire de stock.', 'error');
+      return;
+    }
+
+    isExpressSubmittingRef.current = true;
     setExpressSubmitting(true);
 
     const totalOrderAmount = product.price * quantity;
     const isFree = true;
     const shippingFee = 0;
-    if (product.stock !== undefined && product.stock <= 0) {
-      addToast('Ce produit est actuellement en rupture temporaire de stock.', 'error');
-      setExpressSubmitting(false);
-      return;
-    }
 
     const orderId = `TD-${Math.floor(1000 + Math.random() * 9000)}`;
 
@@ -166,6 +174,7 @@ export default function ProductDetailView() {
       setLastPlacedOrder(newOrder);
       trackPixel('Purchase', { id: orderId, value: newOrder.total, currency: 'MAD' });
       setExpressSubmitting(false);
+      isExpressSubmittingRef.current = false;
       navigateTo('confirmation', newOrder.id);
     }, 600);
   };
@@ -195,10 +204,10 @@ export default function ProductDetailView() {
   };
 
   return (
-    <div style={{ padding: '30px 0 80px 0' }}>
+    <div className="pdp-wrapper">
       <div className="container">
         {/* Breadcrumb */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: '#9CA3AF', marginBottom: '24px' }}>
+        <div className="pdp-breadcrumb">
           <span style={{ cursor: 'pointer' }} onClick={() => navigateTo('home')}>Accueil</span>
           <span>/</span>
           <span style={{ cursor: 'pointer' }} onClick={() => navigateTo('catalog', product.category)}>
@@ -213,19 +222,8 @@ export default function ProductDetailView() {
         {/* Main PDP Grid */}
         <div className="pdp-grid">
           {/* Left Column: Image Gallery */}
-          <div>
-            <div 
-              style={{ 
-                position: 'relative', 
-                borderRadius: '16px', 
-                overflow: 'hidden', 
-                background: '#FAF8F5', 
-                border: '1px solid #EFEAE2',
-                aspectRatio: '1 / 1',
-                marginBottom: '16px',
-                boxShadow: 'var(--shadow-md)'
-              }}
-            >
+          <div className="pdp-gallery-col">
+            <div className="pdp-main-image-container">
               <img
                 src={activeImage}
                 alt={product.name}
@@ -267,20 +265,12 @@ export default function ProductDetailView() {
 
             {/* Thumbnail Row */}
             {product.gallery && product.gallery.length > 1 && (
-              <div style={{ display: 'flex', gap: '12px' }}>
+              <div className="pdp-thumbnails-wrapper">
                 {product.gallery.map((img, idx) => (
                   <button
                     key={idx}
                     onClick={() => setActiveImage(img)}
-                    style={{
-                      width: '74px',
-                      height: '74px',
-                      borderRadius: '8px',
-                      overflow: 'hidden',
-                      border: activeImage === img ? '2px solid var(--gold-500)' : '1px solid #E5E7EB',
-                      cursor: 'pointer',
-                      padding: 0
-                    }}
+                    className={`pdp-thumbnail-btn ${activeImage === img ? 'active' : ''}`}
                   >
                     <img src={img} alt="Thumbnail" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   </button>
@@ -290,12 +280,12 @@ export default function ProductDetailView() {
           </div>
 
           {/* Right Column: Product Info & Moroccan Conversion Blocks */}
-          <div>
+          <div className="pdp-info-col">
             <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--gold-700)', fontWeight: '700' }}>
               Collection Haute Joaillerie Marocaine
             </span>
 
-            <h1 style={{ fontSize: '2.2rem', color: 'var(--obsidian-950)', margin: '8px 0 12px 0' }}>
+            <h1 className="pdp-title">
               {language === 'ar' ? product.nameAr : product.name}
             </h1>
 
@@ -329,14 +319,14 @@ export default function ProductDetailView() {
             </div>
 
             {/* Price Box */}
-            <div style={{ background: '#FAF8F5', border: '1px solid #EFEAE2', padding: '16px 20px', borderRadius: '12px', marginBottom: '16px' }}>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px', marginBottom: '6px' }}>
-                <span style={{ fontSize: '2.2rem', fontWeight: '700', color: 'var(--obsidian-950)' }}>
+            <div className="pdp-price-box">
+              <div className="pdp-price-row">
+                <span className="pdp-price-current">
                   {product.price} DH
                 </span>
                 {product.originalPrice && (
                   <>
-                    <span style={{ fontSize: '1.2rem', color: '#9CA3AF', textDecoration: 'line-through' }}>
+                    <span className="pdp-price-original">
                       {product.originalPrice} DH
                     </span>
                     <span className="badge-sale" style={{ fontSize: '0.8rem', padding: '4px 10px' }}>
@@ -352,7 +342,7 @@ export default function ProductDetailView() {
             </div>
 
             {/* 🌟 LUXURY PACKAGING & ANTI-DOUBT ASSURANCE BOX 🌟 */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', background: '#FDFBF7', border: '1px solid #EAE5DC', padding: '12px 16px', borderRadius: '10px', marginBottom: '22px' }}>
+            <div className="pdp-trust-box">
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: '#065F46', fontWeight: '700' }}>
                 <ShieldCheck size={17} color="#059669" />
                 <span>100% Sécurisé : Ouvrez et vérifiez votre bijou avec le livreur avant de payer</span>
@@ -364,7 +354,7 @@ export default function ProductDetailView() {
             </div>
 
             {/* Short Description */}
-            <p style={{ fontSize: '0.95rem', color: '#4B5563', lineHeight: '1.6', marginBottom: '20px' }}>
+            <p className="pdp-description" style={{ fontSize: '0.95rem', color: '#4B5563', lineHeight: '1.6', marginBottom: '20px' }}>
               {language === 'ar' ? product.descriptionAr : product.description}
             </p>
 
@@ -374,10 +364,10 @@ export default function ProductDetailView() {
                 <span style={{ fontSize: '0.82rem', fontWeight: '800', color: 'var(--obsidian-800)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                   📸 Détails & Photos Explicatives :
                 </span>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '10px' }}>
+                <div className="pdp-desc-grid">
                   {product.descriptionImages.map((imgUrl, idx) => (
-                    <div key={idx} style={{ borderRadius: '10px', overflow: 'hidden', border: '1px solid #E2E8F0', background: '#F8FAFC', boxShadow: '0 2px 6px rgba(0,0,0,0.04)' }}>
-                      <img src={imgUrl} alt={`Détail explicatif ${idx + 1}`} style={{ width: '100%', height: '160px', objectFit: 'cover', display: 'block' }} />
+                    <div key={idx} className="pdp-desc-image-wrap">
+                      <img src={imgUrl} alt={`Détail explicatif ${idx + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
                     </div>
                   ))}
                 </div>
@@ -476,7 +466,7 @@ export default function ProductDetailView() {
             ) : (
               <>
                 {/* Standard Cart Buttons */}
-                <div style={{ display: 'flex', gap: '12px', marginBottom: '28px', flexWrap: 'wrap' }}>
+                <div className="pdp-cart-actions">
                   <div style={{ display: 'flex', alignItems: 'center', border: '1.5px solid #D1D5DB', borderRadius: '6px', background: '#FFFFFF' }}>
                     <button 
                       onClick={() => setQuantity(Math.max(1, quantity - 1))}
