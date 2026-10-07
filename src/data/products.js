@@ -109,7 +109,8 @@ export const PRODUCTS = [
     badge: 'Nouveau'
   },
   {
-    id: 'TD-W03',
+    id: 'TW-W5079',
+    alias: 'TD-W03',
     name: 'Montre Chrono Style – Cadran Argent Brossé',
     nameAr: 'ساعة كرونو ستايل – مينا زمردي مع إطار فضي مصقول',
     nameEn: 'Chrono Style Watch – Brushed Silver & Emerald Dial',
@@ -121,7 +122,8 @@ export const PRODUCTS = [
     discountPercent: 25,
     rating: 5.0,
     reviewsCount: 1,
-    stock: 6,
+    visitorsCount: 85,
+    stock: 18,
     isBestSeller: true,
     isNewArrival: true,
     isFlashSale: false,
@@ -132,7 +134,8 @@ export const PRODUCTS = [
     description: "Design : Cadran soleillé argenté ultra-lumineux. Confort : Bracelet en silicone, résistant à l'eau et à la transpiration, parfait au quotidien comme en soirée. Fonctions : Guichet dateur intégré à 3h, aiguilles luminescentes et finition soignée. Contenu du pack : Montre + Coffret rigide cadeau Twishiyat.ma + Carte de remerciement. Livraison : Rapide partout au Maroc - Paiement à la livraison après vérification du produit.",
     descriptionAr: 'ساعة عصرية تجمع بين الفخامة والعملية اليومية. مينا أخضر زمردي مميز، سوار سيليكون عالي الجودة مضاد للماء والتعرق، ونافذة لعرض التاريخ. تأتي في علبة هدايا فاخرة من توشيات مع بطاقة شكر.',
     specs: {
-      'Couleur': 'Argent Brossé & Vert Émeraude',
+      'Couleur': 'Noir',
+      'Couleurs disponibles': 'Noir, Vert Émeraude & Argent Brossé',
       'Matériau': 'Alliage Haute Résistance & Finition Argentée Brossée',
       'Cadran': 'Vert Émeraude Guilloché avec guichet date',
       'Mouvement': 'Quartz Haute Précision Chronographe',
@@ -141,7 +144,8 @@ export const PRODUCTS = [
       'Bracelet': 'Silicone Haute Densité Confort'
     },
     variants: [
-      { id: 'prx-green', name: 'Vert Émeraude & Argent Brossé', nameAr: 'أخضر زمردي وفضي', colorHex: '#1B4D3E' }
+      { id: 'noir', name: 'Noir', nameAr: 'أسود', colorHex: '#1A1A1A', stock: 18 },
+      { id: 'prx-green', name: 'Vert Émeraude & Argent Brossé', nameAr: 'أخضر زمردي وفضي', colorHex: '#1B4D3E', stock: 6 }
     ],
     sizes: ['Taille Unique Ajustable'],
     badge: 'Best-Seller'

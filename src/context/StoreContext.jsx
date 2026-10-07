@@ -409,8 +409,10 @@ export function StoreProvider({ children }) {
           (p) =>
             p.slug === secondSegment ||
             p.id === secondSegment ||
+            p.alias === secondSegment ||
             (p.slug && p.slug.toLowerCase() === secondSegment.toLowerCase()) ||
-            (p.id && p.id.toLowerCase() === secondSegment.toLowerCase())
+            (p.id && p.id.toLowerCase() === secondSegment.toLowerCase()) ||
+            (p.alias && p.alias.toLowerCase() === secondSegment.toLowerCase())
         );
         if (found) {
           setSelectedProductId(found.id);
@@ -426,8 +428,10 @@ export function StoreProvider({ children }) {
           (p) =>
             p.id === queryProd ||
             p.slug === queryProd ||
+            p.alias === queryProd ||
             (p.slug && p.slug.toLowerCase() === queryProd.toLowerCase()) ||
-            (p.id && p.id.toLowerCase() === queryProd.toLowerCase())
+            (p.id && p.id.toLowerCase() === queryProd.toLowerCase()) ||
+            (p.alias && p.alias.toLowerCase() === queryProd.toLowerCase())
         );
         if (found) {
           setSelectedProductId(found.id);

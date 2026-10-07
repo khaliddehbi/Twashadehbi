@@ -44,18 +44,29 @@ export default function ProductDetailView() {
 
   const { addOrder } = useAdmin();
 
-  const product = products.find((p) => p.id === selectedProductId) || products[0];
+  const product = products.find(
+    (p) =>
+      p.id === selectedProductId ||
+      p.slug === selectedProductId ||
+      p.alias === selectedProductId ||
+      (p.slug && p.slug.toLowerCase() === (selectedProductId || '').toLowerCase())
+  ) || products[0];
 
-  const [activeImage, setActiveImage] = useState(product.image);
-  const [selectedVariant, setSelectedVariant] = useState(product.variants?.[0] || null);
-  const [selectedSize, setSelectedSize] = useState(product.sizes?.[0] || null);
+  const [activeImage, setActiveImage] = useState(product?.image);
+  const [selectedVariant, setSelectedVariant] = useState(product?.variants?.[0] || null);
+  const [selectedSize, setSelectedSize] = useState(product?.sizes?.[0] || null);
   const [quantity, setQuantity] = useState(1);
   const [openTab, setOpenTab] = useState('specs'); // 'specs', 'delivery', 'care'
   const [showStickyBar, setShowStickyBar] = useState(false);
 
   useEffect(() => {
-    if (product && product.id && recordProductView) {
-      recordProductView(product.id);
+    if (product) {
+      setActiveImage(product.image);
+      setSelectedVariant(product.variants?.[0] || null);
+      setSelectedSize(product.sizes?.[0] || null);
+      if (product.id && recordProductView) {
+        recordProductView(product.id);
+      }
     }
   }, [product?.id]);
 
